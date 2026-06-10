@@ -1,0 +1,62 @@
+[
+  {
+    "answer": "Yep. If you need to adjust your gear list, dates, or contact info, just reply to your confirmation email or message us. We'll update the order on our end and send back the revised details.",
+    "question": "Can I edit my rental after I submit it?",
+    "sortOrder": 1,
+    "tag": "rentals"
+  },
+  {
+    "answer": "For popular items like cameras, lighting kits, and lenses, we recommend booking at least 1–2 weeks ahead. Same-day or next-day bookings are sometimes possible depending on inventory — these are also subject to an additional charge.",
+    "question": "How far in advance should I book gear?",
+    "sortOrder": 2,
+    "tag": "rentals"
+  },
+  {
+    "answer": "No — But we require your credit card to put on file.",
+    "question": "Do you require a deposit?",
+    "sortOrder": 3,
+    "tag": "rentals"
+  },
+  {
+    "answer": "Once you submit your order: 1) We review availability, 2) You receive a confirmation or suggested changes, 3) You sign the contract, 4) Your rental is officially booked. You'll also get check-in and check-out instructions before pickup.",
+    "question": "What happens after I create a rental?",
+    "sortOrder": 4,
+    "tag": "rentals"
+  },
+  {
+    "answer": "Pickups and returns happen at our Vancouver office. We'll send you the exact time slot, entry instructions, and any parking notes. If you need an early or late pickup, just ask — we'll try to accommodate.",
+    "question": "How does pickup and return work?",
+    "sortOrder": 5,
+    "tag": "rentals"
+  },
+  {
+    "answer": "A government-issued ID and a credit card used for the payment. If someone else is picking up the order, let us know in advance so we can authorize them.",
+    "question": "What do I need to bring for pickup?",
+    "sortOrder": 6,
+    "tag": "rentals"
+  },
+  {
+    "answer": "Let us know immediately. We handle repairs in-house or through our trusted techs. Damage is assessed fairly — we don't inflate repair costs. Insurance coverage is recommended for larger packages.",
+    "question": "What if the gear breaks during my rental?",
+    "sortOrder": 7,
+    "tag": "rentals"
+  },
+  {
+    "answer": "Yes. Cancellations are free up to 48 hours before pickup. Within 48 hours, the deposit becomes non-refundable due to scheduling and gear lockout.",
+    "question": "Can I cancel my order?",
+    "sortOrder": 8,
+    "tag": "rentals"
+  },
+  {
+    "answer": "We'll offer alternatives or notify you as soon as it becomes available again. We sometimes sub-rent specialty items — just ask.",
+    "question": "What if the gear I want isn't available?",
+    "sortOrder": 9,
+    "tag": "rentals"
+  },
+  {
+    "answer": "Absolutely. Whether you're shooting your first short film or a full commercial, we're here to help you choose the right gear and make sure you're set up for success.",
+    "question": "Do you rent to beginners or first-time filmmakers?",
+    "sortOrder": 10,
+    "tag": "rentals"
+  }
+]

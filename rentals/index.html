@@ -1,0 +1,177 @@
+---
+nav: rentals
+theme: rentals
+---
+{% set base = page.url | basePath %}
+{% set pd = pageBySlug.rentals %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% set pageTitle = pd.title %}
+  {% set pageDescription = pd.description %}
+  {% include "seo-head.njk" %}
+  <link rel="stylesheet" href="{{ base }}css/style.css">
+  <style>
+    .commerce-search {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--color-text-primary);
+      font-family: var(--font-tech);
+    }
+    .rentals-layout { display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start; }
+    .filter-sidebar { position: sticky; top: 100px; padding: 1.5rem; }
+    .filter-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-accent); margin-bottom: 1.5rem; font-weight: 700; }
+    .filter-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .filter-btn { width: 100%; text-align: left; font-size: 0.9rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; color: var(--color-text-secondary); transition: all var(--transition-fast); border-left: 2px solid transparent; background: none; border-top: none; border-right: none; border-bottom: none; }
+    .filter-btn:hover, .filter-btn.active { color: var(--color-text-primary); background-color: rgba(255,255,255,0.02); border-left-color: var(--color-accent); padding-left: 1rem; }
+    .filter-count { opacity: 0.6; font-size: 0.8em; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+    .gear-card { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .gear-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: rgba(255,255,255,0.03); }
+    .gear-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; }
+    .gear-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+    .gear-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); }
+    .gear-price { font-size: 0.95rem; font-weight: 700; color: var(--color-accent); }
+    .gear-title { font-size: 1.1rem; text-transform: uppercase; font-weight: 700; line-height: 1.2; }
+    .gear-variant { width: 100%; padding: 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--color-text-primary); }
+    .cart-drawer-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 99; width: 60px; height: 60px; border-radius: 50%; background-color: var(--color-accent); color: var(--color-bg-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px var(--color-accent-glow); cursor: pointer; font-weight: bold; }
+    .cart-count { position: absolute; top: -3px; right: -3px; background-color: #ff3366; color: #fff; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .cart-items-list { display: flex; flex-direction: column; gap: 1rem; max-height: 200px; overflow-y: auto; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; gap: 0.5rem; }
+    .cart-item input[type=number] { width: 56px; padding: 0.25rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--color-text-primary); border-radius: 4px; }
+    .pricing-summary { font-size: 0.85rem; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 0; border-top: 1px solid rgba(255,255,255,0.05); }
+    .pricing-summary strong { color: var(--color-text-primary); }
+    .faq-float-btn { position: fixed; bottom: 2rem; left: 2rem; z-index: 98; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--color-card-bg); border: 1px solid var(--color-card-border); color: var(--color-accent); cursor: pointer; font-family: var(--font-tech); font-size: 0.85rem; }
+    #rs-toast { position: fixed; bottom: 6rem; right: 2rem; z-index: 100; padding: 0.75rem 1.25rem; background: var(--color-accent); color: var(--color-bg-dark); border-radius: 6px; font-weight: 600; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; }
+    #rs-toast.show { opacity: 1; transform: translateY(0); }
+    .faq-item { margin-bottom: 1.25rem; }
+    .faq-q { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--color-text-primary); }
+    .faq-a { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.5; }
+    @media (max-width: 900px) {
+      .rentals-layout { grid-template-columns: 1fr; }
+      .filter-sidebar { position: static; }
+      .filter-list { flex-direction: row; overflow-x: auto; }
+      .filter-btn { white-space: nowrap; border-left: none; border-bottom: 2px solid transparent; }
+      .filter-btn.active { border-bottom-color: var(--color-accent); }
+    }
+  </style>
+</head>
+<body class="theme-rentals">
+
+  {% include "header.njk" %}
+
+  <main class="site-content">
+    <section class="container">
+      <h1 class="section-title font-tech">
+        <span>{{ pd.sectionSubtitle }}</span>
+        {{ pd.sectionTitle }}
+      </h1>
+
+      <input id="rs-search" class="commerce-search font-tech" type="search" placeholder="Search gear, kits, lenses…" aria-label="Search catalog">
+
+      <div class="rentals-layout">
+        <aside class="filter-sidebar glass-panel">
+          <h2 class="filter-title font-tech">Categories</h2>
+          <ul class="filter-list" id="rs-cats-list" role="tablist"></ul>
+        </aside>
+        <div class="catalog-grid" id="gear-catalog" aria-live="polite">
+          <p class="font-tech" style="color: var(--color-text-secondary);">Loading catalog…</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "footer.njk" %}
+
+  <button type="button" class="faq-float-btn" onclick="document.getElementById('faq-modal').showModal()">Rental FAQ</button>
+
+  <div class="cart-drawer-toggle" id="cart-toggle" onclick="document.getElementById('cart-modal').showModal()" aria-label="Open quote cart">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <div class="cart-count" id="cart-badge" style="display: none;">0</div>
+  </div>
+
+  <dialog id="cart-modal" closedby="any" aria-labelledby="modal-cart-title">
+    <div class="modal-content" style="background-color: #0f1013; border-color: rgba(0, 148, 198, 0.2); max-width: 520px;">
+      <button class="close-modal-btn" commandfor="cart-modal" command="close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title font-tech" id="modal-cart-title" style="font-size: 1.5rem;">Rental Quote Builder</h2>
+      <div class="cart-items-list" id="cart-items-list" style="margin: 1.5rem 0;"></div>
+      <div class="pricing-summary font-tech" id="cart-summary" style="display: none;">
+        <div>Days: <span id="rs-days">—</span></div>
+        <div>Per-day subtotal: <span id="rs-subday">—</span></div>
+        <div>Subtotal: <span id="rs-subtotal">—</span></div>
+        <div>GST (5%): <span id="rs-gst">—</span></div>
+        <div>Service Fee (3%): <span id="rs-service-fee">—</span></div>
+        <div>Estimated total: <strong id="rs-total">—</strong></div>
+        <div style="margin-top: 0.25rem;">Est. per day: <span id="cart-total-rate" style="color: var(--color-accent);">$0</span></div>
+      </div>
+      <form id="quote-submission-form" novalidate style="display: none; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="rental-first" class="form-label">First Name *</label>
+            <input type="text" id="rental-first" class="form-input" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="rental-last" class="form-label">Last Name</label>
+            <input type="text" id="rental-last" class="form-input">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="rental-email" class="form-label">Email *</label>
+          <input type="email" id="rental-email" class="form-input" required autocomplete="email">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="rental-phone" class="form-label">Phone</label>
+          <input type="tel" id="rental-phone" class="form-input">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="rental-start" class="form-label">Pickup Date *</label>
+            <input type="date" id="rental-start" class="form-input" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="rental-end" class="form-label">Dropoff Date *</label>
+            <input type="date" id="rental-end" class="form-input" required>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="rental-note" class="form-label">Notes</label>
+          <textarea id="rental-note" class="form-textarea" rows="2" placeholder="Delivery, PO, etc."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit for Estimate</button>
+        <p id="rs-status" class="font-tech" style="font-size: 0.8rem; color: var(--color-text-secondary); min-height: 1.2em;"></p>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog id="faq-modal" closedby="any" aria-labelledby="faq-title">
+    <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+      <button class="close-modal-btn" commandfor="faq-modal" command="close" aria-label="Close FAQ">&times;</button>
+      <h2 class="modal-title font-tech" id="faq-title">Rental Information</h2>
+      <div style="margin-top: 1.5rem;">
+        {% for item in faqItems %}
+        {% if item.tag == 'rentals' %}
+        <div class="faq-item">
+          <h3 class="faq-q font-tech">{{ item.question }}</h3>
+          <p class="faq-a">{{ item.answer }}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </dialog>
+
+  <div id="rs-toast" hidden>Added to quote</div>
+
+  <script src="{{ base }}js/square-config.js"></script>
+  <script src="{{ base }}js/square-utils.js"></script>
+  <script src="{{ base }}js/main.js"></script>
+  <script src="{{ base }}js/rentals.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% set base = page.url | basePath %}
+<header class="site-header">
+  <div class="header-container">
+    <a href="{{ base }}" class="logo-link">
+      {% if theme == 'rentals' or theme == 'shop' %}
+      <svg class="logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" stroke="#0094c6" stroke-width="6"/>
+        <path d="M30 30L70 70" stroke="#0094c6" stroke-width="6"/>
+        <path d="M70 30L30 70" stroke="#0094c6" stroke-width="6"/>
+      </svg>
+      {% elif theme == 'live' %}
+      <svg class="logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" stroke="#ba8fff" stroke-width="6"/>
+        <circle cx="50" cy="50" r="20" stroke="#ba8fff" stroke-width="6"/>
+        <circle cx="50" cy="50" r="5" fill="#ba8fff"/>
+      </svg>
+      {% else %}
+      <svg class="logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" stroke="#31e880" stroke-width="6"/>
+        <path d="M30 50 L70 50" stroke="#31e880" stroke-width="6"/>
+        <path d="M50 30 L50 70" stroke="#31e880" stroke-width="6"/>
+      </svg>
+      {% endif %}
+      {{ siteSettings.siteName | default("RAINSCOPE") | upper }}
+    </a>
+    <nav class="nav-menu">
+      {% for item in siteSettings.nav %}
+      <a href="{% if nav == item.slug %}{{ base }}{% else %}{{ base }}{{ item.href }}{% endif %}" class="nav-link{% if nav == item.slug %} active{% endif %}"{% if nav == item.slug %} aria-current="page"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</header>

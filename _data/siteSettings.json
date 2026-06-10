@@ -1,0 +1,32 @@
+{
+  "contactEmail": "hello@rainscope.ca",
+  "contactLocation": "Vancouver, British Columbia",
+  "copyrightYear": 2026,
+  "domain": "https://rainscopefilmworks.com",
+  "footerAbout": "A high-end creative studio and equipment resource base built in the Pacific Northwest. We produce visuals that carry texture, depth, and narrative gravity.",
+  "footerTagline": "Made for rainscope.ca",
+  "nav": [
+    {
+      "href": "filmworks/",
+      "label": "Filmworks",
+      "slug": "filmworks"
+    },
+    {
+      "href": "rentals/",
+      "label": "Rentals",
+      "slug": "rentals"
+    },
+    {
+      "href": "shop/",
+      "label": "Shop",
+      "slug": "shop"
+    },
+    {
+      "href": "live/",
+      "label": "Live",
+      "slug": "live"
+    }
+  ],
+  "siteName": "Rainscope",
+  "tagline": "Vancouver, BC"
+}

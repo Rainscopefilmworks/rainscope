@@ -1,0 +1,68 @@
+[
+  {
+    "description": "Rainscope Filmworks is a creative production studio based in Vancouver, BC. We produce cinematic narrative films, high-end commercial campaigns, and corporate branding stories.",
+    "heroTagline": "Pacific Northwest Creative Production",
+    "heroTitle": "A Creative Production Company Shaped by the Pacific Northwest",
+    "sectionFilmsSubtitle": "Cinematic Narrative Projects",
+    "sectionFilmsTitle": "Our Films",
+    "showreelUrl": "https://youtu.be/0LWSPjODvv0",
+    "slug": "filmworks",
+    "title": "Rainscope Filmworks | Cinematic & Narrative Production"
+  },
+  {
+    "description": "Rainscope is a creative production company based in the Pacific Northwest, specializing in narrative films, high-end commercial campaigns, gear rentals, and live multi-cam broadcasting.",
+    "panels": [
+      {
+        "cta": "Enter",
+        "description": "Cinematic narrative films, high-end commercial campaigns, and corporate monthly video creation.",
+        "href": "/filmworks/",
+        "id": "filmworks",
+        "subtitle": "Production Studio",
+        "title": "FILMWORKS"
+      },
+      {
+        "cta": "Explore Catalog",
+        "description": "Comprehensive inventory management. High-performance cameras, lenses, lighting, and audio equipment.",
+        "href": "/rentals/",
+        "id": "rentals",
+        "subtitle": "Equipment Gear",
+        "title": "RENTALS"
+      },
+      {
+        "cta": "View Services",
+        "description": "Professional multi-camera event webcasting, live concert streams, and remote corporate production.",
+        "href": "/live/",
+        "id": "live",
+        "subtitle": "Livestream & Broadcast",
+        "title": "LIVE"
+      }
+    ],
+    "slug": "landing",
+    "title": "Rainscope | Production, Rentals & Live Webcasting"
+  },
+  {
+    "description": "Rainscope Live provides high-end multi-camera webcasting, hybrid corporate meetings, virtual speakers, and live performance broadcasting in Vancouver, BC.",
+    "intro": "We bring cinematic production standards to live webcasts. Using professional multi-camera setups, redundant internet systems, and custom graphics feeds, we make your digital events feel like premium broadcast productions.",
+    "sectionSubtitle": "Broadcast & Event Streaming",
+    "sectionTitle": "Live Production",
+    "showcaseDescription": "A live music recording session stream captured at our Vancouver studio, integrating 4 dynamic camera feeds and direct soundboard mixes.",
+    "showcaseTitle": "No Calls Stream Case",
+    "showcaseVideo": "https://media.rainscopefilmworks.com/work/work-8.mp4",
+    "slug": "live",
+    "title": "Rainscope Live | Multi-Cam Webcasting & Livestreaming"
+  },
+  {
+    "description": "Rainscope Rentals offers professional cinema cameras, anamorphic lenses, high-output lighting, and audio equipment in Vancouver, BC. Explore our full gear inventory.",
+    "sectionSubtitle": "Production Equipment Inventory",
+    "sectionTitle": "Gear Catalog",
+    "slug": "rentals",
+    "title": "Rainscope Rentals | Camera, Lens & Grip Equipment"
+  },
+  {
+    "description": "Purchase professional film equipment in Vancouver, BC. Cameras, lighting, audio gear, and production equipment available for sale.",
+    "sectionSubtitle": "Equipment & Supplies for Sale",
+    "sectionTitle": "Shop Catalog",
+    "slug": "shop",
+    "title": "Rainscope Shop | Film Equipment & Gear for Sale"
+  }
+]

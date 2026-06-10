@@ -1,0 +1,126 @@
+---
+nav: shop
+theme: shop
+---
+{% set base = page.url | basePath %}
+{% set pd = pageBySlug.shop %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% set pageTitle = pd.title %}
+  {% set pageDescription = pd.description %}
+  {% include "seo-head.njk" %}
+  <link rel="stylesheet" href="{{ base }}css/style.css">
+  <link rel="preconnect" href="https://web.squarecdn.com">
+  <style>
+    .commerce-search { width: 100%; max-width: 420px; margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--color-text-primary); font-family: var(--font-tech); }
+    .rentals-layout { display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start; }
+    .filter-sidebar { position: sticky; top: 100px; padding: 1.5rem; }
+    .filter-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-accent); margin-bottom: 1.5rem; font-weight: 700; }
+    .filter-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .filter-btn { width: 100%; text-align: left; font-size: 0.9rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; color: var(--color-text-secondary); transition: all var(--transition-fast); border-left: 2px solid transparent; background: none; border-top: none; border-right: none; border-bottom: none; }
+    .filter-btn:hover, .filter-btn.active { color: var(--color-text-primary); background-color: rgba(255,255,255,0.02); border-left-color: var(--color-accent); padding-left: 1rem; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+    .gear-card { padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+    .gear-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: rgba(255,255,255,0.03); }
+    .gear-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; }
+    .gear-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .gear-category { font-size: 0.7rem; text-transform: uppercase; color: var(--color-text-secondary); }
+    .gear-price { font-size: 0.95rem; font-weight: 700; color: var(--color-accent); }
+    .gear-title { font-size: 1.1rem; text-transform: uppercase; font-weight: 700; }
+    .stock-badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stock-in { background: rgba(49,232,128,0.15); color: #31e880; }
+    .stock-low { background: rgba(255,180,0,0.15); color: #ffb400; }
+    .stock-out { background: rgba(255,80,80,0.15); color: #ff6b6b; }
+    .cart-drawer-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 99; width: 60px; height: 60px; border-radius: 50%; background-color: var(--color-accent); color: var(--color-bg-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px var(--color-accent-glow); cursor: pointer; }
+    .cart-count { position: absolute; top: -3px; right: -3px; background: #ff3366; color: #fff; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    #card-container { min-height: 90px; margin: 1rem 0; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
+    @media (max-width: 900px) { .rentals-layout { grid-template-columns: 1fr; } .filter-list { flex-direction: row; overflow-x: auto; } }
+  </style>
+</head>
+<body class="theme-shop">
+
+  {% include "header.njk" %}
+
+  <main class="site-content">
+    <section class="container">
+      <h1 class="section-title font-tech">
+        <span>{{ pd.sectionSubtitle }}</span>
+        {{ pd.sectionTitle }}
+      </h1>
+
+      <input id="rs-search" class="commerce-search font-tech" type="search" placeholder="Search shop items…" aria-label="Search shop">
+
+      <div class="rentals-layout">
+        <aside class="filter-sidebar glass-panel">
+          <h2 class="filter-title font-tech">Categories</h2>
+          <ul class="filter-list" id="rs-cats-list" role="tablist"></ul>
+        </aside>
+        <div class="catalog-grid" id="shop-catalog" aria-live="polite">
+          <p class="font-tech" style="color: var(--color-text-secondary);">Loading catalog…</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "footer.njk" %}
+
+  <div class="cart-drawer-toggle" id="cart-toggle" onclick="document.getElementById('checkout-modal').showModal()" aria-label="Open cart">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <div class="cart-count" id="cart-badge" style="display: none;">0</div>
+  </div>
+
+  <dialog id="checkout-modal" closedby="any" aria-labelledby="checkout-title">
+    <div class="modal-content" style="background-color: #0f1013; max-width: 520px;">
+      <button class="close-modal-btn" commandfor="checkout-modal" command="close" aria-label="Close">&times;</button>
+
+      <div id="checkout-form-view">
+        <h2 class="modal-title font-tech" id="checkout-title" style="font-size: 1.5rem;">Checkout</h2>
+        <div class="cart-items-list" id="cart-items-list" style="margin: 1rem 0; max-height: 180px; overflow-y: auto;"></div>
+        <div id="cart-summary" style="display: none; justify-content: space-between; padding: 0.75rem 0; border-top: 1px solid rgba(255,255,255,0.05);">
+          <span class="font-tech" style="font-weight: 600;">Total:</span>
+          <span class="font-tech" id="shop-total" style="color: var(--color-accent); font-weight: 700;">$0</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="shop-first" class="form-label">First Name *</label>
+            <input type="text" id="shop-first" class="form-input" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="shop-last" class="form-label">Last Name</label>
+            <input type="text" id="shop-last" class="form-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="shop-email" class="form-label">Email *</label>
+          <input type="email" id="shop-email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="shop-phone" class="form-label">Phone</label>
+          <input type="tel" id="shop-phone" class="form-input">
+        </div>
+
+        <div id="card-container"></div>
+
+        <button type="button" id="shop-submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Pay Now</button>
+        <p id="shop-status" class="font-tech" style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 0.5rem; min-height: 1.2em;"></p>
+      </div>
+
+      <div id="checkout-result" style="display: none; text-align: center; padding: 2rem 0;">
+        <div style="font-size: 3rem; color: var(--color-accent); margin-bottom: 1rem;">✓</div>
+        <h3 class="font-tech" id="checkout-result-title" style="font-size: 1.25rem; text-transform: uppercase; margin-bottom: 0.75rem;"></h3>
+        <p id="checkout-result-message" style="color: var(--color-text-secondary); line-height: 1.6;"></p>
+        <button type="button" class="btn btn-secondary" style="margin-top: 1.5rem;" onclick="document.getElementById('checkout-modal').close()">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="{{ base }}js/square-config.js"></script>
+  <script src="{{ base }}js/square-utils.js"></script>
+  <script src="{{ base }}js/main.js"></script>
+  <script src="{{ base }}js/shop.js"></script>
+</body>
+</html>

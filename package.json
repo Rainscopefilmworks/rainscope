@@ -1,0 +1,19 @@
+{
+  "name": "rainscope",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rainscope — production, rentals, shop, and live webcasting",
+  "scripts": {
+    "fetch-data": "node scripts/fetch-sanity.js",
+    "build": "npm run fetch-data && eleventy",
+    "dev": "npm run fetch-data && eleventy --serve",
+    "studio": "cd studio && npm run dev",
+    "seed": "node scripts/seed-sanity.js"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.28.0"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

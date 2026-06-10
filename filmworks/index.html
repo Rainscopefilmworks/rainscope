@@ -1,0 +1,779 @@
+---
+nav: filmworks
+theme: filmworks
+---
+{% set base = page.url | basePath %}
+{% set pd = pageBySlug.filmworks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% set pageTitle = pd.title %}
+  {% set pageDescription = pd.description %}
+  {% include "seo-head.njk" %}
+  <link rel="stylesheet" href="{{ base }}css/style.css">
+  <style>
+    /* Filmworks Specific Custom Styles */
+    .hero-reel {
+      position: relative;
+      height: 60vh;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .hero-reel-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .hero-reel-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-tagline {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+      line-height: 1.1;
+    }
+
+    /* Film Grid */
+    .film-gallery-section {
+      max-width: none;
+      width: 100%;
+      padding-left: clamp(1.25rem, 4vw, 3.5rem);
+      padding-right: clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(1rem, 2vw, 2.5rem);
+      width: 100%;
+      max-width: min(96vw, 6000px);
+      margin: 0 auto;
+    }
+
+    .film-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 2 / 3;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(49, 232, 128, 0.15);
+    }
+
+    .film-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease-out;
+    }
+
+    .film-card:hover .film-poster {
+      transform: scale(1.05);
+    }
+
+    .film-card-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(7, 24, 22, 0.95) 0%, rgba(7, 24, 22, 0.7) 40%, rgba(7, 24, 22, 0.1) 100%);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+
+    .film-card:hover .film-card-overlay {
+      opacity: 1;
+    }
+
+    .film-card-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .film-card-year {
+      font-size: 0.8rem;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .film-card-logline {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Work Reel Gallery (preview loops + modal) */
+    .work-gallery-section {
+      max-width: none;
+      width: 100%;
+      padding-left: clamp(1.25rem, 4vw, 3.5rem);
+      padding-right: clamp(1.25rem, 4vw, 3.5rem);
+    }
+
+    .video-gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1rem, 2.5vw, 3rem);
+      width: 100%;
+      max-width: min(96vw, 6000px);
+      margin: 0 auto;
+    }
+
+    .video-gallery-item {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0;
+      cursor: pointer;
+      text-align: center;
+      will-change: transform;
+      transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+    }
+
+    .video-gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      border-color: rgba(var(--color-accent-rgb), 0.35);
+    }
+
+    .video-gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .video-gallery-item:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    .work-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.35rem;
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      background: linear-gradient(180deg, rgba(5, 10, 10, 0) 0%, rgba(5, 10, 10, 0.7) 55%, rgba(5, 10, 10, 0.92) 100%);
+      color: var(--color-text-primary);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+      pointer-events: none;
+    }
+
+    .video-gallery-item:hover .work-overlay,
+    .video-gallery-item:focus-visible .work-overlay {
+      opacity: 1;
+    }
+
+    .work-overlay-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .work-overlay-title {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      text-transform: uppercase;
+      font-weight: 700;
+      width: 100%;
+    }
+
+    .work-overlay-description {
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--color-text-secondary);
+      width: 100%;
+      max-width: 42ch;
+      margin-inline: auto;
+    }
+
+    .work-overlay-copy {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 0.25rem;
+      width: 100%;
+    }
+
+    .work-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1.5rem, 4vw, 3rem);
+      z-index: 1200;
+    }
+
+    .work-modal.open {
+      display: flex;
+    }
+
+    .work-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 18, 17, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .work-modal-content {
+      position: relative;
+      z-index: 1;
+      width: min(90vw, 960px);
+      background: rgba(15, 44, 41, 0.97);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      color: var(--color-text-primary);
+    }
+
+    .work-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text-primary);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .work-modal-media {
+      background: #000;
+    }
+
+    .work-modal-media video,
+    .work-modal-media iframe {
+      width: 100%;
+      display: block;
+    }
+
+    .work-modal-media iframe {
+      aspect-ratio: 16 / 9;
+      border: 0;
+    }
+
+    .work-modal-media [hidden] {
+      display: none !important;
+    }
+
+    .work-modal-info {
+      padding: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    .work-modal-category {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .work-modal-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .work-modal-description {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    @media (min-width: 640px) {
+      .film-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .film-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .film-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (min-width: 640px) {
+      .video-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(1.25rem, 3vw, 2.5rem);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .video-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(1.5rem, 3vw, 4rem);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .video-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-overlay {
+        opacity: 1;
+        padding: 1rem;
+        background: linear-gradient(180deg, rgba(5, 10, 10, 0.15) 0%, rgba(5, 10, 10, 0.75) 45%, rgba(5, 10, 10, 0.92) 100%);
+      }
+
+      .work-overlay-description {
+        max-width: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .work-overlay-copy {
+        display: none;
+      }
+    }
+
+    /* Team Section */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      text-align: center;
+    }
+
+    .team-avatar-container {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 1.5rem;
+      border: 2px solid var(--color-card-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .team-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-normal);
+    }
+
+    .team-card:hover .team-avatar {
+      transform: scale(1.08);
+    }
+
+    .team-name {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .team-role {
+      font-size: 0.8rem;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Contact Planner */
+    .planner-form-container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 3rem;
+    }
+
+    /* Modal Layout */
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .modal-media {
+      aspect-ratio: 2 / 3;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      background-color: #000;
+    }
+
+    .modal-media.has-video {
+      aspect-ratio: 16 / 9;
+      grid-column: 1 / -1;
+    }
+
+    .modal-media video, .modal-media iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
+
+    .modal-meta {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-accent);
+    }
+
+    .modal-logline {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      border-left: 2px solid var(--color-accent);
+      padding-left: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .modal-credits {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .credit-label {
+      font-weight: 700;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .credit-value {
+      color: var(--color-text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      .modal-body {
+        grid-template-columns: 1fr;
+      }
+      .modal-media {
+        aspect-ratio: 16 / 9;
+      }
+      .planner-form-container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="theme-filmworks">
+
+  {% include "header.njk" %}
+
+  <main class="site-content">
+    
+    <!-- Hero Showreel Section -->
+    <section class="hero-reel">
+      <!-- Muted looping background representation or poster -->
+      <div class="hero-reel-video" style="background-image: linear-gradient(to bottom, rgba(7, 24, 22, 0.4), rgba(4, 12, 11, 0.95)), url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1600'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+      <div class="hero-reel-content">
+        <span class="hero-tagline">{{ pd.heroTagline }}</span>
+        <h1 class="hero-title font-display">{{ pd.heroTitle }}</h1>
+        <button class="btn btn-primary" onclick="window.open('{{ pd.showreelUrl }}', '_blank')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Watch 2025 Showreel
+        </button>
+      </div>
+    </section>
+
+    <!-- Commercial & Corporate Section -->
+    <section class="container work-gallery-section reveal">
+      <h2 class="section-title font-display">
+        <span>Branded Content & Corporate Contracts</span>
+        Commercial Showcase
+      </h2>
+      
+      <div class="video-gallery-grid">
+        {% for reel in workReels %}
+        <button
+          class="video-gallery-item work-overlay-card"
+          type="button"
+          id="{{ reel.title | slug }}"
+          data-project="{{ reel.title | slug }}"
+          data-title="{{ reel.title }}"
+          data-category="{{ reel.category }}"
+          data-description="{{ reel.description }}"
+          {% if reel.embed %}data-embed="{{ reel.embed }}"{% endif %}
+          {% if reel.video %}data-video="{{ reel.video }}"{% endif %}
+        >
+          <video loop muted playsinline preload="none" data-deferred-work-video aria-hidden="true">
+            <source data-src="{{ reel.preview or reel.video }}" type="video/mp4">
+          </video>
+          <span class="work-overlay">
+            <span class="work-overlay-category">{{ reel.category }}</span>
+            <span class="work-overlay-title font-display">{{ reel.title }}</span>
+            <span class="work-overlay-description">{{ reel.description }}</span>
+            <span class="work-overlay-copy">Watch + Details</span>
+          </span>
+        </button>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Narrative Films Section -->
+    <section class="container film-gallery-section reveal">
+      <h2 class="section-title font-display">
+        <span>{{ pd.sectionFilmsSubtitle }}</span>
+        {{ pd.sectionFilmsTitle }}
+      </h2>
+      
+      <div class="film-grid">
+        {% for film in films %}
+        <div class="film-card"
+             data-title="{{ film.title }}"
+             data-year="{{ film.year }}"
+             data-logline="{{ film.logline }}"
+             data-cast="{{ film.cast }}"
+             data-director="{{ film.directed }}"
+             data-writer="{{ film.written }}"
+             data-dop="{{ film.dop }}"
+             data-designer="{{ film.designer }}"
+             data-producer="{{ film.produced }}"
+             {% if film.youtubeEmbed %}data-youtube="{{ film.youtubeEmbed | youtubeId }}"{% endif %}
+             data-poster="{{ film.poster | mediaUrl(base) }}">
+          {% if film.posterWebp %}
+          <picture>
+            <source srcset="{{ film.posterWebp | mediaUrl(base) }}" type="image/webp">
+            <img src="{{ film.poster | mediaUrl(base) }}" alt="{{ film.title }} Poster" class="film-poster" loading="lazy">
+          </picture>
+          {% else %}
+          <img src="{{ film.poster | mediaUrl(base) }}" alt="{{ film.title }} Poster" class="film-poster" loading="lazy">
+          {% endif %}
+          <div class="film-card-overlay">
+            <div class="film-card-year">{{ film.year }}</div>
+            <h3 class="film-card-title font-display">{{ film.title }}</h3>
+            <p class="film-card-logline">{{ film.logline | truncate(90) }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Team Profiles Section -->
+    <section class="container reveal">
+      <h2 class="section-title font-display">
+        <span>The Minds Behind the Lens</span>
+        Our Core Team
+      </h2>
+      
+      <div class="team-grid">
+        {% for member in teamMembers %}
+        <div class="team-card">
+          <div class="team-avatar-container">
+            <img src="{{ member.image }}" alt="{{ member.name }}" class="team-avatar" loading="lazy">
+          </div>
+          <h3 class="team-name font-display">{{ member.name }}</h3>
+          <div class="team-role">{{ member.role }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Client Lead / Project Planner Form -->
+    <section class="container reveal">
+      <div class="glass-panel planner-form-container">
+        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">
+          <span>Get in Touch</span>
+          Start Your Project
+        </h2>
+        
+        <form id="project-planner-form" novalidate>
+          <div class="form-group">
+            <label for="client-name" class="form-label">Your Name</label>
+            <input type="text" id="client-name" name="name" class="form-input" required autocomplete="name" placeholder="John Doe">
+            <span class="form-error">Please fill in your name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="client-email" class="form-label">Email Address</label>
+            <span class="form-hint" style="margin-bottom: 0.25rem;">We will contact you here within 24 hours.</span>
+            <input type="email" id="client-email" name="email" class="form-input" required autocomplete="email" placeholder="you@example.com">
+            <span class="form-error">Please enter a valid email address.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="project-type" class="form-label">Project Focus</label>
+            <select id="project-type" name="type" class="form-select" required>
+              <option value="" disabled selected>Select an option...</option>
+              <option value="narrative">Narrative Film / Cinematic Collaboration</option>
+              <option value="commercial">High-End Commercial Campaign</option>
+              <option value="corporate">Corporate Production (Monthly Retainer)</option>
+              <option value="music">Music Video Production</option>
+              <option value="other">Specialized Cinematography / Other</option>
+            </select>
+            <span class="form-error">Please select a project focus.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="project-details" class="form-label">Tell Us About the Project</label>
+            <textarea id="project-details" name="details" class="form-textarea" rows="4" required minlength="10" placeholder="Briefly describe your timeline, budget parameters, and creative concepts..."></textarea>
+            <span class="form-error">Please supply a description (at least 10 characters).</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Project Proposal</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  {% include "footer.njk" %}
+
+  <!-- Reusable Film Dialog Modal -->
+  <dialog id="film-modal" closedby="any" aria-labelledby="modal-film-title">
+    <div class="modal-content">
+      <button class="close-modal-btn" commandfor="film-modal" command="close" aria-label="Close modal">&times;</button>
+      <div class="modal-body">
+        
+        <!-- Media Container (Replaced dynamically with image poster or youtube video player iframe) -->
+        <div class="modal-media" id="modal-media-box">
+          <img id="modal-poster-img" src="" alt="Film Poster" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <div class="modal-details">
+          <div>
+            <span class="modal-meta" id="modal-film-year"></span>
+            <h2 class="modal-title font-display" id="modal-film-title"></h2>
+          </div>
+          
+          <p class="modal-logline" id="modal-film-logline"></p>
+
+          <div class="modal-credits">
+            <span class="credit-label">Cast</span>
+            <span class="credit-value" id="modal-cast"></span>
+
+            <span class="credit-label">Director</span>
+            <span class="credit-value" id="modal-director"></span>
+
+            <span class="credit-label">Writer</span>
+            <span class="credit-value" id="modal-writer"></span>
+
+            <span class="credit-label">DOP</span>
+            <span class="credit-value" id="modal-dop"></span>
+
+            <span class="credit-label">Production Designer</span>
+            <span class="credit-value" id="modal-designer"></span>
+
+            <span class="credit-label">Producer</span>
+            <span class="credit-value" id="modal-producer"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </dialog>
+
+  <div class="work-modal" id="workModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
+    <div class="work-modal-backdrop" data-close></div>
+    <div class="work-modal-content" role="document">
+      <button class="work-modal-close" type="button" aria-label="Close project">&times;</button>
+      <div class="work-modal-media">
+        <iframe id="workModalEmbed" title="Project video player" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" hidden></iframe>
+        <video id="workModalVideo" controls playsinline preload="metadata" hidden></video>
+      </div>
+      <div class="work-modal-info">
+        <p class="work-modal-category" id="workModalCategory"></p>
+        <h2 class="work-modal-title font-display" id="workModalTitle"></h2>
+        <p class="work-modal-description" id="workModalDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ base }}js/main.js"></script>
+  <script src="{{ base }}js/filmworks-work.js"></script>
+</body>
+</html>

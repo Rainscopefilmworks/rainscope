@@ -1,0 +1,27 @@
+{% set base = page.url | basePath %}
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-about">
+      <h3>{{ siteSettings.siteName | default("Rainscope") }}</h3>
+      <p>{{ siteSettings.footerAbout }}</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="{{ base }}">Landing Hub</a></li>
+        {% for item in siteSettings.nav %}
+        <li><a href="{{ base }}{{ item.href }}"{% if nav == item.slug %} style="color: var(--color-accent)"{% endif %}>{% if item.slug == 'rentals' %}Gear Rentals{% elif item.slug == 'live' %}Live Broadcasts{% elif item.slug == 'shop' %}Shop{% else %}{{ item.label }}{% endif %}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h4>Office / Studio</h4>
+      <p>{{ siteSettings.contactLocation }}</p>
+      <p style="margin-top: 0.5rem;">{{ siteSettings.contactEmail }}</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; {{ siteSettings.copyrightYear }} Rainscope Filmworks. All rights reserved.</p>
+    <p>{{ siteSettings.footerTagline }}</p>
+  </div>
+</footer>

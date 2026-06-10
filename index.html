@@ -1,0 +1,252 @@
+---
+layout: false
+---
+{% set pd = pageBySlug.landing %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% set pageTitle = pd.title %}
+  {% set pageDescription = pd.description %}
+  {% include "seo-head.njk" %}
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Landing page specific layout - Full screen split panel */
+    body.landing-page {
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: #050507;
+    }
+
+    .landing-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      padding: 2rem;
+      background: linear-gradient(to bottom, rgba(5, 5, 7, 0.8) 0%, rgba(5, 5, 7, 0) 100%);
+      display: flex;
+      justify-content: center;
+    }
+
+    .landing-logo {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      text-align: center;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .landing-logo span {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.5em;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      margin-left: 0.5rem; /* align center with letter spacing offset */
+    }
+
+    .split-container {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      flex-direction: row;
+    }
+
+    .panel {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: flex var(--transition-slow), filter var(--transition-slow);
+      text-align: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .panel:last-child {
+      border-right: none;
+    }
+
+    /* Panel background images with dark overlays */
+    .panel-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.05);
+      transition: transform var(--transition-slow);
+      filter: grayscale(40%) brightness(35%);
+      z-index: 1;
+    }
+
+    /* Column-specific placeholder backgrounds (Abstract gradients mimicking misty forest, technical gear stack, live lighting setup) */
+    #panel-filmworks .panel-bg {
+      background-image: linear-gradient(135deg, rgba(7, 24, 22, 0.95), rgba(4, 12, 11, 0.95)), url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200');
+    }
+
+    #panel-rentals .panel-bg {
+      background-image: linear-gradient(135deg, rgba(22, 25, 32, 0.95), rgba(15, 16, 19, 0.95)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200');
+    }
+
+    #panel-live .panel-bg {
+      background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200');
+    }
+
+    /* Hover effect: Expand column and reveal color/depth */
+    .split-container:hover .panel {
+      flex: 0.8;
+      filter: blur(2px) grayscale(80%) opacity(0.5);
+    }
+
+    .split-container .panel:hover {
+      flex: 1.4;
+      filter: none;
+      z-index: 2;
+    }
+
+    .split-container .panel:hover .panel-bg {
+      transform: scale(1);
+      filter: grayscale(10%) brightness(55%);
+    }
+
+    /* Content Cards on top of Panels */
+    .panel-content {
+      position: relative;
+      z-index: 2;
+      max-width: 320px;
+      padding: 2.5rem;
+      border-radius: 16px;
+      background: rgba(10, 10, 12, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transform: translateY(0);
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .panel:hover .panel-content {
+      transform: translateY(-8px);
+      background: rgba(10, 10, 12, 0.7);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Individual brand touches on hover */
+    #panel-filmworks:hover .panel-content {
+      border-color: rgba(49, 232, 128, 0.3);
+      box-shadow: 0 10px 40px rgba(49, 232, 128, 0.15);
+    }
+    #panel-rentals:hover .panel-content {
+      border-color: rgba(0, 148, 198, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 148, 198, 0.15);
+    }
+    #panel-live:hover .panel-content {
+      border-color: rgba(186, 143, 255, 0.3);
+      box-shadow: 0 10px 40px rgba(186, 143, 255, 0.15);
+    }
+
+    .panel-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .panel-subtitle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+
+    #panel-filmworks .panel-subtitle { color: #31e880; }
+    #panel-rentals .panel-subtitle { color: #0094c6; }
+    #panel-live .panel-subtitle { color: #ba8fff; }
+
+    .panel-desc {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive scaling for landing page */
+    @media (max-width: 900px) {
+      .split-container {
+        flex-direction: column;
+      }
+      body.landing-page {
+        height: auto;
+        overflow: auto;
+      }
+      .panel {
+        height: 33.33vh;
+        min-height: 280px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .split-container:hover .panel {
+        flex: 1;
+        filter: none;
+      }
+      .split-container .panel:hover {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body class="landing-page">
+
+  <header class="landing-header">
+    <div class="landing-logo">
+      {{ siteSettings.siteName | upper }}
+      <span>{{ siteSettings.tagline }}</span>
+    </div>
+  </header>
+
+  <div class="split-container">
+    
+    {% for panel in pd.panels %}
+    <a href="{{ panel.href }}" class="panel" id="panel-{{ panel.id }}">
+      <div class="panel-bg"></div>
+      <div class="panel-content">
+        <div>
+          <h2 class="panel-title {% if panel.id == 'rentals' %}font-tech{% else %}font-display{% endif %}">{{ panel.title }}</h2>
+          <div class="panel-subtitle">{{ panel.subtitle }}</div>
+        </div>
+        <p class="panel-desc">{{ panel.description }}</p>
+        <span class="btn btn-secondary">{{ panel.cta }}</span>
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
+
+</body>
+</html>

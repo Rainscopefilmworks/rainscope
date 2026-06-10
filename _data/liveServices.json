@@ -1,0 +1,26 @@
+[
+  {
+    "description": "Multi-cam setups for corporate town halls, product launches, panel discussions, and keynotes.",
+    "icon": "📡",
+    "sortOrder": 1,
+    "title": "Webcasting"
+  },
+  {
+    "description": "Fusing remote speakers with local presenters on stage with high-fidelity, low-latency video feeds.",
+    "icon": "🎙️",
+    "sortOrder": 2,
+    "title": "Hybrid Integration"
+  },
+  {
+    "description": "Cinematic capture of live music, concerts, theatrical acts, and online festivals with multi-track sound.",
+    "icon": "🎵",
+    "sortOrder": 3,
+    "title": "Performance streams"
+  },
+  {
+    "description": "Real-time overlay of custom speaker titles, social tags, slideshow overlays, and video rolls.",
+    "icon": "💻",
+    "sortOrder": 4,
+    "title": "Custom Graphics"
+  }
+]
