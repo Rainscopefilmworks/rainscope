@@ -31,12 +31,19 @@ theme: rentals
     .gear-media {
       width: 100%;
       flex-shrink: 0;
-    }
-    .gear-media:has(.gear-image-placeholder) {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 2 / 3;
       background: rgba(255,255,255,0.03);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .gear-image { width: 100%; height: auto; display: block; }
+    .gear-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
     .gear-image-placeholder { width: 100%; height: 100%; }
     .gear-body {
       padding: 1.25rem 1.5rem 1.5rem;
