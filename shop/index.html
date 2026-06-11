@@ -34,9 +34,16 @@ theme: shop
     .stock-in { background: rgba(49,232,128,0.15); color: #31e880; }
     .stock-low { background: rgba(255,180,0,0.15); color: #ffb400; }
     .stock-out { background: rgba(255,80,80,0.15); color: #ff6b6b; }
-    .cart-drawer-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 99; width: 60px; height: 60px; border-radius: 50%; background-color: var(--color-accent); color: var(--color-bg-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px var(--color-accent-glow); cursor: pointer; }
-    .cart-count { position: absolute; top: -3px; right: -3px; background: #ff3366; color: #fff; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     #card-container { min-height: 90px; margin: 1rem 0; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
+    .commerce-cart-total-row {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-weight: 600;
+    }
+    .commerce-cart-total-row.is-visible { display: flex; }
   </style>
 </head>
 <body class="theme-shop">
@@ -52,73 +59,89 @@ theme: shop
 
       <input id="rs-search" class="commerce-search font-tech" type="search" placeholder="Search shop items…" aria-label="Search shop">
 
-      <div class="rentals-layout">
+      <div class="rentals-layout commerce-layout">
         <aside class="filter-sidebar glass-panel">
           <h2 class="filter-title font-tech">Categories</h2>
           <ul class="filter-list" id="rs-cats-list" role="tablist"></ul>
         </aside>
+
         <div class="catalog-grid" id="shop-catalog" aria-live="polite">
           <p class="font-tech" style="color: var(--color-text-secondary);">Loading catalog…</p>
         </div>
+
+        <dialog id="checkout-modal" class="commerce-cart-panel glass-panel" closedby="any" aria-labelledby="checkout-title">
+          <div class="commerce-cart-inner" id="checkout-form-view">
+            <button type="button" class="close-modal-btn commerce-cart-close commerce-mobile-only" aria-label="Close cart">&times;</button>
+            <h2 class="commerce-cart-title font-tech" id="checkout-title">
+              Cart
+              <span id="cart-panel-count" class="commerce-cart-header-count" hidden></span>
+            </h2>
+
+            <div class="commerce-cart-scroll">
+              <div class="commerce-cart-items-list" id="cart-items-list"></div>
+
+              <div class="commerce-cart-total-row font-tech" id="cart-summary">
+                <span>Total</span>
+                <span id="shop-total" style="color: var(--color-accent);">—</span>
+              </div>
+
+              <div class="commerce-cart-form">
+                <div class="form-row-2">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="shop-first" class="form-label">First Name *</label>
+                    <input type="text" id="shop-first" class="form-input" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="shop-last" class="form-label">Last Name</label>
+                    <input type="text" id="shop-last" class="form-input">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="shop-email" class="form-label">Email *</label>
+                  <input type="email" id="shop-email" class="form-input" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="shop-phone" class="form-label">Phone</label>
+                  <input type="tel" id="shop-phone" class="form-input">
+                </div>
+
+                <div id="card-container"></div>
+
+                <button type="button" id="shop-submit" class="btn btn-primary" style="width: 100%;">Pay Now</button>
+                <p id="shop-status" class="font-tech" style="font-size: 0.8rem; color: var(--color-text-secondary); min-height: 1.2em;"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="commerce-cart-inner" id="checkout-result" style="display: none; text-align: center; padding-top: 2.5rem;">
+            <div style="font-size: 3rem; color: var(--color-accent); margin-bottom: 1rem;">✓</div>
+            <h3 class="font-tech" id="checkout-result-title" style="font-size: 1.25rem; text-transform: uppercase; margin-bottom: 0.75rem;"></h3>
+            <p id="checkout-result-message" style="color: var(--color-text-secondary); line-height: 1.6;"></p>
+            <button type="button" class="btn btn-secondary" style="margin-top: 1.5rem;" id="checkout-result-close">Close</button>
+          </div>
+        </dialog>
       </div>
     </section>
   </main>
 
   {% include "footer.njk" %}
 
-  <div class="cart-drawer-toggle" id="cart-toggle" onclick="document.getElementById('checkout-modal').showModal()" aria-label="Open cart">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    <div class="cart-count" id="cart-badge" style="display: none;">0</div>
-  </div>
-
-  <dialog id="checkout-modal" closedby="any" aria-labelledby="checkout-title">
-    <div class="modal-content" style="background-color: #0f1013; max-width: 520px;">
-      <button class="close-modal-btn" commandfor="checkout-modal" command="close" aria-label="Close">&times;</button>
-
-      <div id="checkout-form-view">
-        <h2 class="modal-title font-tech" id="checkout-title" style="font-size: 1.5rem;">Checkout</h2>
-        <div class="cart-items-list" id="cart-items-list" style="margin: 1rem 0; max-height: 180px; overflow-y: auto;"></div>
-        <div id="cart-summary" style="display: none; justify-content: space-between; padding: 0.75rem 0; border-top: 1px solid rgba(255,255,255,0.05);">
-          <span class="font-tech" style="font-weight: 600;">Total:</span>
-          <span class="font-tech" id="shop-total" style="color: var(--color-accent); font-weight: 700;">$0</span>
-        </div>
-
-        <div class="form-row-2" style="margin-top: 1rem;">
-          <div class="form-group" style="margin-bottom: 0;">
-            <label for="shop-first" class="form-label">First Name *</label>
-            <input type="text" id="shop-first" class="form-input" required>
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label for="shop-last" class="form-label">Last Name</label>
-            <input type="text" id="shop-last" class="form-input">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="shop-email" class="form-label">Email *</label>
-          <input type="email" id="shop-email" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label for="shop-phone" class="form-label">Phone</label>
-          <input type="tel" id="shop-phone" class="form-input">
-        </div>
-
-        <div id="card-container"></div>
-
-        <button type="button" id="shop-submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Pay Now</button>
-        <p id="shop-status" class="font-tech" style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 0.5rem; min-height: 1.2em;"></p>
-      </div>
-
-      <div id="checkout-result" style="display: none; text-align: center; padding: 2rem 0;">
-        <div style="font-size: 3rem; color: var(--color-accent); margin-bottom: 1rem;">✓</div>
-        <h3 class="font-tech" id="checkout-result-title" style="font-size: 1.25rem; text-transform: uppercase; margin-bottom: 0.75rem;"></h3>
-        <p id="checkout-result-message" style="color: var(--color-text-secondary); line-height: 1.6;"></p>
-        <button type="button" class="btn btn-secondary" style="margin-top: 1.5rem;" onclick="document.getElementById('checkout-modal').close()">Close</button>
-      </div>
-    </div>
-  </dialog>
+  <button type="button" class="commerce-cart-toggle" id="cart-toggle" aria-label="Open shop cart">
+    <span class="commerce-cart-toggle-icon" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </span>
+    <span class="commerce-cart-toggle-text">
+      <span class="commerce-cart-toggle-label">Cart</span>
+      <span class="commerce-cart-toggle-meta">
+        <span id="cart-badge" class="commerce-cart-count" hidden>0</span>
+        <span id="cart-toggle-total" class="commerce-cart-day-rate"></span>
+      </span>
+    </span>
+  </button>
 
   <script src="{{ base }}js/square-config.js"></script>
   <script src="{{ base }}js/square-utils.js"></script>
+  <script src="{{ base }}js/commerce-cart-shell.js"></script>
   <script src="{{ base }}js/main.js"></script>
   <script src="{{ base }}js/shop.js"></script>
 </body>

@@ -89,6 +89,8 @@
 
     const $cartItems = document.getElementById("cart-items-list");
     const $cartBadge = document.getElementById("cart-badge");
+    const $cartPanelCount = document.getElementById("cart-panel-count");
+    const $cartToggleDayRate = document.getElementById("cart-toggle-day-rate");
     const $cartSummary = document.getElementById("cart-summary");
     const $cartTotalRate = document.getElementById("cart-total-rate");
 
@@ -105,6 +107,14 @@
 
     const cart = utils.safeParseJSON(localStorage.getItem(CART_KEY) || "[]");
     let submitting = false;
+    let cartShell = null;
+
+    if (window.CommerceCartShell) {
+      cartShell = window.CommerceCartShell.init({
+        dialogId: "cart-modal",
+        toggleId: "cart-toggle"
+      });
+    }
 
     function createIdempotencyKey() {
       if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -136,12 +146,23 @@
         return n + Math.max(1, parseInt(l.qty || "1", 10));
       }, 0);
 
+      const countText = String(units);
+
       if ($cartBadge) {
         if (units > 0) {
-          $cartBadge.textContent = String(units);
+          $cartBadge.textContent = countText;
           $cartBadge.hidden = false;
         } else {
           $cartBadge.hidden = true;
+        }
+      }
+
+      if ($cartPanelCount) {
+        if (units > 0) {
+          $cartPanelCount.textContent = countText;
+          $cartPanelCount.hidden = false;
+        } else {
+          $cartPanelCount.hidden = true;
         }
       }
     }
@@ -173,6 +194,9 @@
       }
       if ($total) $total.textContent = totalAmount ? utils.money(totalAmount) : "—";
       if ($cartTotalRate) $cartTotalRate.textContent = perDay ? utils.money(perDay) : "—";
+      if ($cartToggleDayRate) {
+        $cartToggleDayRate.textContent = perDay ? utils.money(perDay) + "/day" : "";
+      }
     }
 
     function renderCart() {
@@ -198,22 +222,22 @@
             : "—";
           const qtyText = utils.escapeHTML(String(line.qty || "1"));
           return (
-            '<div class="cart-item">' +
+            '<div class="commerce-cart-item">' +
             '  <div>' +
-            '    <div class="cart-item-title">' +
+            '    <div class="commerce-cart-item-title">' +
             itemName +
             "</div>" +
-            '    <div class="cart-item-meta">Price/day: ' +
+            '    <div class="commerce-cart-item-meta">Price/day: ' +
             priceText +
             "</div>" +
             "  </div>" +
-            '  <div class="cart-item-controls">' +
+            '  <div class="commerce-cart-item-controls">' +
             '    <input type="number" min="1" data-i="' +
             i +
             '" value="' +
             qtyText +
             '">' +
-            '    <button type="button" class="cart-item-remove" data-rm="' +
+            '    <button type="button" class="commerce-cart-item-remove" data-rm="' +
             i +
             '">&times;</button>' +
             "  </div>" +
@@ -766,9 +790,8 @@
         renderCart();
         computeTotals();
 
-        const cartModal = document.getElementById("cart-modal");
-        if (cartModal && typeof cartModal.close === "function" && cartModal.open) {
-          cartModal.close();
+        if (cartShell && typeof cartShell.closeIfMobile === "function") {
+          cartShell.closeIfMobile();
         }
       } catch (err) {
         alert("Estimate failed:\n" + ((err && err.message) || String(err)));

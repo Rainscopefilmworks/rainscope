@@ -19,6 +19,7 @@
   };
 
   var els = {};
+  var cartShell = null;
 
   function init() {
     if (!document.getElementById("shop-catalog")) return;
@@ -34,6 +35,12 @@
     }
 
     state.cart = UTILS.safeParseJSON(localStorage.getItem(CART_KEY) || "[]");
+    if (window.CommerceCartShell) {
+      cartShell = window.CommerceCartShell.init({
+        dialogId: "checkout-modal",
+        toggleId: "cart-toggle"
+      });
+    }
     bindEvents();
     renderCart();
     loadCatalog();
@@ -47,10 +54,13 @@
 
     els.cartItems = document.getElementById("cart-items-list");
     els.cartBadge = document.getElementById("cart-badge");
+    els.cartPanelCount = document.getElementById("cart-panel-count");
+    els.cartToggleTotal = document.getElementById("cart-toggle-total");
     els.cartSummary = document.getElementById("cart-summary");
     els.total = document.getElementById("shop-total");
 
     els.checkoutModal = document.getElementById("checkout-modal");
+    els.checkoutFormView = document.getElementById("checkout-form-view");
     els.cardContainer = document.getElementById("card-container");
     els.first = document.getElementById("shop-first");
     els.last = document.getElementById("shop-last");
@@ -62,6 +72,7 @@
     els.result = document.getElementById("checkout-result");
     els.resultTitle = document.getElementById("checkout-result-title");
     els.resultMessage = document.getElementById("checkout-result-message");
+    els.resultClose = document.getElementById("checkout-result-close");
   }
 
   function bindEvents() {
@@ -100,6 +111,15 @@
     if (els.submit) {
       els.submit.addEventListener("click", handleCheckoutSubmit);
     }
+
+    if (els.resultClose) {
+      els.resultClose.addEventListener("click", function () {
+        hideCheckoutResult();
+        if (cartShell && typeof cartShell.closeIfMobile === "function") {
+          cartShell.closeIfMobile();
+        }
+      });
+    }
   }
 
   function setStatus(message, tone) {
@@ -125,17 +145,32 @@
   }
 
   function updateCartBadge() {
-    if (!els.cartBadge) return;
     var count = state.cart.reduce(function (sum, line) {
       return sum + maxQty(line.qty);
     }, 0);
+    var countText = String(count);
+    var total = computeTotal();
 
-    if (count > 0) {
-      els.cartBadge.textContent = String(count);
-      els.cartBadge.hidden = false;
-    } else {
-      els.cartBadge.textContent = "0";
-      els.cartBadge.hidden = true;
+    if (els.cartBadge) {
+      if (count > 0) {
+        els.cartBadge.textContent = countText;
+        els.cartBadge.hidden = false;
+      } else {
+        els.cartBadge.hidden = true;
+      }
+    }
+
+    if (els.cartPanelCount) {
+      if (count > 0) {
+        els.cartPanelCount.textContent = countText;
+        els.cartPanelCount.hidden = false;
+      } else {
+        els.cartPanelCount.hidden = true;
+      }
+    }
+
+    if (els.cartToggleTotal) {
+      els.cartToggleTotal.textContent = total > 0 ? UTILS.money(total) : "";
     }
   }
 
@@ -145,7 +180,7 @@
 
     if (!state.cart.length) {
       els.cartItems.innerHTML = "<div class=\"cart-empty-text\">Your cart is empty.</div>";
-      if (els.cartSummary) els.cartSummary.style.display = "none";
+      if (els.cartSummary) els.cartSummary.classList.remove("is-visible");
       if (els.total) els.total.textContent = "—";
       return;
     }
@@ -157,23 +192,23 @@
       var max = parseInt(line.maxQty || "999", 10);
 
       return [
-        "<div class=\"cart-item\">",
+        "<div class=\"commerce-cart-item\">",
         "  <div>",
-        "    <div class=\"cart-item-title\">" + UTILS.escapeHTML(line.name || "Item") + "</div>",
-        "    <div class=\"cart-item-meta\">" + (unit ? UTILS.money(unit) : "—") + (line.onRequest ? " • On request" : "") + "</div>",
+        "    <div class=\"commerce-cart-item-title\">" + UTILS.escapeHTML(line.name || "Item") + "</div>",
+        "    <div class=\"commerce-cart-item-meta\">" + (unit ? UTILS.money(unit) : "—") + (line.onRequest ? " • On request" : "") + "</div>",
         "  </div>",
-        "  <div class=\"cart-item-controls\">",
+        "  <div class=\"commerce-cart-item-controls\">",
         "    <input type=\"number\" min=\"1\" max=\"" + max + "\" value=\"" + qty + "\" data-qty-index=\"" + index + "\" aria-label=\"Quantity\">",
-        "    <button type=\"button\" class=\"cart-item-remove\" data-remove-index=\"" + index + "\" aria-label=\"Remove item\">&times;</button>",
+        "    <button type=\"button\" class=\"commerce-cart-item-remove\" data-remove-index=\"" + index + "\" aria-label=\"Remove item\">&times;</button>",
         "  </div>",
-        "  <div class=\"cart-item-total\">" + (lineTotal ? UTILS.money(lineTotal) : "—") + "</div>",
+        "  <div class=\"commerce-cart-item-meta\" style=\"width:100%; text-align:right;\">" + (lineTotal ? UTILS.money(lineTotal) : "—") + "</div>",
         "</div>"
       ].join("");
     }).join("");
 
     els.cartItems.innerHTML = html;
 
-    if (els.cartSummary) els.cartSummary.style.display = "block";
+    if (els.cartSummary) els.cartSummary.classList.add("is-visible");
     if (els.total) {
       var total = computeTotal();
       els.total.textContent = total > 0 ? UTILS.money(total) : "—";
@@ -610,22 +645,29 @@
   }
 
   function showResult(title, message) {
+    if (els.checkoutFormView) els.checkoutFormView.style.display = "none";
     if (!els.result) return;
     if (els.resultTitle) els.resultTitle.textContent = title || "Order Update";
     if (els.resultMessage) els.resultMessage.textContent = message || "";
-    els.result.hidden = false;
+    els.result.style.display = "flex";
+  }
+
+  function hideCheckoutResult() {
+    if (els.result) els.result.style.display = "none";
+    if (els.checkoutFormView) els.checkoutFormView.style.display = "";
   }
 
   function clearCheckoutState() {
     state.cart = [];
     saveCart();
     renderCart();
+    hideCheckoutResult();
     if (els.first) els.first.value = "";
     if (els.last) els.last.value = "";
     if (els.email) els.email.value = "";
     if (els.phone) els.phone.value = "";
-    if (els.checkoutModal && typeof els.checkoutModal.close === "function" && els.checkoutModal.open) {
-      els.checkoutModal.close();
+    if (cartShell && typeof cartShell.closeIfMobile === "function") {
+      cartShell.closeIfMobile();
     }
   }
 
