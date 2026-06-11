@@ -101,8 +101,22 @@
 
     const $form = document.getElementById("quote-submission-form");
     const $status = document.getElementById("rs-status");
+    const $submit = $form ? $form.querySelector('[type="submit"]') : null;
 
     const cart = utils.safeParseJSON(localStorage.getItem(CART_KEY) || "[]");
+    let submitting = false;
+
+    function createIdempotencyKey() {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+      }
+      return "rs-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+    }
+
+    function setSubmitting(active) {
+      submitting = active;
+      if ($submit) $submit.disabled = active;
+    }
 
     function saveCart() {
       localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -339,8 +353,17 @@
               ? '<div class="gear-variant">' + utils.escapeHTML(selectedVariationName) + "</div>"
               : "";
 
+          const variantMarkup = hasMultipleVariants
+            ? '<select class="rs-variant" data-item="' +
+              utils.escapeHTML(item.id || "") +
+              '">' +
+              options +
+              "</select>"
+            : singleVariantLabel;
+
           return (
             '<article class="gear-card glass-panel">' +
+            '<div class="gear-media">' +
             (safeImage
               ? '<img class="gear-image" loading="lazy" src="' +
                 safeImage +
@@ -348,6 +371,7 @@
                 title +
                 '">'
               : '<div class="gear-image-placeholder" aria-hidden="true"></div>') +
+            "</div>" +
             '<div class="gear-body">' +
             '<div class="gear-header">' +
             '  <div class="gear-category">' +
@@ -362,13 +386,9 @@
             '<h3 class="gear-title">' +
             title +
             "</h3>" +
-            (hasMultipleVariants
-              ? '<select class="rs-variant" data-item="' +
-                utils.escapeHTML(item.id || "") +
-                '">' +
-                options +
-                "</select>"
-              : singleVariantLabel) +
+            '<div class="gear-options">' +
+            variantMarkup +
+            "</div>" +
             '<button type="button" class="btn btn-secondary add-to-quote-btn" data-add="' +
             utils.escapeHTML(item.id || "") +
             '" data-variation-id="' +
@@ -563,6 +583,8 @@
         if ($status) $status.textContent = message || "";
       }
 
+      if (submitting) return;
+
       try {
         const firstEl = document.getElementById("rental-first");
         const lastEl = document.getElementById("rental-last");
@@ -615,6 +637,9 @@
 
         startStr = startStr.slice(0, 10);
         endStr = endStr.slice(0, 10);
+
+        const idempotencyKey = createIdempotencyKey();
+        setSubmitting(true);
 
         setStatus("Creating customer...");
         const custRes = await fetch(PROXY_BASE + "/api/customer", {
@@ -722,7 +747,8 @@
             publish: true,
             delivery_method: "EMAIL",
             start_date: startStr,
-            service_date: serviceDateStr
+            service_date: serviceDateStr,
+            idempotency_key: idempotencyKey
           })
         });
 
@@ -747,6 +773,8 @@
       } catch (err) {
         alert("Estimate failed:\n" + ((err && err.message) || String(err)));
         setStatus("");
+      } finally {
+        setSubmitting(false);
       }
     }
 

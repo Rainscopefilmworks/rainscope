@@ -28,17 +28,47 @@ theme: rentals
     .filter-btn:hover, .filter-btn.active { color: var(--color-text-primary); background-color: rgba(255,255,255,0.02); border-left-color: var(--color-accent); padding-left: 1rem; }
     .filter-count { opacity: 0.6; font-size: 0.8em; }
     .gear-card { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .gear-image { width: 100%; height: auto; flex-shrink: 0; display: block; }
-    .gear-image-placeholder { flex: 1 1 0; min-height: 12rem; background: rgba(255,255,255,0.03); }
-    .gear-body { padding: 1.75rem 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.25rem; flex-grow: 1; }
-    .gear-card:not(:has(.gear-image)) .gear-body { flex-grow: 0; flex-shrink: 0; }
+    .gear-media {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+    }
+    .gear-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gear-image-placeholder { width: 100%; height: 100%; }
+    .gear-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      gap: 0.75rem;
+      min-height: 0;
+    }
     .gear-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
-    .gear-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); }
-    .gear-price { font-size: 0.95rem; font-weight: 700; color: var(--color-accent); }
-    .gear-title { font-size: 1.1rem; text-transform: uppercase; font-weight: 700; line-height: 1.35; margin: 0; }
+    .gear-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); flex-shrink: 0; }
+    .gear-price { font-size: 0.9rem; font-weight: 700; color: var(--color-accent); text-align: right; line-height: 1.3; white-space: nowrap; }
+    .gear-title {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0;
+      min-height: calc(2 * 1.05rem * 1.35);
+    }
+    .gear-options { min-height: 2.65rem; display: flex; align-items: center; }
     .gear-variant,
-    .rs-variant { width: 100%; padding: 0.65rem 0.75rem; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--color-text-primary); }
-    .gear-body .btn { width: 100%; margin-top: 0.25rem; }
+    .rs-variant {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--color-text-primary);
+      font-size: 0.85rem;
+    }
+    .gear-variant { color: var(--color-text-secondary); }
+    .gear-body .btn { width: 100%; margin-top: auto; }
     .cart-drawer-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 99; width: 60px; height: 60px; border-radius: 50%; background-color: var(--color-accent); color: var(--color-bg-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px var(--color-accent-glow); cursor: pointer; font-weight: bold; }
     .cart-count { position: absolute; top: -3px; right: -3px; background-color: #ff3366; color: #fff; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     .cart-items-list { display: flex; flex-direction: column; gap: 1rem; max-height: 200px; overflow-y: auto; }

@@ -102,7 +102,7 @@ export default {
       }
 
       // --- Estimate: create Order -> create Invoice -> (optional) publish ---
-      // Body: { customer_id, location_id, line_items[], taxes?, service_charges?, note?, publish?, start_date?, service_date? }
+      // Body: { customer_id, location_id, line_items[], taxes?, service_charges?, note?, publish?, start_date?, service_date?, idempotency_key? }
       if (url.pathname === "/api/estimate" && method === "POST") {
         const {
           customer_id,
@@ -114,6 +114,7 @@ export default {
           publish = false,
           start_date, // ISO yyyy-mm-dd; sets invoice BALANCE due date
           service_date, // ISO yyyy-mm-dd; sets invoice sale_or_service_date
+          idempotency_key,
         } = await req.json();
 
         if (!customer_id || !location_id || !Array.isArray(line_items) || !line_items.length) {
@@ -130,8 +131,14 @@ export default {
           );
         }
 
+        const requestKey =
+          typeof idempotency_key === "string" && idempotency_key.trim()
+            ? idempotency_key.trim().slice(0, 192)
+            : cryptoRandomId();
+
         // 1) Create the Order
         const orderRes = await square(env, "POST", "/v2/orders", {
+          idempotency_key: requestKey,
           order: { location_id, customer_id, line_items, taxes, service_charges },
         });
 
@@ -168,7 +175,10 @@ export default {
           },
         };
 
-        const invRes = await square(env, "POST", "/v2/invoices", invoiceBody);
+        const invRes = await square(env, "POST", "/v2/invoices", {
+          idempotency_key: `${requestKey}-inv`,
+          ...invoiceBody,
+        });
         const invoice = invRes?.invoice;
         if (!invoice?.id) {
           throw new Error("Square did not return an invoice id.");
@@ -185,7 +195,7 @@ export default {
             `/v2/invoices/${encodeURIComponent(id)}/publish`,
             {
               version,
-              idempotency_key: cryptoRandomId(),
+              idempotency_key: `${requestKey}-pub`,
             }
           );
           published = !!pub?.invoice?.status && pub.invoice.status !== "DRAFT";
