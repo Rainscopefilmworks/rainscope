@@ -52,6 +52,12 @@ theme: rentals
     .faq-item { margin-bottom: 1.25rem; }
     .faq-q { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--color-text-primary); }
     .faq-a { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.5; }
+    #quote-submission-form input[type="date"] { color-scheme: dark; }
+    #quote-submission-form input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1) brightness(1.25);
+      opacity: 0.92;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="theme-rentals">

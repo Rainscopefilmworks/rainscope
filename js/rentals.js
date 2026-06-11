@@ -167,12 +167,14 @@
       if (!cart.length) {
         $cartItems.innerHTML = "<em>Your quote list is empty.</em>";
         if ($cartSummary) $cartSummary.style.display = "none";
+        if ($form) $form.style.display = "none";
         updateBadges();
         computeTotals();
         return;
       }
 
       if ($cartSummary) $cartSummary.style.display = "";
+      if ($form) $form.style.display = "flex";
 
       $cartItems.innerHTML = cart
         .map(function (line, i) {
@@ -737,6 +739,11 @@
         saveCart();
         renderCart();
         computeTotals();
+
+        const cartModal = document.getElementById("cart-modal");
+        if (cartModal && typeof cartModal.close === "function" && cartModal.open) {
+          cartModal.close();
+        }
       } catch (err) {
         alert("Estimate failed:\n" + ((err && err.message) || String(err)));
         setStatus("");
