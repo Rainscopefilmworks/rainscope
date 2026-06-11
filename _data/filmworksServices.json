@@ -1,0 +1,26 @@
+[
+  {
+    "description": "Short films, festival projects, and cinematic collaborations — from development through final delivery.",
+    "icon": "🎬",
+    "sortOrder": 1,
+    "title": "Narrative Films"
+  },
+  {
+    "description": "Brand films, product launches, and spec campaigns built for broadcast, digital, and social placement.",
+    "icon": "📺",
+    "sortOrder": 2,
+    "title": "Commercial Production"
+  },
+  {
+    "description": "Monthly video retainers, internal comms, and recurring content for teams that need consistent output.",
+    "icon": "🏢",
+    "sortOrder": 3,
+    "title": "Corporate Video"
+  },
+  {
+    "description": "Performance capture, artist visuals, and short-form edits designed for reach and retention.",
+    "icon": "🎵",
+    "sortOrder": 4,
+    "title": "Music & Social"
+  }
+]

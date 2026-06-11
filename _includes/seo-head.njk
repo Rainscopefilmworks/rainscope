@@ -1,3 +1,20 @@
 <title>{{ pageTitle }}</title>
 <meta name="description" content="{{ pageDescription }}">
 <link rel="canonical" href="{{ siteSettings.domain }}{{ page.url }}">
+
+<meta property="og:type" content="{{ ogType | default('website') }}">
+<meta property="og:title" content="{{ ogTitle | default(pageTitle) }}">
+<meta property="og:description" content="{{ ogDescription | default(pageDescription) }}">
+<meta property="og:url" content="{{ siteSettings.domain }}{{ page.url }}">
+<meta property="og:image" content="{{ ogImage | default(siteSettings.defaultOgImage) }}">
+<meta property="og:site_name" content="{{ siteSettings.siteName }}">
+<meta property="og:locale" content="en_CA">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ ogTitle | default(pageTitle) }}">
+<meta name="twitter:description" content="{{ ogDescription | default(pageDescription) }}">
+<meta name="twitter:image" content="{{ ogImage | default(siteSettings.defaultOgImage) }}">
+
+{% if schemaJson %}
+<script type="application/ld+json">{{ schemaJson | safe }}</script>
+{% endif %}

@@ -11,6 +11,37 @@ theme: filmworks
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% set pageTitle = pd.title %}
   {% set pageDescription = pd.description %}
+  {% set schemaJson %}
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Rainscope Filmworks",
+  "url": "{{ siteSettings.domain }}/filmworks/",
+  "image": "{{ siteSettings.defaultOgImage }}",
+  "description": {{ pd.description | dump | safe }},
+  "email": "{{ siteSettings.contactEmail }}",
+  "areaServed": {
+    "@type": "City",
+    "name": "Vancouver",
+    "containedInPlace": {
+      "@type": "AdministrativeArea",
+      "name": "British Columbia"
+    }
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Vancouver",
+    "addressRegion": "BC",
+    "addressCountry": "CA"
+  },
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "{{ siteSettings.siteName }}",
+    "url": "{{ siteSettings.domain }}/"
+  },
+  "knowsAbout": ["Film production", "Commercial video", "Corporate video", "Music videos", "Narrative filmmaking"]
+}
+  {% endset %}
   {% include "seo-head.njk" %}
   <link rel="stylesheet" href="{{ base }}css/style.css">
   <style>
@@ -26,6 +57,15 @@ theme: filmworks
       overflow: hidden;
     }
 
+    .hero-reel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to bottom, rgba(7, 24, 22, 0.15), rgba(4, 12, 11, 0.55));
+      pointer-events: none;
+    }
+
     .hero-reel-video {
       position: absolute;
       top: 0;
@@ -33,7 +73,7 @@ theme: filmworks
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.4;
+      opacity: 1;
       pointer-events: none;
     }
 
@@ -62,21 +102,20 @@ theme: filmworks
       line-height: 1.1;
     }
 
+    .intro-section {
+      padding-top: clamp(2.5rem, 5vw, 3.5rem);
+      padding-bottom: 0;
+    }
+
     /* Film Grid */
     .film-gallery-section {
-      max-width: none;
       width: 100%;
-      padding-left: clamp(1.25rem, 4vw, 3.5rem);
-      padding-right: clamp(1.25rem, 4vw, 3.5rem);
     }
 
     .film-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: clamp(1rem, 2vw, 2.5rem);
-      width: 100%;
-      max-width: min(96vw, 6000px);
-      margin: 0 auto;
     }
 
     .film-card {
@@ -146,19 +185,13 @@ theme: filmworks
 
     /* Work Reel Gallery (preview loops + modal) */
     .work-gallery-section {
-      max-width: none;
       width: 100%;
-      padding-left: clamp(1.25rem, 4vw, 3.5rem);
-      padding-right: clamp(1.25rem, 4vw, 3.5rem);
     }
 
     .video-gallery-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: clamp(1rem, 2.5vw, 3rem);
-      width: 100%;
-      max-width: min(96vw, 6000px);
-      margin: 0 auto;
     }
 
     .video-gallery-item {
@@ -406,21 +439,24 @@ theme: filmworks
 
     /* Team Section */
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.5rem 3rem;
     }
 
     .team-card {
+      flex: 0 1 220px;
+      max-width: 280px;
       text-align: center;
     }
 
     .team-avatar-container {
-      width: 150px;
-      height: 150px;
+      width: 190px;
+      height: 190px;
       border-radius: 50%;
       overflow: hidden;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.75rem;
       border: 2px solid var(--color-card-border);
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
@@ -437,22 +473,21 @@ theme: filmworks
     }
 
     .team-name {
-      font-size: 1.1rem;
+      font-size: 1.35rem;
       text-transform: uppercase;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
     }
 
     .team-role {
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       color: var(--color-accent);
       text-transform: uppercase;
       letter-spacing: 0.1em;
+      line-height: 1.4;
     }
 
     /* Contact Planner */
     .planner-form-container {
-      max-width: 650px;
-      margin: 0 auto;
       padding: 3rem;
     }
 
@@ -534,8 +569,18 @@ theme: filmworks
 
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 2rem;
+        font-size: clamp(1.5rem, 6vw, 2rem);
       }
+
+      .hero-tagline {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+      }
+
+      .hero-reel-content {
+        padding: 1.25rem;
+      }
+
       .modal-body {
         grid-template-columns: 1fr;
       }
@@ -544,6 +589,30 @@ theme: filmworks
       }
       .planner-form-container {
         padding: 1.5rem;
+      }
+
+      .team-grid {
+        gap: 2rem 1.5rem;
+      }
+
+      .team-card {
+        flex-basis: 160px;
+        max-width: 220px;
+      }
+
+      .team-avatar-container {
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .film-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-reel {
+        min-height: 320px;
       }
     }
   </style>
@@ -556,8 +625,9 @@ theme: filmworks
     
     <!-- Hero Showreel Section -->
     <section class="hero-reel">
-      <!-- Muted looping background representation or poster -->
-      <div class="hero-reel-video" style="background-image: linear-gradient(to bottom, rgba(7, 24, 22, 0.4), rgba(4, 12, 11, 0.95)), url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1600'); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+      <video class="hero-reel-video" autoplay loop muted playsinline aria-hidden="true">
+        <source src="https://media.rainscope.ca/hero-videov3.mp4" type="video/mp4">
+      </video>
       <div class="hero-reel-content">
         <span class="hero-tagline">{{ pd.heroTagline }}</span>
         <h1 class="hero-title font-display">{{ pd.heroTitle }}</h1>
@@ -570,12 +640,31 @@ theme: filmworks
       </div>
     </section>
 
+    <!-- Studio Overview -->
+    <section class="container intro-section reveal">
+      <p class="section-intro content-narrow">
+        {{ pd.intro }}
+        Need gear or a live broadcast crew? Explore our <a href="{{ base }}rentals/">equipment rentals</a> and <a href="{{ base }}live/">live streaming</a> services.
+      </p>
+
+      <div class="services-grid">
+        {% for service in filmworksServices %}
+        <div class="service-card glass-panel">
+          <div class="service-icon" aria-hidden="true">{{ service.icon }}</div>
+          <h3 class="service-title font-display">{{ service.title }}</h3>
+          <p class="service-desc">{{ service.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
     <!-- Commercial & Corporate Section -->
     <section class="container work-gallery-section reveal">
       <h2 class="section-title font-display">
         <span>Branded Content & Corporate Contracts</span>
         Commercial Showcase
       </h2>
+      <p class="section-intro">{{ pd.sectionCommercialIntro }}</p>
       
       <div class="video-gallery-grid">
         {% for reel in workReels %}
@@ -610,6 +699,7 @@ theme: filmworks
         <span>{{ pd.sectionFilmsSubtitle }}</span>
         {{ pd.sectionFilmsTitle }}
       </h2>
+      <p class="section-intro">{{ pd.sectionFilmsIntro }}</p>
       
       <div class="film-grid">
         {% for film in films %}
@@ -649,6 +739,7 @@ theme: filmworks
         <span>The Minds Behind the Lens</span>
         Our Core Team
       </h2>
+      <p class="section-intro">{{ pd.sectionTeamIntro }}</p>
       
       <div class="team-grid">
         {% for member in teamMembers %}
@@ -671,7 +762,7 @@ theme: filmworks
           Start Your Project
         </h2>
         
-        <form id="project-planner-form" novalidate>
+        <form id="project-planner-form" novalidate data-endpoint="https://script.google.com/macros/s/AKfycbzMvRqqR_oA5YBljGVrkbpl3EFjQljEu-_uHaHwIJdQPdFw_jWvrxznR7ik-Lu_dURkdw/exec">
           <div class="form-group">
             <label for="client-name" class="form-label">Your Name</label>
             <input type="text" id="client-name" name="name" class="form-input" required autocomplete="name" placeholder="John Doe">
@@ -773,6 +864,8 @@ theme: filmworks
     </div>
   </div>
 
+  <script src="{{ base }}js/form-config.js"></script>
+  <script src="{{ base }}js/google-forms.js"></script>
   <script src="{{ base }}js/main.js"></script>
   <script src="{{ base }}js/filmworks-work.js"></script>
 </body>

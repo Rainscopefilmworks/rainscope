@@ -219,6 +219,41 @@ layout: false
         flex: 1;
       }
     }
+
+    @media (max-width: 480px) {
+      .landing-header {
+        padding: 1rem;
+      }
+
+      .landing-logo {
+        font-size: 1.5rem;
+        letter-spacing: 0.12em;
+      }
+
+      .landing-logo span {
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        margin-left: 0;
+      }
+
+      .panel {
+        min-height: 240px;
+      }
+
+      .panel-content {
+        padding: 1.25rem;
+        max-width: min(90vw, 320px);
+        gap: 1rem;
+      }
+
+      .panel-title {
+        font-size: 1.25rem;
+      }
+
+      .panel-desc {
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
 <body class="landing-page">

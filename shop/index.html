@@ -15,14 +15,10 @@ theme: shop
   <link rel="stylesheet" href="{{ base }}css/style.css">
   <link rel="preconnect" href="https://web.squarecdn.com">
   <style>
-    .commerce-search { width: 100%; max-width: 420px; margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--color-text-primary); font-family: var(--font-tech); }
-    .rentals-layout { display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start; }
-    .filter-sidebar { position: sticky; top: 100px; padding: 1.5rem; }
+    .commerce-search { margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--color-text-primary); font-family: var(--font-tech); }
     .filter-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-accent); margin-bottom: 1.5rem; font-weight: 700; }
-    .filter-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
     .filter-btn { width: 100%; text-align: left; font-size: 0.9rem; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; color: var(--color-text-secondary); transition: all var(--transition-fast); border-left: 2px solid transparent; background: none; border-top: none; border-right: none; border-bottom: none; }
     .filter-btn:hover, .filter-btn.active { color: var(--color-text-primary); background-color: rgba(255,255,255,0.02); border-left-color: var(--color-accent); padding-left: 1rem; }
-    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
     .gear-card { padding: 0; display: flex; flex-direction: column; overflow: hidden; }
     .gear-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: rgba(255,255,255,0.03); }
     .gear-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; }
@@ -37,7 +33,6 @@ theme: shop
     .cart-drawer-toggle { position: fixed; bottom: 2rem; right: 2rem; z-index: 99; width: 60px; height: 60px; border-radius: 50%; background-color: var(--color-accent); color: var(--color-bg-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px var(--color-accent-glow); cursor: pointer; }
     .cart-count { position: absolute; top: -3px; right: -3px; background: #ff3366; color: #fff; font-size: 0.75rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     #card-container { min-height: 90px; margin: 1rem 0; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
-    @media (max-width: 900px) { .rentals-layout { grid-template-columns: 1fr; } .filter-list { flex-direction: row; overflow-x: auto; } }
   </style>
 </head>
 <body class="theme-shop">
@@ -84,7 +79,7 @@ theme: shop
           <span class="font-tech" id="shop-total" style="color: var(--color-accent); font-weight: 700;">$0</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+        <div class="form-row-2" style="margin-top: 1rem;">
           <div class="form-group" style="margin-bottom: 0;">
             <label for="shop-first" class="form-label">First Name *</label>
             <input type="text" id="shop-first" class="form-input" required>

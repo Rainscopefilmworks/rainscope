@@ -206,18 +206,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize form validation fallbacks
   const allForms = document.querySelectorAll('form');
+  const googleFormIds = new Set(['project-planner-form', 'live-consultation-form']);
+
   allForms.forEach(form => {
     if (form.id === 'quote-submission-form') return;
 
     UserInvalidFallback.init(form);
 
-    // Submission interceptor for fancy premium fade-in notices
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
       
       const formFields = form.querySelectorAll('input, textarea, select');
       let isFormValid = true;
       let firstInvalidField = null;
+      const submitButton = form.querySelector('[type="submit"]');
 
       // Scan validity and flag fallbacks
       formFields.forEach(field => {
@@ -237,18 +239,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!isFormValid) {
-        // Focus first failing element
         if (firstInvalidField) {
           firstInvalidField.focus();
         }
         return;
       }
 
-      // If valid, simulate submission success visuals
       const container = form.parentElement;
       const originalTitle = container.querySelector('.section-title');
-      
-      // Animate success screen
+      const usesGoogleForms = googleFormIds.has(form.id) && window.GoogleForms;
+
+      if (usesGoogleForms) {
+        if (submitButton) submitButton.disabled = true;
+
+        try {
+          await window.GoogleForms.submitToGoogleForm(form);
+        } catch (error) {
+          if (submitButton) submitButton.disabled = false;
+          alert('Something went wrong while sending your request. Please try again.');
+          return;
+        }
+
+        if (submitButton) submitButton.disabled = false;
+      }
+
+      // Success visuals
       container.style.opacity = '0';
       container.style.transform = 'translateY(10px)';
       container.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
@@ -282,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = successMessage;
         container.style.opacity = '1';
         container.style.transform = 'translateY(0)';
-      }, 400);
+      }, usesGoogleForms ? 0 : 400);
 
     });
   });
