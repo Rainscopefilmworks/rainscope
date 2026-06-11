@@ -1,33 +1,45 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
 
-  // ─── Rainscope static site (Eleventy → _site) ─────────────────────────────
+  // =============================================================================
+  // Rainscope — Cloudflare Pages / Workers Builds
+  // =============================================================================
   //
-  // Cloudflare Pages — recommended dashboard settings (Settings → Builds):
-  //   Root directory:         (leave blank)
-  //   Build command:            npm run build
-  //   Build output directory:   _site
-  //   Deploy command:           (leave blank — Pages publishes _site automatically)
+  // Dashboard → Workers & Pages → your project → Settings → Builds
   //
-  // If your Pages project forces a deploy command, use ONE of these (not plain
-  // `wrangler deploy`, which targets Workers and will fail without assets):
+  //   Root directory:          (leave blank — repo root, where package.json lives)
+  //   Build command:           npm run build
+  //   Build output directory:  _site
+  //   Deploy command:          (leave blank for standard Pages Git deploys)
   //
-  //   npx wrangler pages deploy _site --project-name=marketing-rainscope
+  // If your project requires a deploy command, use:
+  //   npx wrangler deploy
+  // (only after npm run build — this file tells wrangler to publish ./_site)
   //
-  // Or from repo root after `npm run build`:
+  // Do NOT set Root directory to _site — that folder is created by the build,
+  // it is not in Git, and Cloudflare will fail with "root directory not found".
   //
-  //   npm run site:deploy
+  // Build watch paths: leave default (only needed for monorepos).
   //
-  // Optional env vars (Pages → Settings → Environment variables):
+  // Optional environment variables (Settings → Variables):
   //   SANITY_PROJECT_ID   — fetch live CMS content at build time
-  //   SANITY_DATASET      — e.g. production (defaults to production)
+  //   SANITY_DATASET        — e.g. production (defaults to production)
   //
-  // Square shop/rentals also need the preview URL added in Square Developer
-  // Dashboard → Web Payments SDK allowed origins, and CORS_ORIGIN updated on
-  // the rainscope-square-proxy Worker (see worker/wrangler.jsonc).
-  // ───────────────────────────────────────────────────────────────────────────
+  // Without SANITY_PROJECT_ID the build uses committed _data/*.json (still works).
+  //
+  // Square proxy (separate Worker — NOT this project):
+  //   worker/wrangler.jsonc + npm run worker:deploy
+  //
+  // =============================================================================
 
-  "name": "marketing-rainscope",
+  "name": "rainscope-preview",
   "compatibility_date": "2026-06-11",
+
+  // Static site output from Eleventy (npm run build → _site/)
+  "assets": {
+    "directory": "./_site"
+  },
+
+  // Legacy Pages key — kept so dashboard Pages projects still pick up output dir
   "pages_build_output_dir": "_site"
 }
