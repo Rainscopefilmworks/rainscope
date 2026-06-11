@@ -11,9 +11,8 @@
     "seed": "node scripts/seed-sanity.js",
     "worker:deploy": "wrangler deploy --config worker/wrangler.jsonc",
     "worker:tail": "wrangler tail rainscope-square-proxy",
-    "site:deploy": "npm run build && wrangler pages deploy _site --project-name=marketing-rainscope",
-    "pages:deploy": "npm run site:deploy",
-    "pages:deploy:branch": "npm run build && wrangler pages deploy _site --project-name=marketing-rainscope --branch=preview"
+    "pages:deploy": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview",
+    "pages:deploy:branch": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview --branch=preview"
   },
   "dependencies": {
     "@sanity/client": "^6.28.0"

@@ -6,6 +6,8 @@
 //   - SQUARE_TOKEN: Your Square Access Token (from Square Developer Dashboard)
 //   - CORS_ORIGIN: Comma-separated allowed origins (see worker/wrangler.jsonc)
 //   - ALLOW_PAGES_PREVIEW: Set to "false" to block *.pages.dev origins (default: allow)
+//   - ALLOW_WORKERS_DEV: Set to "false" to block *.workers.dev origins (default: allow)
+//   - ALLOW_LOCALHOST: Set to "false" to block localhost/127.0.0.1 origins (default: allow)
 //   - SQUARE_API_BASE: Square API base URL (optional, defaults to "https://connect.squareup.com")
 //     - Use "https://connect.squareup.com" for production
 //     - Use "https://connect.squareupsandbox.com" for sandbox/testing
@@ -32,7 +34,7 @@ export default {
         const cache = caches.default;
         const cacheKey = new Request(url.toString(), req);
         const cached = await cache.match(cacheKey);
-        if (cached) return cached;
+        if (cached) return cors(env, cached, req);
 
         const types =
           "ITEM,ITEM_VARIATION,CATEGORY,IMAGE,MODIFIER,MODIFIER_LIST,TAX,MEASUREMENT_UNIT";
@@ -490,13 +492,21 @@ function cors(env, res, req) {
     .map((s) => s.trim())
     .filter(Boolean);
   const allowPagesPreview = env.ALLOW_PAGES_PREVIEW !== "false";
-  const pagesDevOrigin = /^https:\/\/[\w-]+\.pages\.dev$/;
+  const allowWorkersDev = env.ALLOW_WORKERS_DEV !== "false";
+  const allowLocalhost = env.ALLOW_LOCALHOST !== "false";
+  const pagesDevOrigin = /^https:\/\/[\w-]+(\.[\w-]+)*\.pages\.dev$/;
+  const workersDevOrigin = /^https:\/\/[\w-]+(\.[\w-]+)*\.workers\.dev$/;
+  const localhostOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
   let chosen = null;
   if (origin) {
     if (allow.includes(origin)) {
       chosen = origin;
     } else if (allowPagesPreview && pagesDevOrigin.test(origin)) {
+      chosen = origin;
+    } else if (allowWorkersDev && workersDevOrigin.test(origin)) {
+      chosen = origin;
+    } else if (allowLocalhost && localhostOrigin.test(origin)) {
       chosen = origin;
     } else if (allow.length === 0) {
       chosen = "*";

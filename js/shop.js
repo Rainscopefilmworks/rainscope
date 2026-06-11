@@ -419,13 +419,17 @@
 
     return [
       "<article class=\"gear-card glass-panel\" data-item-id=\"" + UTILS.escapeHTML(item.id) + "\">",
-      safeImage ? "<img class=\"gear-image\" src=\"" + safeImage + "\" alt=\"" + title + "\" loading=\"lazy\">" : "",
+      safeImage
+        ? "<img class=\"gear-image\" src=\"" + safeImage + "\" alt=\"" + title + "\" loading=\"lazy\">"
+        : "<div class=\"gear-image-placeholder\" aria-hidden=\"true\"></div>",
+      "<div class=\"gear-body\">",
       "<h3 class=\"gear-title\">" + title + "</h3>",
       variantUi,
       "<div class=\"gear-stock " + stockClass + "\" data-stock>" + UTILS.escapeHTML(stockText) + "</div>",
       "<div class=\"gear-footer\">",
       "  <div class=\"gear-price\" data-price>" + UTILS.escapeHTML(priceText) + "</div>",
       "  <button type=\"button\" class=\"btn btn-primary\" data-add-item-id=\"" + UTILS.escapeHTML(item.id) + "\" data-variation-id=\"" + UTILS.escapeHTML(firstVar ? firstVar.id : "") + "\">" + (requestOnly ? "Request" : "Add") + "</button>",
+      "</div>",
       "</div>",
       "</article>"
     ].join("");

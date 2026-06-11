@@ -345,7 +345,8 @@
                 '" alt="' +
                 title +
                 '">'
-              : "") +
+              : '<div class="gear-image-placeholder" aria-hidden="true"></div>') +
+            '<div class="gear-body">' +
             '<div class="gear-header">' +
             '  <div class="gear-category">' +
             catLabel +
@@ -371,6 +372,7 @@
             '" data-variation-id="' +
             utils.escapeHTML((first && first.id) || "") +
             '">Add to Quote</button>' +
+            "</div>" +
             "</article>"
           );
         })
