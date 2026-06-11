@@ -4,7 +4,8 @@
 //
 // Required Environment Variables:
 //   - SQUARE_TOKEN: Your Square Access Token (from Square Developer Dashboard)
-//   - CORS_ORIGIN: Comma-separated list of allowed origins (e.g., "https://rainscope.ca,https://www.rainscope.ca,https://rainscopefilmworks.com,https://www.rainscopefilmworks.com")
+//   - CORS_ORIGIN: Comma-separated allowed origins (see worker/wrangler.jsonc)
+//   - ALLOW_PAGES_PREVIEW: Set to "false" to block *.pages.dev origins (default: allow)
 //   - SQUARE_API_BASE: Square API base URL (optional, defaults to "https://connect.squareup.com")
 //     - Use "https://connect.squareup.com" for production
 //     - Use "https://connect.squareupsandbox.com" for sandbox/testing
@@ -484,19 +485,33 @@ function json(data, status = 200) {
 
 function cors(env, res, req) {
   const origin = req.headers.get("Origin") || "";
-  // CORS_ORIGIN can be a comma-separated list of allowed origins
-  // Example: "https://rainscope.ca,https://www.rainscope.ca,https://rainscopefilmworks.com,https://www.rainscopefilmworks.com"
   const allow = (env.CORS_ORIGIN || "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  // If CORS_ORIGIN is not set, allow all origins (not recommended for production)
-  const chosen = allow.includes(origin) ? origin : allow[0] || "*";
+  const allowPagesPreview = env.ALLOW_PAGES_PREVIEW !== "false";
+  const pagesDevOrigin = /^https:\/\/[\w-]+\.pages\.dev$/;
+
+  let chosen = null;
+  if (origin) {
+    if (allow.includes(origin)) {
+      chosen = origin;
+    } else if (allowPagesPreview && pagesDevOrigin.test(origin)) {
+      chosen = origin;
+    } else if (allow.length === 0) {
+      chosen = "*";
+    }
+  } else if (allow.length === 0) {
+    chosen = "*";
+  }
+
   const headers = new Headers(res.headers);
-  headers.set("Access-Control-Allow-Origin", chosen);
-  headers.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
-  headers.set("Access-Control-Max-Age", "600");
+  if (chosen) {
+    headers.set("Access-Control-Allow-Origin", chosen);
+    headers.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type");
+    headers.set("Access-Control-Max-Age", "600");
+  }
   return new Response(res.body, { status: res.status, headers });
 }
 

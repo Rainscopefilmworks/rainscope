@@ -8,12 +8,17 @@
     "build": "npm run fetch-data && eleventy",
     "dev": "npm run fetch-data && eleventy --serve",
     "studio": "cd studio && npm run dev",
-    "seed": "node scripts/seed-sanity.js"
+    "seed": "node scripts/seed-sanity.js",
+    "worker:deploy": "wrangler deploy --config worker/wrangler.jsonc",
+    "worker:tail": "wrangler tail rainscope-square-proxy",
+    "pages:deploy": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview",
+    "pages:deploy:branch": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview --branch=preview"
   },
   "dependencies": {
     "@sanity/client": "^6.28.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1"
+    "@11ty/eleventy": "^2.0.1",
+    "wrangler": "^4.100.0"
   }
 }
