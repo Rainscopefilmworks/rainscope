@@ -1,6 +1,33 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "rainscope-preview",
+
+  // ─── Rainscope static site (Eleventy → _site) ─────────────────────────────
+  //
+  // Cloudflare Pages — recommended dashboard settings (Settings → Builds):
+  //   Root directory:         (leave blank)
+  //   Build command:            npm run build
+  //   Build output directory:   _site
+  //   Deploy command:           (leave blank — Pages publishes _site automatically)
+  //
+  // If your Pages project forces a deploy command, use ONE of these (not plain
+  // `wrangler deploy`, which targets Workers and will fail without assets):
+  //
+  //   npx wrangler pages deploy _site --project-name=marketing-rainscope
+  //
+  // Or from repo root after `npm run build`:
+  //
+  //   npm run site:deploy
+  //
+  // Optional env vars (Pages → Settings → Environment variables):
+  //   SANITY_PROJECT_ID   — fetch live CMS content at build time
+  //   SANITY_DATASET      — e.g. production (defaults to production)
+  //
+  // Square shop/rentals also need the preview URL added in Square Developer
+  // Dashboard → Web Payments SDK allowed origins, and CORS_ORIGIN updated on
+  // the rainscope-square-proxy Worker (see worker/wrangler.jsonc).
+  // ───────────────────────────────────────────────────────────────────────────
+
+  "name": "marketing-rainscope",
   "compatibility_date": "2026-06-11",
   "pages_build_output_dir": "_site"
 }
