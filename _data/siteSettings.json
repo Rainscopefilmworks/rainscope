@@ -2,7 +2,8 @@
   "contactEmail": "hello@rainscope.ca",
   "contactLocation": "Vancouver, British Columbia",
   "copyrightYear": 2026,
-  "domain": "https://rainscopefilmworks.com",
+  "domain": "https://rainscope.ca",
+  "defaultOgImage": "https://media.rainscope.ca/posters/poster-1.jpg",
   "footerAbout": "A high-end creative studio and equipment resource base built in the Pacific Northwest. We produce visuals that carry texture, depth, and narrative gravity.",
   "footerTagline": "Made for rainscope.ca",
   "nav": [

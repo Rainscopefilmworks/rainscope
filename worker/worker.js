@@ -4,7 +4,7 @@
 //
 // Required Environment Variables:
 //   - SQUARE_TOKEN: Your Square Access Token (from Square Developer Dashboard)
-//   - CORS_ORIGIN: Comma-separated list of allowed origins (e.g., "https://rainscopefilmworks.com,https://www.rainscopefilmworks.com")
+//   - CORS_ORIGIN: Comma-separated list of allowed origins (e.g., "https://rainscope.ca,https://www.rainscope.ca,https://rainscopefilmworks.com,https://www.rainscopefilmworks.com")
 //   - SQUARE_API_BASE: Square API base URL (optional, defaults to "https://connect.squareup.com")
 //     - Use "https://connect.squareup.com" for production
 //     - Use "https://connect.squareupsandbox.com" for sandbox/testing
@@ -485,7 +485,7 @@ function json(data, status = 200) {
 function cors(env, res, req) {
   const origin = req.headers.get("Origin") || "";
   // CORS_ORIGIN can be a comma-separated list of allowed origins
-  // Example: "https://rainscopefilmworks.com,https://www.rainscopefilmworks.com"
+  // Example: "https://rainscope.ca,https://www.rainscope.ca,https://rainscopefilmworks.com,https://www.rainscopefilmworks.com"
   const allow = (env.CORS_ORIGIN || "")
     .split(",")
     .map((s) => s.trim())

@@ -1,6 +1,6 @@
 /**
  * Shared Square API configuration.
- * Domain: rainscopefilmworks.com until rainscope.ca launches — update CORS + Square SDK origins then.
+ * Allowed origins: rainscope.ca (+ rainscopefilmworks.com during transition). Update CORS_ORIGIN on the Worker and Square SDK origins when adding/removing domains.
  */
 window.SquareConfig = {
   PROXY_BASE: "https://rainscope-square-proxy.sweet-queen-15c3.workers.dev",
