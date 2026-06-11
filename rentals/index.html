@@ -29,13 +29,14 @@ theme: rentals
     .filter-count { opacity: 0.6; font-size: 0.8em; }
     .gear-card { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
     .gear-media {
-      aspect-ratio: 4 / 3;
       width: 100%;
       flex-shrink: 0;
-      background: rgba(255,255,255,0.03);
-      overflow: hidden;
     }
-    .gear-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gear-media:has(.gear-image-placeholder) {
+      aspect-ratio: 4 / 3;
+      background: rgba(255,255,255,0.03);
+    }
+    .gear-image { width: 100%; height: auto; display: block; }
     .gear-image-placeholder { width: 100%; height: 100%; }
     .gear-body {
       padding: 1.25rem 1.5rem 1.5rem;
