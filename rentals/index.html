@@ -31,6 +31,7 @@ theme: rentals
     .gear-image { width: 100%; height: auto; flex-shrink: 0; display: block; }
     .gear-image-placeholder { flex: 1 1 0; min-height: 12rem; background: rgba(255,255,255,0.03); }
     .gear-body { padding: 1.75rem 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.25rem; flex-grow: 1; }
+    .gear-card:not(:has(.gear-image)) .gear-body { flex-grow: 0; flex-shrink: 0; }
     .gear-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
     .gear-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); }
     .gear-price { font-size: 0.95rem; font-weight: 700; color: var(--color-accent); }
