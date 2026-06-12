@@ -1,6 +1,6 @@
 /**
  * Shared Square API configuration.
- * Allowed origins: rainscope.ca, rainscopefilmworks.com, *.pages.dev, *.workers.dev, and localhost (dev).
+ * Allowed origins: rainscope.ca, *.pages.dev, *.workers.dev, and localhost (dev).
  * Update CORS_ORIGIN on the Worker and Square SDK Web Payments origins when adding domains.
  */
 window.SquareConfig = {

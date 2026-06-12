@@ -5,7 +5,7 @@
   "compatibility_date": "2026-06-11",
   "workers_dev": true,
   "vars": {
-    "CORS_ORIGIN": "https://rainscope.ca,https://www.rainscope.ca,https://rainscopefilmworks.com,https://www.rainscopefilmworks.com",
+    "CORS_ORIGIN": "https://rainscope.ca,https://www.rainscope.ca",
     "ALLOW_PAGES_PREVIEW": "true",
     "ALLOW_WORKERS_DEV": "true",
     "ALLOW_LOCALHOST": "true",
