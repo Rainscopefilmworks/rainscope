@@ -52,6 +52,7 @@ async function main() {
     ["workReels.json", "workReel"],
     ["teamMembers.json", "teamMember"],
     ["liveServices.json", "liveService"],
+    ["liveProjects.json", "liveProject"],
     ["faqItems.json", "faqItem"]
   ]) {
     const items = JSON.parse(fs.readFileSync(path.join(DATA, file), "utf8"));

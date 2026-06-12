@@ -10,6 +10,12 @@ export default defineType({
     defineField({ name: "description", type: "text", title: "Meta Description" }),
     defineField({ name: "heroTagline", type: "string" }),
     defineField({ name: "heroTitle", type: "text" }),
+    defineField({
+      name: "heroImage",
+      title: "Hero image",
+      type: "url",
+      description: "Full-width hero background image (used on Live and other division pages)."
+    }),
     defineField({ name: "showreelUrl", type: "url" }),
     defineField({ name: "sectionTitle", type: "string" }),
     defineField({ name: "sectionSubtitle", type: "string" }),

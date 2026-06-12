@@ -29,9 +29,9 @@
   };
 
   const LIVE_SCOPE_LABELS = {
-    internal: "Small / Internal Town Hall (1-100 viewers)",
-    medium: "Corporate Event / Public Stream (100-1000 viewers)",
-    large: "High-Traffic Live Concert / Festival (1000+ viewers)",
+    internal: "Intimate / Boardroom (up to 100 guests)",
+    medium: "Mid-Size Corporate or Performance (100–500 guests)",
+    large: "Large Venue or Festival (500+ guests)",
   };
 
   function buildFormData(form) {
@@ -60,19 +60,19 @@
       const name = payload.get("name") || "";
       const email = payload.get("email") || "";
 
-      payload.set("form_name", "live_streaming_booking");
+      payload.set("form_name", "live_event_inquiry");
       payload.set("project_deadline", String(eventDate));
       payload.set(
         "project_details",
         [
-          "Live streaming booking request",
+          "Live event production inquiry",
           `Contact: ${name}`,
           `Email: ${email}`,
           `Event date: ${eventDate}`,
-          `Audience scope: ${scopeLabel}`,
+          `Event size: ${scopeLabel}`,
         ].join("\n")
       );
-      payload.append("services[]", "Live Broadcast / Webcasting");
+      payload.append("services[]", "Live Event Production / AV");
       payload.delete("scope");
       payload.delete("event_date");
     }

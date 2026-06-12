@@ -17,14 +17,14 @@
       "slug": "rentals"
     },
     {
-      "href": "shop/",
-      "label": "Shop",
-      "slug": "shop"
-    },
-    {
       "href": "live/",
       "label": "Live",
       "slug": "live"
+    },
+    {
+      "href": "shop/",
+      "label": "Shop",
+      "slug": "shop"
     }
   ],
   "siteName": "Rainscope",

@@ -24,6 +24,8 @@
   --color-card-bg: rgba(7, 24, 22, 0.55);
   --color-card-border: rgba(49, 232, 128, 0.15);
   --color-focus-ring: #31e880;
+  --color-modal-bg: rgba(7, 24, 22, 0.97);
+  --color-modal-backdrop: rgba(7, 18, 17, 0.8);
 
   /* Animations & Speed */
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,6 +48,8 @@
   --color-card-bg: rgba(22, 25, 32, 0.55);
   --color-card-border: rgba(0, 148, 198, 0.12);
   --color-focus-ring: #0094c6;
+  --color-modal-bg: rgba(22, 25, 32, 0.97);
+  --color-modal-backdrop: rgba(9, 10, 12, 0.85);
 }
 
 /* Live Theme: Black & Bright Lavender */
@@ -60,6 +64,8 @@
   --color-card-bg: rgba(20, 10, 30, 0.5);
   --color-card-border: rgba(186, 143, 255, 0.15);
   --color-focus-ring: #ba8fff;
+  --color-modal-bg: rgba(20, 10, 30, 0.97);
+  --color-modal-backdrop: rgba(0, 0, 0, 0.85);
 }
 
 /* --- Base Elements --- */
@@ -469,8 +475,8 @@ dialog[open]::backdrop {
 
 /* Dialog content panel */
 .modal-content {
-  background-color: #071816; /* dark evergreen matching filmworks modal */
-  border: 1px solid rgba(49, 232, 128, 0.2);
+  background-color: var(--color-modal-bg);
+  border: 1px solid var(--color-card-border);
   border-radius: 16px;
   padding: 2.5rem;
   position: relative;
@@ -510,6 +516,133 @@ dialog[open] .modal-content {
 .close-modal-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: rotate(90deg);
+}
+
+/* --- Work / project modals (custom overlay) --- */
+.work-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  z-index: 1200;
+}
+
+.work-modal.open {
+  display: flex;
+}
+
+.work-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-modal-backdrop);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.work-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(90vw, 960px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--color-modal-bg);
+  border-radius: 12px;
+  border: 1px solid var(--color-card-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: var(--color-text-primary);
+}
+
+.work-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.work-modal-close:hover {
+  border-color: rgba(var(--color-accent-rgb), 0.45);
+  background: rgba(var(--color-accent-rgb), 0.12);
+}
+
+.work-modal-media {
+  background: #000;
+}
+
+.work-modal-media video,
+.work-modal-media iframe {
+  width: 100%;
+  display: block;
+}
+
+.work-modal-media iframe {
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.work-modal-gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #000;
+}
+
+.work-modal-gallery img {
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+}
+
+.work-modal-media [hidden],
+.work-modal-gallery[hidden] {
+  display: none !important;
+}
+
+.work-modal-info {
+  padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.work-modal-category {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.work-modal-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.work-modal-description {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .work-modal-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* --- Forms & Real-Time Validation (:user-invalid) --- */

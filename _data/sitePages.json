@@ -30,10 +30,10 @@
       },
       {
         "cta": "View Services",
-        "description": "Professional multi-camera event webcasting, live concert streams, and remote corporate production.",
+        "description": "Full-service live event production — switching, audio, and vision for corporate events and performances in Vancouver.",
         "href": "/live/",
         "id": "live",
-        "subtitle": "Livestream & Broadcast",
+        "subtitle": "Event Production & AV",
         "title": "LIVE"
       }
     ],
@@ -41,15 +41,17 @@
     "title": "Rainscope | Production, Rentals & Live Webcasting"
   },
   {
-    "description": "Rainscope Live provides high-end multi-camera webcasting, hybrid corporate meetings, virtual speakers, and live performance broadcasting in Vancouver, BC.",
-    "intro": "We bring cinematic production standards to live webcasts. Using professional multi-camera setups, redundant internet systems, and custom graphics feeds, we make your digital events feel like premium broadcast productions.",
-    "sectionSubtitle": "Broadcast & Event Streaming",
-    "sectionTitle": "Live Production",
-    "showcaseDescription": "A live music recording session stream captured at our Vancouver studio, integrating 4 dynamic camera feeds and direct soundboard mixes.",
-    "showcaseTitle": "No Calls Stream Case",
-    "showcaseVideo": "https://media.rainscopefilmworks.com/work/work-8.mp4",
+    "description": "Full-service live event production in Vancouver, BC. Switching, audio, vision, and webcasting for corporate events and live performances.",
+    "heroImage": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1920",
+    "heroTagline": "Vancouver Event Production",
+    "heroTitle": "Live Event Production for Vancouver Venues",
+    "intro": "Your event deserves more than a microphone and a projector. Rainscope Live runs the show — camera switching, sound, and vision for everyone in the room. From corporate keynotes to live performances, we bring broadcast-level production to your venue. Remote attendees? We stream it with the same crew and standards.",
+    "sectionSubtitle": "Vancouver Event Production",
+    "sectionTitle": "Live AV",
+    "showcaseDescription": "A look at events we've produced across Vancouver — corporate gatherings, performances, and more.",
+    "showcaseTitle": "Recent Productions",
     "slug": "live",
-    "title": "Rainscope Live | Multi-Cam Webcasting & Livestreaming"
+    "title": "Rainscope Live | Event Production & AV in Vancouver, BC"
   },
   {
     "description": "Rainscope Rentals offers professional cinema cameras, anamorphic lenses, high-output lighting, and audio equipment in Vancouver, BC. Explore our full gear inventory.",

@@ -18,6 +18,7 @@ const QUERIES = {
   workReels: `*[_type == "workReel"] | order(sortOrder asc)`,
   teamMembers: `*[_type == "teamMember"] | order(sortOrder asc)`,
   liveServices: `*[_type == "liveService"] | order(sortOrder asc)`,
+  liveProjects: `*[_type == "liveProject"] | order(sortOrder asc)`,
   faqItems: `*[_type == "faqItem"] | order(sortOrder asc)`,
   formCopy: `*[_type == "formCopy"][0]`
 };

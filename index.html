@@ -185,9 +185,39 @@ layout: false
       margin-bottom: 1rem;
     }
 
+    #panel-filmworks {
+      --color-accent: #31e880;
+      --color-accent-rgb: 49, 232, 128;
+      --color-accent-glow: rgba(49, 232, 128, 0.2);
+    }
+
+    #panel-rentals {
+      --color-accent: #0094c6;
+      --color-accent-rgb: 0, 148, 198;
+      --color-accent-glow: rgba(0, 148, 198, 0.15);
+    }
+
+    #panel-live {
+      --color-accent: #ba8fff;
+      --color-accent-rgb: 186, 143, 255;
+      --color-accent-glow: rgba(186, 143, 255, 0.2);
+    }
+
     #panel-filmworks .panel-subtitle { color: #31e880; }
     #panel-rentals .panel-subtitle { color: #0094c6; }
     #panel-live .panel-subtitle { color: #ba8fff; }
+
+    .panel .btn {
+      border-color: rgba(var(--color-accent-rgb), 0.45);
+      color: var(--color-accent);
+      background: rgba(var(--color-accent-rgb), 0.08);
+    }
+
+    .panel .btn:hover {
+      background: rgba(var(--color-accent-rgb), 0.18);
+      border-color: var(--color-accent);
+      box-shadow: 0 4px 20px var(--color-accent-glow);
+    }
 
     .panel-desc {
       font-size: 0.9rem;

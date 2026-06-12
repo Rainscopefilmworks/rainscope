@@ -37,6 +37,8 @@ module.exports = function (eleventyConfig) {
     return `${base}${url}`;
   });
 
+  eleventyConfig.addFilter("json", (value) => JSON.stringify(value ?? null));
+
   return {
     dir: {
       input: ".",
