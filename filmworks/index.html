@@ -519,6 +519,113 @@ theme: filmworks
         min-height: 320px;
       }
     }
+
+    /* Testimonials carousel (from legacy site) */
+    .testimonials {
+      padding: clamp(2rem, 4vw, 3rem) 0 0;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+
+    .testimonials-heading {
+      margin-bottom: 2rem;
+      padding: 0 1.5rem;
+    }
+
+    .testimonials-slider {
+      width: 100%;
+      position: relative;
+    }
+
+    .testimonial-slide {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: clamp(360px, 55vh, 620px);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .testimonial-slide.active {
+      display: flex;
+    }
+
+    .testimonial-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.5) 100%);
+      z-index: 1;
+    }
+
+    .testimonial-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: min(90vw, 1100px);
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .testimonial-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.45;
+      margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+      letter-spacing: 0.02em;
+      color: #fff;
+    }
+
+    .testimonial-author {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin: 0;
+      color: var(--color-accent);
+      text-transform: uppercase;
+    }
+
+    .testimonial-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem;
+    }
+
+    .testimonial-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: 2px solid transparent;
+      padding: 0;
+    }
+
+    .testimonial-indicator:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(1.15);
+    }
+
+    .testimonial-indicator.active {
+      background: var(--color-accent);
+      border-color: rgba(var(--color-accent-rgb), 0.4);
+      box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb), 0.25);
+    }
+
+    .testimonial-indicator:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
   </style>
 </head>
 <body class="theme-filmworks">
@@ -648,6 +755,8 @@ theme: filmworks
         {% endfor %}
       </div>
     </section>
+
+    {% include "testimonials.njk" %}
 
     <!-- Client Lead / Project Planner Form -->
     <section class="container reveal">

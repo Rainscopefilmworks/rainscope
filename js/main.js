@@ -132,7 +132,66 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     4. Accessibility & Native Form Validation
+     4. Testimonials Carousel
+     ========================================================================== */
+  const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+  const testimonialIndicators = document.querySelectorAll('.testimonial-indicator');
+
+  if (testimonialSlides.length > 0) {
+    let currentSlide = 0;
+    let slideInterval;
+
+    const showTestimonialSlide = (index) => {
+      testimonialSlides.forEach((slide) => slide.classList.remove('active'));
+      testimonialIndicators.forEach((indicator) => {
+        indicator.classList.remove('active');
+        indicator.setAttribute('aria-selected', 'false');
+      });
+
+      if (testimonialSlides[index]) {
+        testimonialSlides[index].classList.add('active');
+      }
+      if (testimonialIndicators[index]) {
+        testimonialIndicators[index].classList.add('active');
+        testimonialIndicators[index].setAttribute('aria-selected', 'true');
+      }
+    };
+
+    const nextTestimonialSlide = () => {
+      currentSlide = (currentSlide + 1) % testimonialSlides.length;
+      showTestimonialSlide(currentSlide);
+    };
+
+    const startTestimonialSlider = () => {
+      slideInterval = setInterval(nextTestimonialSlide, 5000);
+    };
+
+    const stopTestimonialSlider = () => {
+      if (slideInterval) {
+        clearInterval(slideInterval);
+      }
+    };
+
+    testimonialIndicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        currentSlide = index;
+        showTestimonialSlide(currentSlide);
+        stopTestimonialSlider();
+        startTestimonialSlider();
+      });
+    });
+
+    const testimonialsSection = document.querySelector('.testimonials');
+    if (testimonialsSection) {
+      testimonialsSection.addEventListener('mouseenter', stopTestimonialSlider);
+      testimonialsSection.addEventListener('mouseleave', startTestimonialSlider);
+    }
+
+    startTestimonialSlider();
+  }
+
+  /* ==========================================================================
+     5. Accessibility & Native Form Validation
      ========================================================================== */
   
   // Sync visually user-invalid states with standard accessibility aria-invalid

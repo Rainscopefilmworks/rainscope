@@ -1,0 +1,29 @@
+<section class="testimonials reveal" id="testimonials" aria-label="Client testimonials">
+  <h2 class="section-title font-display testimonials-heading">
+    <span>What Clients Say</span>
+    Testimonials
+  </h2>
+  <div class="testimonials-slider">
+    {% for testimonial in testimonials %}
+    <div class="testimonial-slide{% if loop.first %} active{% endif %}" style="background-image: url('{{ testimonial.image }}');">
+      <div class="testimonial-overlay"></div>
+      <div class="testimonial-content">
+        <blockquote class="testimonial-text">{{ testimonial.quote }}</blockquote>
+        <p class="testimonial-author">— {{ testimonial.name }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="testimonial-indicators" role="tablist" aria-label="Testimonial slides">
+    {% for testimonial in testimonials %}
+    <button
+      type="button"
+      class="testimonial-indicator{% if loop.first %} active{% endif %}"
+      role="tab"
+      aria-label="Show testimonial from {{ testimonial.name }}"
+      aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
+      data-slide="{{ loop.index0 }}"
+    ></button>
+    {% endfor %}
+  </div>
+</section>
