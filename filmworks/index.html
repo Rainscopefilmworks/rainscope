@@ -48,8 +48,8 @@ theme: filmworks
     /* Filmworks Specific Custom Styles */
     .hero-reel {
       position: relative;
-      height: 60vh;
-      min-height: 400px;
+      height: min(60dvh, 560px);
+      min-height: min(400px, 70dvh);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,12 +94,14 @@ theme: filmworks
     }
 
     .hero-title {
-      font-size: 3rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 2rem;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
       line-height: 1.1;
+      max-width: 18ch;
+      margin-inline: auto;
     }
 
     .intro-section {
@@ -562,10 +564,7 @@ theme: filmworks
 
     <!-- Commercial & Corporate Section -->
     <section class="container work-gallery-section reveal">
-      <h2 class="section-title font-display">
-        <span>Branded Content & Corporate Contracts</span>
-        Commercial Showcase
-      </h2>
+      <h2 class="section-title font-display">Commercial Showcase</h2>
       <p class="section-intro">{{ pd.sectionCommercialIntro }}</p>
       
       <div class="video-gallery-grid">
@@ -597,10 +596,7 @@ theme: filmworks
 
     <!-- Narrative Films Section -->
     <section class="container film-gallery-section reveal">
-      <h2 class="section-title font-display">
-        <span>{{ pd.sectionFilmsSubtitle }}</span>
-        {{ pd.sectionFilmsTitle }}
-      </h2>
+      <h2 class="section-title font-display">{{ pd.sectionFilmsTitle }}</h2>
       <p class="section-intro">{{ pd.sectionFilmsIntro }}</p>
       
       <div class="film-grid">
@@ -637,10 +633,7 @@ theme: filmworks
 
     <!-- Team Profiles Section -->
     <section class="container reveal">
-      <h2 class="section-title font-display">
-        <span>The Minds Behind the Lens</span>
-        Our Core Team
-      </h2>
+      <h2 class="section-title font-display">Our Core Team</h2>
       <p class="section-intro">{{ pd.sectionTeamIntro }}</p>
       
       <div class="team-grid">
@@ -659,15 +652,12 @@ theme: filmworks
     <!-- Client Lead / Project Planner Form -->
     <section class="container reveal">
       <div class="glass-panel planner-form-container">
-        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">
-          <span>Get in Touch</span>
-          Start Your Project
-        </h2>
+        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">Start Your Project</h2>
         
         <form id="project-planner-form" novalidate data-endpoint="https://script.google.com/macros/s/AKfycbzMvRqqR_oA5YBljGVrkbpl3EFjQljEu-_uHaHwIJdQPdFw_jWvrxznR7ik-Lu_dURkdw/exec">
           <div class="form-group">
             <label for="client-name" class="form-label">Your Name</label>
-            <input type="text" id="client-name" name="name" class="form-input" required autocomplete="name" placeholder="John Doe">
+            <input type="text" id="client-name" name="name" class="form-input" required autocomplete="name" placeholder="Alex Kim">
             <span class="form-error">Please fill in your name.</span>
           </div>
 

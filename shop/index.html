@@ -29,12 +29,22 @@ theme: shop
     .gear-price { font-size: 0.95rem; font-weight: 700; color: var(--color-accent); }
     .gear-title { font-size: 1.1rem; text-transform: uppercase; font-weight: 700; line-height: 1.35; margin: 0; }
     .gear-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 0.25rem; }
+    .gear-stock { font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.35; }
+    .gear-stock.in-stock { color: #31e880; }
+    .gear-stock.low-stock { color: #ffb400; }
+    .gear-stock.out-of-stock { color: #ff6b6b; }
     .gear-body select { width: 100%; padding: 0.65rem 0.75rem; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--color-text-primary); }
     .stock-badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
     .stock-in { background: rgba(49,232,128,0.15); color: #31e880; }
     .stock-low { background: rgba(255,180,0,0.15); color: #ffb400; }
     .stock-out { background: rgba(255,80,80,0.15); color: #ff6b6b; }
-    #card-container { min-height: 90px; margin: 1rem 0; padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
+    #card-container {
+      min-height: 52px;
+      width: 100%;
+    }
+    #card-container .sq-card-wrapper {
+      width: 100%;
+    }
     .commerce-cart-total-row {
       display: none;
       justify-content: space-between;
@@ -44,6 +54,38 @@ theme: shop
       font-weight: 600;
     }
     .commerce-cart-total-row.is-visible { display: flex; }
+
+    @media (max-width: 1199px) {
+      .gear-body {
+        padding: 0.85rem 0.75rem 1rem;
+        gap: 0.65rem;
+      }
+      .gear-title {
+        font-size: 0.78rem;
+        line-height: 1.3;
+        text-transform: none;
+      }
+      .gear-price { font-size: 0.8rem; }
+      .gear-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+      .gear-footer .btn {
+        width: 100%;
+        padding: 0.5rem 0.65rem;
+        font-size: 0.7rem;
+      }
+      .gear-body select,
+      .variant-label {
+        font-size: 0.72rem;
+        padding: 0.45rem 0.5rem;
+      }
+      .gear-stock {
+        font-size: 0.65rem;
+        line-height: 1.35;
+      }
+    }
   </style>
 </head>
 <body class="theme-shop">
@@ -52,7 +94,7 @@ theme: shop
 
   <main class="site-content">
     <section class="container">
-      <h1 class="section-title font-tech">
+      <h1 class="section-title">
         <span>{{ pd.sectionSubtitle }}</span>
         {{ pd.sectionTitle }}
       </h1>
@@ -65,9 +107,7 @@ theme: shop
           <ul class="filter-list" id="rs-cats-list" role="tablist"></ul>
         </aside>
 
-        <div class="catalog-grid" id="shop-catalog" aria-live="polite">
-          <p class="font-tech" style="color: var(--color-text-secondary);">Loading catalog…</p>
-        </div>
+        <div class="catalog-grid shop-catalog-grid" id="shop-catalog" aria-live="polite" aria-busy="true"></div>
 
         <dialog id="checkout-modal" class="commerce-cart-panel glass-panel" closedby="any" aria-labelledby="checkout-title">
           <div class="commerce-cart-inner" id="checkout-form-view">
@@ -105,7 +145,10 @@ theme: shop
                   <input type="tel" id="shop-phone" class="form-input">
                 </div>
 
-                <div id="card-container"></div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="card-container">Card Details</label>
+                  <div id="card-container"></div>
+                </div>
 
                 <button type="button" id="shop-submit" class="btn btn-primary" style="width: 100%;">Pay Now</button>
                 <p id="shop-status" class="font-tech" style="font-size: 0.8rem; color: var(--color-text-secondary); min-height: 1.2em;"></p>

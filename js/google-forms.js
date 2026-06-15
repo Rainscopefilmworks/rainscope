@@ -30,7 +30,7 @@
 
   const LIVE_SCOPE_LABELS = {
     internal: "Intimate / Boardroom (up to 100 guests)",
-    medium: "Mid-Size Corporate or Performance (100–500 guests)",
+    medium: "Mid-Size Corporate or Performance (100-500 guests)",
     large: "Large Venue or Festival (500+ guests)",
   };
 

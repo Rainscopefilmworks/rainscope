@@ -66,6 +66,25 @@ window.SquareUtils = (function () {
     return new Set(names.map(normalize));
   }
 
+  function catalogSkeletonHTML(count, variant) {
+    const cardClass = variant === "shop" ? " catalog-skeleton-card--shop" : "";
+    const cards = Array.from({ length: count }, () =>
+      '<div class="catalog-skeleton-card gear-card' + cardClass + '" aria-hidden="true">' +
+        '<div class="catalog-skeleton-media"></div>' +
+        '<div class="catalog-skeleton-body">' +
+          '<div class="catalog-skeleton-line short"></div>' +
+          '<div class="catalog-skeleton-line long"></div>' +
+          '<div class="catalog-skeleton-line medium"></div>' +
+        '</div>' +
+      '</div>'
+    ).join("");
+
+    return (
+      cards +
+      '<span class="visually-hidden" role="status" aria-live="polite" aria-busy="true">Loading catalog</span>'
+    );
+  }
+
   return {
     normalize,
     escapeHTML,
@@ -75,6 +94,7 @@ window.SquareUtils = (function () {
     itemCatIds,
     displayCategoryId,
     buildExcludeSet,
-    buildIncludeSet
+    buildIncludeSet,
+    catalogSkeletonHTML
   };
 })();

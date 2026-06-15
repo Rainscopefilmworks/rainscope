@@ -4,8 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
      1. Scroll Reveal Animations (IntersectionObserver)
      ========================================================================== */
   const revealElements = document.querySelectorAll('.reveal');
-  
-  if ('IntersectionObserver' in window) {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion) {
+    revealElements.forEach(el => el.classList.add('active'));
+    document.querySelectorAll('.hero-reel-video').forEach((video) => {
+      video.pause();
+      video.removeAttribute('autoplay');
+    });
+  } else if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

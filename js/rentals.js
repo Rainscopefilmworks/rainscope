@@ -522,7 +522,7 @@
 
     async function loadCatalog() {
       try {
-        $grid.innerHTML = "<em>Loading catalog...</em>";
+        $grid.innerHTML = utils.catalogSkeletonHTML(8);
         const response = await fetch(PROXY_BASE + "/api/catalog?bust=" + Date.now());
         if (!response.ok) {
           throw new Error("HTTP " + response.status + ": " + response.statusText);
@@ -827,6 +827,8 @@
 
     (async function startApp() {
       try {
+        $grid.innerHTML = utils.catalogSkeletonHTML(8);
+
         const today = new Date();
         const tomorrow = new Date(Date.now() + MS);
         const startInput = document.getElementById("rental-start");

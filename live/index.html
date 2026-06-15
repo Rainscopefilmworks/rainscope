@@ -17,8 +17,8 @@ theme: live
     /* Live hero (mirrors Filmworks layout) */
     .hero-reel {
       position: relative;
-      height: 60vh;
-      min-height: 400px;
+      height: min(60dvh, 560px);
+      min-height: min(400px, 70dvh);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -62,12 +62,14 @@ theme: live
     }
 
     .hero-title {
-      font-size: 3rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 2rem;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
       line-height: 1.1;
+      max-width: 22ch;
+      margin-inline: auto;
     }
 
     .intro-section {
@@ -143,14 +145,8 @@ theme: live
     .specs-item {
       display: flex;
       gap: 1rem;
-    }
-
-    .specs-num {
-      font-family: var(--font-tech);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--color-accent);
-      line-height: 1;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(var(--color-accent-rgb), 0.35);
     }
 
     .specs-content h3 {
@@ -172,8 +168,26 @@ theme: live
 
     .live-projects-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: clamp(1rem, 2.5vw, 2rem);
+      justify-content: center;
+      width: 100%;
+      max-width: min(96vw, 1200px);
+      margin-inline: auto;
+    }
+
+    .live-projects-grid[data-count="1"] {
+      grid-template-columns: minmax(280px, 420px);
+    }
+
+    .live-projects-grid[data-count="2"] {
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      max-width: 840px;
+    }
+
+    .live-projects-grid[data-count="3"] {
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      max-width: 1080px;
     }
 
     .live-project-item {
@@ -260,13 +274,13 @@ theme: live
     }
 
     @media (min-width: 640px) {
-      .live-projects-grid {
+      .live-projects-grid:not([data-count="1"]):not([data-count="2"]):not([data-count="3"]) {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (min-width: 1024px) {
-      .live-projects-grid {
+      .live-projects-grid:not([data-count="1"]):not([data-count="2"]):not([data-count="3"]) {
         grid-template-columns: repeat(4, 1fr);
       }
     }
@@ -329,7 +343,7 @@ theme: live
         <span class="hero-tagline">{{ pd.heroTagline }}</span>
         <h1 class="hero-title font-display">{{ pd.heroTitle }}</h1>
         <a class="btn btn-primary" href="#request-production">
-          Request Production
+          Plan Your Event
         </a>
       </div>
     </section>
@@ -350,34 +364,28 @@ theme: live
     </section>
 
     <!-- Specs Section -->
-    <section class="container reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
-      <h2 class="section-title font-display" style="margin-bottom: 2rem;">
-        <span>Built for the Room</span>
-        How We Run Your Event
-      </h2>
+    <section class="container reveal" id="how-we-run" style="padding-top: 2rem; padding-bottom: 2rem;">
+      <h2 class="section-title font-display" style="margin-bottom: 2rem;">How We Run Your Event</h2>
 
       <ul class="specs-list">
         <li class="specs-item">
-          <span class="specs-num">01</span>
           <div class="specs-content">
             <h3>Plan the Show</h3>
-            <p>We start with your run-of-show, venue layout, and audience — in the room, online, or both. Together we map camera positions, audio needs, and display routing so nothing is left to guesswork on event day.</p>
+            <p>We start with your run-of-show, venue layout, and audience in the room, online, or both. Together we map camera positions, audio needs, and display routing so nothing is left to guesswork on event day.</p>
           </div>
         </li>
 
         <li class="specs-item">
-          <span class="specs-num">02</span>
           <div class="specs-content">
             <h3>Build Before Doors Open</h3>
-            <p>Our crew loads in early, runs lines, soundchecks, and walks through cues with your team. By the time guests arrive, switching, sound, and vision are tested — and the stream is live if you need one.</p>
+            <p>Our crew loads in early, runs lines, soundchecks, and walks through cues with your team. By the time guests arrive, switching, sound, and vision are tested, and the stream is live if you need one.</p>
           </div>
         </li>
 
         <li class="specs-item">
-          <span class="specs-num">03</span>
           <div class="specs-content">
             <h3>Run It Live</h3>
-            <p>From the first walk-on to the final bow, we call the show — cutting cameras, mixing audio, and feeding screens in real time. You focus on your event; we keep the production moving.</p>
+            <p>From the first walk-on to the final bow, we call the show: cutting cameras, mixing audio, and feeding screens in real time. You focus on your event; we keep the production moving.</p>
           </div>
         </li>
       </ul>
@@ -385,13 +393,10 @@ theme: live
 
     <!-- Live Project Showcase -->
     <section class="container live-projects-section reveal" style="padding-top: 2rem; padding-bottom: 4rem;">
-      <h2 class="section-title font-display">
-        <span>Event Production</span>
-        {{ pd.showcaseTitle }}
-      </h2>
+      <h2 class="section-title font-display">{{ pd.showcaseTitle }}</h2>
       <p class="section-intro">{{ pd.showcaseDescription }}</p>
 
-      <div class="live-projects-grid">
+      <div class="live-projects-grid" data-count="{{ liveProjects | length }}">
         {% for project in liveProjects %}
         <button
           class="live-project-item"
@@ -427,21 +432,18 @@ theme: live
     <!-- Consultation Form -->
     <section class="container reveal" id="request-production">
       <div class="glass-panel consultation-form-container">
-        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">
-          <span>Plan Your Event</span>
-          Request Production
-        </h2>
+        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">Request Production</h2>
         
         <form id="live-consultation-form" novalidate data-endpoint="https://script.google.com/macros/s/AKfycbzMvRqqR_oA5YBljGVrkbpl3EFjQljEu-_uHaHwIJdQPdFw_jWvrxznR7ik-Lu_dURkdw/exec">
           <div class="form-group">
             <label for="live-name" class="form-label">Contact Name</label>
-            <input type="text" id="live-name" name="name" class="form-input" required autocomplete="name" placeholder="Sarah Connor">
+            <input type="text" id="live-name" name="name" class="form-input" required autocomplete="name" placeholder="Jordan Lee">
             <span class="form-error">Provide your name.</span>
           </div>
 
           <div class="form-group">
             <label for="live-email" class="form-label">Email Address</label>
-            <input type="email" id="live-email" name="email" class="form-input" required autocomplete="email" placeholder="sarah@corp-events.com">
+            <input type="email" id="live-email" name="email" class="form-input" required autocomplete="email" placeholder="jordan@company.com">
             <span class="form-error">Provide a valid email address.</span>
           </div>
 
@@ -456,7 +458,7 @@ theme: live
             <select id="live-scope" name="scope" class="form-select" required>
               <option value="" disabled selected>Select event size...</option>
               <option value="internal">Intimate / Boardroom (up to 100 guests)</option>
-              <option value="medium">Mid-Size Corporate or Performance (100–500 guests)</option>
+              <option value="medium">Mid-Size Corporate or Performance (100-500 guests)</option>
               <option value="large">Large Venue or Festival (500+ guests)</option>
             </select>
             <span class="form-error">Please choose an event size.</span>

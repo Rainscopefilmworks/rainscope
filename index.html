@@ -14,7 +14,8 @@ layout: false
   <style>
     /* Landing page specific layout - Full screen split panel */
     body.landing-page {
-      height: 100vh;
+      height: 100dvh;
+      min-height: 100dvh;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -35,10 +36,10 @@ layout: false
 
     .landing-logo {
       font-family: var(--font-display);
-      font-size: 2.25rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.02em;
       text-align: center;
       color: #fff;
       display: flex;
@@ -112,10 +113,10 @@ layout: false
       background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200');
     }
 
-    /* Hover effect: Expand column and reveal color/depth */
+    /* Hover effect: expand focused column, dim siblings */
     .split-container:hover .panel {
-      flex: 0.8;
-      filter: blur(2px) grayscale(80%) opacity(0.5);
+      flex: 0.85;
+      filter: grayscale(55%) brightness(42%);
     }
 
     .split-container .panel:hover {
@@ -236,7 +237,7 @@ layout: false
         overflow: auto;
       }
       .panel {
-        height: 33.33vh;
+        height: 33.33dvh;
         min-height: 280px;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -284,13 +285,35 @@ layout: false
         font-size: 0.85rem;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel,
+      .panel-bg,
+      .panel-content {
+        transition: none;
+      }
+
+      .split-container:hover .panel,
+      .split-container .panel:hover {
+        flex: 1;
+        filter: none;
+      }
+
+      .split-container .panel:hover .panel-bg {
+        transform: scale(1.05);
+      }
+
+      .panel:hover .panel-content {
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body class="landing-page">
 
   <header class="landing-header">
     <div class="landing-logo">
-      {{ siteSettings.siteName | upper }}
+      {{ siteSettings.siteName }}
       <span>{{ siteSettings.tagline }}</span>
     </div>
   </header>

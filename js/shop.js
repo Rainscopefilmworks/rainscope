@@ -43,6 +43,9 @@
     }
     bindEvents();
     renderCart();
+    if (els.catalog) {
+      els.catalog.innerHTML = UTILS.catalogSkeletonHTML(8, "shop");
+    }
     loadCatalog();
     loadSquarePayments();
   }
@@ -258,7 +261,7 @@
   }
 
   function loadCatalog() {
-    els.catalog.innerHTML = "<em>Loading shop catalog...</em>";
+    els.catalog.innerHTML = UTILS.catalogSkeletonHTML(8, "shop");
     fetch(CONFIG.PROXY_BASE + "/api/catalog?bust=" + Date.now())
       .then(function (res) {
         if (!res.ok) throw new Error("Catalog request failed (" + res.status + ")");
@@ -696,6 +699,53 @@
     });
   }
 
+  function getSquareCardStyle() {
+    var cs = getComputedStyle(document.body);
+    var accent = cs.getPropertyValue("--color-accent").trim() || "#0094c6";
+    var textMuted = cs.getPropertyValue("--color-text-secondary").trim() || "#9ea5b4";
+
+    return {
+      ".input-container": {
+        borderColor: "rgba(255, 255, 255, 0.08)",
+        borderRadius: "6px"
+      },
+      ".input-container.is-focus": {
+        borderColor: accent
+      },
+      ".input-container.is-error": {
+        borderColor: "#ff6b6b"
+      },
+      ".message-text": {
+        color: textMuted
+      },
+      ".message-icon": {
+        color: textMuted
+      },
+      ".message-text.is-error": {
+        color: "#ff6b6b"
+      },
+      ".message-icon.is-error": {
+        color: "#ff6b6b"
+      },
+      input: {
+        backgroundColor: "#161920",
+        color: "#ffffff",
+        fontFamily: "Outfit",
+        fontSize: "16px"
+      },
+      "input::placeholder": {
+        color: textMuted
+      },
+      "input.is-focus": {
+        backgroundColor: "#1c2029",
+        color: "#ffffff"
+      },
+      "input.is-error": {
+        color: "#ff6b6b"
+      }
+    };
+  }
+
   function loadSquarePayments() {
     if (!els.cardContainer) return;
 
@@ -705,9 +755,16 @@
           throw new Error("Square Web Payments SDK unavailable");
         }
         var payments = window.Square.payments(CONFIG.APPLICATION_ID, CONFIG.LOCATION_ID);
-        return payments.card().then(function (card) {
+
+        function attachCard(card) {
+          if (els.cardContainer) els.cardContainer.innerHTML = "";
           state.card = card;
           return card.attach("#card-container");
+        }
+
+        return payments.card({ style: getSquareCardStyle() }).then(attachCard).catch(function (styleErr) {
+          console.warn("Square card custom style failed, using defaults:", styleErr);
+          return payments.card().then(attachCard);
         });
       })
       .then(function () {

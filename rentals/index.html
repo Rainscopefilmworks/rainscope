@@ -55,14 +55,13 @@ theme: rentals
     }
     .gear-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
     .gear-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); flex-shrink: 0; }
-    .gear-price { font-size: 0.9rem; font-weight: 700; color: var(--color-accent); text-align: right; line-height: 1.3; white-space: nowrap; }
+    .gear-price { font-size: 0.9rem; font-weight: 700; color: var(--color-accent); text-align: right; line-height: 1.3; }
     .gear-title {
       font-size: 1.05rem;
       text-transform: uppercase;
       font-weight: 700;
       line-height: 1.35;
       margin: 0;
-      min-height: calc(2 * 1.05rem * 1.35);
     }
     .gear-options { min-height: 2.65rem; display: flex; align-items: center; }
     .gear-variant,
@@ -77,12 +76,63 @@ theme: rentals
     }
     .gear-variant { color: var(--color-text-secondary); }
     .gear-body .btn { width: 100%; margin-top: auto; }
-    .faq-float-btn { position: fixed; bottom: 2rem; left: 2rem; z-index: 98; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--color-card-bg); border: 1px solid var(--color-card-border); color: var(--color-accent); cursor: pointer; font-family: var(--font-tech); font-size: 0.85rem; }
+    .faq-float-btn {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 98;
+      padding: 0.75rem 1.25rem;
+      border-radius: 999px;
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-card-border);
+      color: var(--color-accent);
+      cursor: pointer;
+      font-family: var(--font-tech);
+      font-size: 0.85rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .faq-float-btn:hover {
+      border-color: rgba(var(--color-accent-rgb), 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
     #rs-toast { position: fixed; bottom: 6rem; right: 2rem; z-index: 100; padding: 0.75rem 1.25rem; background: var(--color-accent); color: var(--color-bg-dark); border-radius: 6px; font-weight: 600; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; }
     #rs-toast.show { opacity: 1; transform: translateY(0); }
-    @media (max-width: 900px) {
+    @media (min-width: 1200px) {
+      .faq-float-btn {
+        left: calc(
+          max(clamp(1.25rem, 4vw, 3.5rem), (100vw - min(96vw, 6000px)) / 2)
+          + 210px
+          + clamp(1rem, 2vw, 2rem)
+          + 1.25rem
+        );
+      }
+    }
+    @media (max-width: 767px) {
+      .gear-media { aspect-ratio: 1 / 1; }
+    }
+    @media (max-width: 1199px) {
       #rs-toast { bottom: 5.5rem; right: 1.25rem; max-width: calc(100vw - 2.5rem); }
       .faq-float-btn { bottom: 1.25rem; left: 1.25rem; }
+      .gear-body {
+        padding: 0.85rem 0.75rem 1rem;
+        gap: 0.65rem;
+      }
+      .gear-title {
+        font-size: 0.85rem;
+        line-height: 1.3;
+      }
+      .gear-price { font-size: 0.8rem; white-space: normal; text-align: left; }
+      .gear-category { font-size: 0.62rem; }
+      .gear-variant,
+      .rs-variant { font-size: 0.72rem; padding: 0.45rem 0.5rem; }
+      .gear-body .btn {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.7rem;
+      }
     }
     .faq-item { margin-bottom: 1.25rem; }
     .faq-q { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--color-text-primary); }
@@ -101,7 +151,7 @@ theme: rentals
 
   <main class="site-content">
     <section class="container">
-      <h1 class="section-title font-tech">
+      <h1 class="section-title">
         <span>{{ pd.sectionSubtitle }}</span>
         {{ pd.sectionTitle }}
       </h1>
@@ -114,9 +164,7 @@ theme: rentals
           <ul class="filter-list" id="rs-cats-list" role="tablist"></ul>
         </aside>
 
-        <div class="catalog-grid" id="gear-catalog" aria-live="polite">
-          <p class="font-tech" style="color: var(--color-text-secondary);">Loading catalog…</p>
-        </div>
+        <div class="catalog-grid rentals-catalog-grid" id="gear-catalog" aria-live="polite" aria-busy="true"></div>
 
         <dialog id="cart-modal" class="commerce-cart-panel glass-panel" closedby="any" aria-labelledby="modal-cart-title">
           <div class="commerce-cart-inner">

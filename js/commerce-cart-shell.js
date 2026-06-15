@@ -1,7 +1,7 @@
 window.CommerceCartShell = (function () {
   "use strict";
 
-  var DESKTOP_MQ = window.matchMedia("(min-width: 901px)");
+  var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");
 
   function init(options) {
     var dialog = document.getElementById(options.dialogId);
