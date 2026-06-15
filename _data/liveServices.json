@@ -1,9 +1,15 @@
 [
   {
-    "description": "Corporate keynotes, town halls, product launches, and panel discussions. One team handles switching, timing, and show flow.",
+    "description": "Corporate keynotes, town halls, product launches, and panel discussions — one team handling switching, timing, and show flow.",
     "icon": "🎛️",
     "sortOrder": 1,
     "title": "Show Production"
+  },
+  {
+    "description": "Fusing remote speakers with local presenters on stage with high-fidelity, low-latency video feeds.",
+    "icon": "🎙️",
+    "sortOrder": 2,
+    "title": "Hybrid Integration"
   },
   {
     "description": "Professional mixing, wireless mics, and direct soundboard integration so every word and note lands clearly in the room.",
@@ -12,13 +18,25 @@
     "title": "Live Sound"
   },
   {
-    "description": "Multi-camera feeds switched live for projection and IMAG, so your audience sees the event, not a single static angle.",
+    "description": "Cinematic capture of live music, concerts, theatrical acts, and online festivals with multi-track sound.",
+    "icon": "🎵",
+    "sortOrder": 3,
+    "title": "Performance streams"
+  },
+  {
+    "description": "Multi-camera feeds switched live for projection and IMAG — so your audience sees the event, not a single static angle.",
     "icon": "📽️",
     "sortOrder": 3,
     "title": "Vision & Switching"
   },
   {
-    "description": "Reliable live streams for remote audiences: town halls, performances, and hybrid events delivered with the same production standards as the show in the room.",
+    "description": "Real-time overlay of custom speaker titles, social tags, slideshow overlays, and video rolls.",
+    "icon": "💻",
+    "sortOrder": 4,
+    "title": "Custom Graphics"
+  },
+  {
+    "description": "Reliable live streams for remote audiences — town halls, performances, and hybrid events delivered with the same production standards as the show in the room.",
     "icon": "📡",
     "sortOrder": 4,
     "title": "Webcasting"
