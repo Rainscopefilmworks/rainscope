@@ -9,10 +9,11 @@
     "dev": "npm run fetch-data && eleventy --serve",
     "studio": "cd studio && npm run dev",
     "seed": "node scripts/seed-sanity.js",
+    "setup:sanity-webhook": "node scripts/setup-sanity-deploy-hook.js",
     "worker:deploy": "wrangler deploy --config worker/wrangler.jsonc",
     "worker:tail": "wrangler tail rainscope-square-proxy",
-    "pages:deploy": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview",
-    "pages:deploy:branch": "npm run build && wrangler pages deploy _site --project-name=rainscope-preview --branch=preview"
+    "pages:deploy": "npm run build && wrangler pages deploy _site --project-name=rainscope-site",
+    "pages:deploy:branch": "npm run build && wrangler pages deploy _site --project-name=rainscope-site --branch=preview"
   },
   "dependencies": {
     "@sanity/client": "^6.28.0"

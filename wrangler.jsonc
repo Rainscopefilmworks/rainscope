@@ -12,10 +12,6 @@
   //   Build output directory:  _site
   //   Deploy command:          (leave blank for standard Pages Git deploys)
   //
-  // If your project requires a deploy command, use:
-  //   npx wrangler deploy
-  // (only after npm run build — this file tells wrangler to publish ./_site)
-  //
   // Do NOT set Root directory to _site — that folder is created by the build,
   // it is not in Git, and Cloudflare will fail with "root directory not found".
   //
@@ -27,19 +23,19 @@
   //
   // Without SANITY_PROJECT_ID the build uses committed _data/*.json (still works).
   //
+  // Auto-rebuild on Sanity publish (rainscope-site production):
+  //   npm run setup:sanity-webhook
+  // Sanity webhook → Cloudflare deploy hook → npm run build (fetch-data + eleventy)
+  //
   // Square proxy (separate Worker — NOT this project):
   //   worker/wrangler.jsonc + npm run worker:deploy
   //
   // =============================================================================
 
-  "name": "rainscope-preview",
+  "name": "rainscope-site",
   "compatibility_date": "2026-06-11",
 
-  // Static site output from Eleventy (npm run build → _site/)
-  "assets": {
-    "directory": "./_site"
-  },
-
-  // Legacy Pages key — kept so dashboard Pages projects still pick up output dir
+  // Eleventy output (npm run build → _site/). Pages Git builds read this key only —
+  // do not add "assets" here; that is for Workers static-asset deploys, not Pages.
   "pages_build_output_dir": "_site"
 }
