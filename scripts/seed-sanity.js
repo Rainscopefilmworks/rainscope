@@ -42,7 +42,7 @@ async function main() {
   console.log("Seeded formCopy");
 
   function docId(type, item, index) {
-    const key = item.slug || item.title || item.question || `${type}-${index}`;
+    const key = item.slug || item.title || item.question || item.name || `${type}-${index}`;
     return `${type}-${String(key).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   }
 
@@ -53,7 +53,8 @@ async function main() {
     ["teamMembers.json", "teamMember"],
     ["liveServices.json", "liveService"],
     ["liveProjects.json", "liveProject"],
-    ["faqItems.json", "faqItem"]
+    ["faqItems.json", "faqItem"],
+    ["testimonials.json", "testimonial"]
   ]) {
     const items = JSON.parse(fs.readFileSync(path.join(DATA, file), "utf8"));
     const list = Array.isArray(items) ? items : [items];

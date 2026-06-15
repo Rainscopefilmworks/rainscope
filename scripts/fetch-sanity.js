@@ -20,7 +20,8 @@ const QUERIES = {
   liveServices: `*[_type == "liveService"] | order(sortOrder asc)`,
   liveProjects: `*[_type == "liveProject"] | order(sortOrder asc)`,
   faqItems: `*[_type == "faqItem"] | order(sortOrder asc)`,
-  formCopy: `*[_type == "formCopy"][0]`
+  formCopy: `*[_type == "formCopy"][0]`,
+  testimonials: `*[_type == "testimonial"] | order(sortOrder asc)`
 };
 
 function stripSanityMeta(value) {

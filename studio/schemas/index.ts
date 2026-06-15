@@ -7,6 +7,7 @@ import liveService from "./liveService";
 import liveProject from "./liveProject";
 import faqItem from "./faqItem";
 import formCopy from "./formCopy";
+import testimonial from "./testimonial";
 
 export const schemaTypes = [
   siteSettings,
@@ -17,5 +18,6 @@ export const schemaTypes = [
   liveService,
   liveProject,
   faqItem,
-  formCopy
+  formCopy,
+  testimonial
 ];

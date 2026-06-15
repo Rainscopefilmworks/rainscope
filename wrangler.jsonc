@@ -23,7 +23,7 @@
   //
   // Without SANITY_PROJECT_ID the build uses committed _data/*.json (still works).
   //
-  // Auto-rebuild on Sanity publish (rainscope-site production):
+  // Auto-rebuild on Sanity publish (rainscope production):
   //   npm run setup:sanity-webhook
   // Sanity webhook → Cloudflare deploy hook → npm run build (fetch-data + eleventy)
   //
@@ -32,7 +32,7 @@
   //
   // =============================================================================
 
-  "name": "rainscope-site",
+  "name": "rainscope",
   "compatibility_date": "2026-06-11",
 
   // Eleventy output (npm run build → _site/). Pages Git builds read this key only —
