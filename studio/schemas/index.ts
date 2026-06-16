@@ -5,6 +5,7 @@ import workReel from "./workReel";
 import teamMember from "./teamMember";
 import liveService from "./liveService";
 import liveProject from "./liveProject";
+import filmworksService from "./filmworksService";
 import faqItem from "./faqItem";
 import formCopy from "./formCopy";
 import testimonial from "./testimonial";
@@ -17,6 +18,7 @@ export const schemaTypes = [
   teamMember,
   liveService,
   liveProject,
+  filmworksService,
   faqItem,
   formCopy,
   testimonial

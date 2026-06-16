@@ -5,7 +5,7 @@
  * Creates (or reuses):
  *   1. A Cloudflare Pages deploy hook on the production project
  *   2. A Sanity document webhook that POSTs to that hook
- *   3. Production build env vars SANITY_PROJECT_ID + SANITY_DATASET
+ *   3. Confirms sanity.config.json exists (Cloudflare builds use this for CMS fetch)
  *
  * Auth:
  *   Cloudflare — CLOUDFLARE_API_TOKEN, or wrangler OAuth token on disk
@@ -25,7 +25,7 @@ const CF_API = "https://api.cloudflare.com/client/v4";
 const DEPLOY_HOOK_NAME = "Sanity CMS publish";
 const SANITY_WEBHOOK_NAME = "Cloudflare Pages rebuild";
 const CONTENT_FILTER =
-  '_type in ["siteSettings","page","film","workReel","teamMember","liveService","liveProject","faqItem","formCopy","testimonial"]';
+  '_type in ["siteSettings","page","film","workReel","teamMember","liveService","liveProject","filmworksService","faqItem","formCopy","testimonial"]';
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "production";
@@ -147,48 +147,28 @@ async function ensureSanityWebhook(sanityToken, deployUrl) {
   return created.id;
 }
 
-async function ensureBuildEnvVars(cfToken) {
+async function ensureBuildConfig(cfToken) {
   await cfRequest(cfToken, "PATCH", `/accounts/${cfAccountId}/pages/projects/${cfPagesProject}`, {
     build_config: {
       build_command: "npm run build",
       destination_dir: "_site"
-    },
-    deployment_configs: {
-      production: {
-        env_vars: {
-          SANITY_PROJECT_ID: { type: "plain_text", value: projectId },
-          SANITY_DATASET: { type: "plain_text", value: dataset }
-        }
-      }
     }
   });
-  console.log(
-    `[cf] Set build command, output dir, and Sanity env vars on ${cfPagesProject}`
-  );
+  console.log(`[cf] Set build command and output dir on ${cfPagesProject}`);
 }
 
-async function removeLegacyDeployHook(cfToken) {
-  const legacyProject = process.env.CF_PAGES_LEGACY_PROJECT || "rainscope-site";
-  if (legacyProject === cfPagesProject) return;
-
-  try {
-    const hooks = await cfRequest(
-      cfToken,
-      "GET",
-      `/accounts/${cfAccountId}/pages/projects/${legacyProject}/deploy_hooks`
-    );
-    const legacy = hooks.find((hook) => hook.name === DEPLOY_HOOK_NAME);
-    if (!legacy) return;
-
-    await cfRequest(
-      cfToken,
-      "DELETE",
-      `/accounts/${cfAccountId}/pages/projects/${legacyProject}/deploy_hooks/${legacy.hook_id}`
-    );
-    console.log(`[cf] Removed legacy deploy hook from ${legacyProject} (${legacy.hook_id})`);
-  } catch (err) {
-    console.warn(`[cf] Could not remove legacy deploy hook from ${legacyProject}: ${err.message}`);
+function ensureSanityConfigFile() {
+  const configPath = path.join(__dirname, "..", "sanity.config.json");
+  let config = {};
+  if (fs.existsSync(configPath)) {
+    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
   }
+  const next = {
+    projectId: config.projectId || projectId,
+    dataset: config.dataset || dataset
+  };
+  fs.writeFileSync(configPath, JSON.stringify(next, null, 2) + "\n");
+  console.log(`[sanity] Wrote sanity.config.json (${next.projectId}/${next.dataset})`);
 }
 
 async function main() {
@@ -216,8 +196,8 @@ async function main() {
 
   const deployUrl = await ensureDeployHook(cfToken);
   await ensureSanityWebhook(sanityToken, deployUrl);
-  await ensureBuildEnvVars(cfToken);
-  await removeLegacyDeployHook(cfToken);
+  ensureSanityConfigFile();
+  await ensureBuildConfig(cfToken);
 
   console.log("\nDone. Publish a change in Sanity Studio to verify:");
   console.log("  1. sanity.io/manage → API → Webhooks → Attempts (expect 200)");

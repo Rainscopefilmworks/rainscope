@@ -53,6 +53,7 @@ async function main() {
     ["teamMembers.json", "teamMember"],
     ["liveServices.json", "liveService"],
     ["liveProjects.json", "liveProject"],
+    ["filmworksServices.json", "filmworksService"],
     ["faqItems.json", "faqItem"],
     ["testimonials.json", "testimonial"]
   ]) {

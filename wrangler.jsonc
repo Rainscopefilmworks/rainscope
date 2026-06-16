@@ -17,11 +17,8 @@
   //
   // Build watch paths: leave default (only needed for monorepos).
   //
-  // Optional environment variables (Settings → Variables):
-  //   SANITY_PROJECT_ID   — fetch live CMS content at build time
-  //   SANITY_DATASET        — e.g. production (defaults to production)
-  //
-  // Without SANITY_PROJECT_ID the build uses committed _data/*.json (still works).
+  // CMS: build reads sanity.config.json (committed) to fetch live content from Sanity.
+  // Optional env overrides: SANITY_PROJECT_ID, SANITY_DATASET
   //
   // Auto-rebuild on Sanity publish (rainscope production):
   //   npm run setup:sanity-webhook

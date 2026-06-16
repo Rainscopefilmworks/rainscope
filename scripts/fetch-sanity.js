@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
  * Fetches content from Sanity at build time.
- * Falls back to committed _data/*.json when SANITY_PROJECT_ID is not set.
+ * Uses SANITY_PROJECT_ID env, else sanity.config.json (for Cloudflare Pages builds).
+ * Falls back to committed _data/*.json only when no project ID is configured.
  */
 require("./load-env");
 
 const fs = require("fs");
 const path = require("path");
+const { getSanityConfig } = require("./sanity-config");
 
 const ROOT = path.join(__dirname, "..");
 const DATA_DIR = path.join(ROOT, "_data");
@@ -19,6 +21,7 @@ const QUERIES = {
   teamMembers: `*[_type == "teamMember"] | order(sortOrder asc)`,
   liveServices: `*[_type == "liveService"] | order(sortOrder asc)`,
   liveProjects: `*[_type == "liveProject"] | order(sortOrder asc)`,
+  filmworksServices: `*[_type == "filmworksService"] | order(sortOrder asc)`,
   faqItems: `*[_type == "faqItem"] | order(sortOrder asc)`,
   formCopy: `*[_type == "formCopy"][0]`,
   testimonials: `*[_type == "testimonial"] | order(sortOrder asc)`
@@ -40,13 +43,14 @@ function stripSanityMeta(value) {
 }
 
 async function fetchFromSanity() {
-  const projectId = process.env.SANITY_PROJECT_ID;
-  const dataset = process.env.SANITY_DATASET || "production";
+  const { projectId, dataset } = getSanityConfig();
 
   if (!projectId) {
-    console.log("[fetch-sanity] No SANITY_PROJECT_ID — using committed _data/*.json");
+    console.log("[fetch-sanity] No Sanity project ID — using committed _data/*.json");
     return false;
   }
+
+  console.log(`[fetch-sanity] Fetching ${dataset} from project ${projectId}`);
 
   const { createClient } = require("@sanity/client");
   const client = createClient({
