@@ -327,13 +327,13 @@ layout: false
     {% for panel in pd.panels %}
     <a href="{{ panel.href }}" class="panel" id="panel-{{ panel.id }}">
       <div class="panel-bg">
-        {% if panel.id == 'filmworks' %}
+        {% if panel.id == 'filmworks' and pageBySlug.filmworks.heroVideo %}
         <video class="panel-bg-video" loop muted playsinline preload="metadata" aria-hidden="true">
-          <source src="https://media.rainscope.ca/hero-videov3.mp4" type="video/mp4">
+          <source src="{{ pageBySlug.filmworks.heroVideo }}" type="video/mp4">
         </video>
-        {% elif panel.id == 'live' %}
+        {% elif panel.id == 'live' and pageBySlug.live.heroVideo %}
         <video class="panel-bg-video" loop muted playsinline preload="metadata" aria-hidden="true">
-          <source src="https://media.rainscopefilmworks.com/work/work-8.mp4" type="video/mp4">
+          <source src="{{ pageBySlug.live.heroVideo }}" type="video/mp4">
         </video>
         {% endif %}
       </div>

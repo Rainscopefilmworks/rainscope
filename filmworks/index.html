@@ -4,6 +4,7 @@ theme: filmworks
 ---
 {% set base = page.url | basePath %}
 {% set pd = pageBySlug.filmworks %}
+{% set filmworksHeroVideo = pd.heroVideo | default('https://media.rainscope.ca/hero-videov3.mp4') %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -564,18 +565,20 @@ theme: filmworks
     <!-- Hero Showreel Section -->
     <section class="hero-reel hero-reel--cinematic">
       <video class="hero-reel-video" autoplay loop muted playsinline aria-hidden="true">
-        <source src="https://media.rainscope.ca/hero-videov3.mp4" type="video/mp4">
+        <source src="{{ filmworksHeroVideo }}" type="video/mp4">
       </video>
       <div class="hero-reel-content">
         <span class="hero-tagline">{{ pd.heroTagline }}</span>
         <h1 class="hero-title font-display">{{ pd.heroTitle }}</h1>
         <div class="hero-reel-actions">
-          <button class="btn btn-primary" onclick="window.open('{{ pd.showreelUrl }}', '_blank')">
+          {% if pd.showreelUrl %}
+          <a class="btn btn-primary" href="{{ pd.showreelUrl }}" target="_blank" rel="noopener noreferrer">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;" aria-hidden="true">
               <path d="M8 5v14l11-7z"/>
             </svg>
-            Watch 2025 Showreel
-          </button>
+            {{ pd.showreelLabel | default('Watch Showreel') }}
+          </a>
+          {% endif %}
           <button type="button" class="hero-unmute-btn" aria-pressed="false" aria-label="Unmute hero video">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
@@ -607,7 +610,7 @@ theme: filmworks
 
     <!-- Commercial & Corporate Section -->
     <section class="container work-gallery-section reveal">
-      <h2 class="section-title font-display">Commercial Showcase</h2>
+      <h2 class="section-title font-display">{{ pd.sectionCommercialTitle | default('Commercial Showcase') }}</h2>
       <p class="section-intro">{{ pd.sectionCommercialIntro }}</p>
       
       <div class="video-gallery-grid">
