@@ -11,6 +11,7 @@ layout: false
   {% set pageDescription = pd.description %}
   {% include "seo-head.njk" %}
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cinematic.css">
   <style>
     /* Landing page specific layout - Full screen split panel */
     body.landing-page {
@@ -100,17 +101,14 @@ layout: false
       z-index: 1;
     }
 
-    /* Column-specific placeholder backgrounds (Abstract gradients mimicking misty forest, technical gear stack, live lighting setup) */
-    #panel-filmworks .panel-bg {
-      background-image: linear-gradient(135deg, rgba(7, 24, 22, 0.95), rgba(4, 12, 11, 0.95)), url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200');
-    }
-
+    /* Column-specific backgrounds — rentals uses still image; filmworks/live use video */
     #panel-rentals .panel-bg {
       background-image: linear-gradient(135deg, rgba(22, 25, 32, 0.95), rgba(15, 16, 19, 0.95)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200');
     }
 
+    #panel-filmworks .panel-bg,
     #panel-live .panel-bg {
-      background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200');
+      background: #050507;
     }
 
     /* Hover effect: expand focused column, dim siblings */
@@ -311,6 +309,12 @@ layout: false
 </head>
 <body class="landing-page">
 
+  <div id="landing-intro" class="landing-intro" aria-hidden="false">
+    <div class="landing-intro-logo">{{ siteSettings.siteName }}</div>
+    <div class="landing-intro-tagline">{{ siteSettings.tagline }}</div>
+    <div class="landing-intro-progress" aria-hidden="true"></div>
+  </div>
+
   <header class="landing-header">
     <div class="landing-logo">
       {{ siteSettings.siteName }}
@@ -322,7 +326,17 @@ layout: false
     
     {% for panel in pd.panels %}
     <a href="{{ panel.href }}" class="panel" id="panel-{{ panel.id }}">
-      <div class="panel-bg"></div>
+      <div class="panel-bg">
+        {% if panel.id == 'filmworks' %}
+        <video class="panel-bg-video" loop muted playsinline preload="metadata" aria-hidden="true">
+          <source src="https://media.rainscope.ca/hero-videov3.mp4" type="video/mp4">
+        </video>
+        {% elif panel.id == 'live' %}
+        <video class="panel-bg-video" loop muted playsinline preload="metadata" aria-hidden="true">
+          <source src="https://media.rainscopefilmworks.com/work/work-8.mp4" type="video/mp4">
+        </video>
+        {% endif %}
+      </div>
       <div class="panel-content">
         <div>
           <h2 class="panel-title {% if panel.id == 'rentals' %}font-tech{% else %}font-display{% endif %}">{{ panel.title }}</h2>
@@ -336,5 +350,6 @@ layout: false
 
   </div>
 
+  <script src="js/landing-intro.js"></script>
 </body>
 </html>

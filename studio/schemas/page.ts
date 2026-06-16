@@ -14,7 +14,13 @@ export default defineType({
       name: "heroImage",
       title: "Hero image",
       type: "url",
-      description: "Full-width hero background image (used on Live and other division pages)."
+      description: "Full-width hero background image fallback when no hero video is set."
+    }),
+    defineField({
+      name: "heroVideo",
+      title: "Hero video",
+      type: "url",
+      description: "Full-width looping hero background video (mp4). Used on Live and other division pages."
     }),
     defineField({ name: "showreelUrl", type: "url" }),
     defineField({ name: "sectionTitle", type: "string" }),
