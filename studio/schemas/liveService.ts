@@ -9,5 +9,12 @@ export default defineType({
     defineField({ name: "title", type: "string" }),
     defineField({ name: "description", type: "text" }),
     defineField({ name: "sortOrder", type: "number" })
-  ]
+  ],
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "title" },
+    prepare({ title }) {
+      return { title: title || "Untitled service" };
+    }
+  }
 });

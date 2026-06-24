@@ -83,6 +83,15 @@ async function main() {
       }
     }
 
+    if (type === "liveProject") {
+      const existing = await client.fetch('*[_type == "liveProject"]._id');
+      const orphans = existing.filter((id) => !seededIds.includes(id));
+      for (const orphanId of orphans) {
+        await client.delete(orphanId);
+        console.log(`[seed-sanity] Removed orphan liveProject: ${orphanId}`);
+      }
+    }
+
     console.log(`Seeded ${seededIds.length} ${type} document(s)`);
   }
 

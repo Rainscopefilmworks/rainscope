@@ -27,5 +27,12 @@ export default defineType({
       description: "Optional. If set, opens in the modal instead of the MP4."
     }),
     defineField({ name: "sortOrder", type: "number" })
-  ]
+  ],
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "title", subtitle: "category" },
+    prepare({ title, subtitle }) {
+      return { title: title || "Untitled reel", subtitle };
+    }
+  }
 });

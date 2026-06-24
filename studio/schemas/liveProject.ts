@@ -40,5 +40,12 @@ export default defineType({
       description: "Shown in the modal when no video or embed is set. Can include multiple photos."
     }),
     defineField({ name: "sortOrder", type: "number" })
-  ]
+  ],
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "title", subtitle: "category" },
+    prepare({ title, subtitle }) {
+      return { title: title || "Untitled project", subtitle };
+    }
+  }
 });

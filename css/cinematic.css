@@ -161,9 +161,32 @@ body.landing-page.is-intro-active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
   background: #050507;
   transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.9s;
+}
+
+.landing-intro-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.landing-intro-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+.landing-intro-mark {
+  width: clamp(48px, 12vw, 64px);
+  height: clamp(48px, 12vw, 64px);
+  flex-shrink: 0;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: landing-intro-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
 }
 
 .landing-intro.is-hidden {
@@ -189,28 +212,34 @@ body.landing-page.is-intro-active {
   letter-spacing: 0.45em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  padding-left: 0.45em;
   opacity: 0;
   animation: landing-intro-fade 0.7s ease 0.55s forwards;
 }
 
-.landing-intro-progress {
-  position: absolute;
-  bottom: clamp(2rem, 8vh, 4rem);
-  left: 50%;
-  transform: translateX(-50%);
+.landing-progress {
   width: min(120px, 30vw);
   height: 1px;
   background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  margin-top: 0.25rem;
 }
 
-.landing-intro-progress::after {
+.landing-progress::after {
   content: '';
   display: block;
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #31e880, #ba8fff);
+}
+
+.landing-intro-progress::after {
   animation: landing-intro-bar 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+
+body.landing-page.is-intro-ready .landing-logo-progress::after {
+  animation: landing-intro-bar 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
 }
 
 @keyframes landing-intro-rise {
@@ -299,19 +328,22 @@ body.landing-page.is-intro-ready .landing-header {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-cue::after,
+  .landing-intro-mark,
   .landing-intro-logo,
   .landing-intro-tagline,
-  .landing-intro-progress::after {
+  .landing-progress::after {
     animation: none;
   }
 
+  .landing-intro-mark,
   .landing-intro-logo,
   .landing-intro-tagline {
     opacity: 1;
     transform: none;
   }
 
-  .landing-intro-progress::after {
+  .landing-progress::after,
+  body.landing-page.is-intro-ready .landing-logo-progress::after {
     width: 100%;
   }
 

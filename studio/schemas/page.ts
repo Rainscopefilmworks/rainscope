@@ -136,6 +136,14 @@ export default defineType({
       title: "Showcase section intro",
       group: "sections",
       hidden: ({ document }) => document?.slug !== "live"
+    }),
+    defineField({
+      name: "showcaseVideo",
+      type: "url",
+      title: "Showcase video (legacy)",
+      description: "Deprecated. Live showcase videos are managed under Live → Projects.",
+      group: "sections",
+      hidden: ({ document }) => document?.slug !== "live"
     })
   ],
   preview: {

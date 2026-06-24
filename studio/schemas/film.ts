@@ -24,5 +24,11 @@ export default defineType({
     defineField({ name: "produced", type: "string" }),
     defineField({ name: "sortOrder", type: "number" })
   ],
-  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }]
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "title", subtitle: "year" },
+    prepare({ title, subtitle }) {
+      return { title: title || "Untitled film", subtitle };
+    }
+  }
 });

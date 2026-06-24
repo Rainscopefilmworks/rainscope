@@ -10,5 +10,12 @@ export default defineType({
     defineField({ name: "bio", type: "text" }),
     defineField({ name: "image", type: "url" }),
     defineField({ name: "sortOrder", type: "number" })
-  ]
+  ],
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "name", subtitle: "role" },
+    prepare({ title, subtitle }) {
+      return { title: title || "Untitled", subtitle };
+    }
+  }
 });

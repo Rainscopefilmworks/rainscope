@@ -9,5 +9,12 @@ export default defineType({
     defineField({ name: "answer", type: "text" }),
     defineField({ name: "tag", type: "string", options: { list: ["rentals", "shop"] } }),
     defineField({ name: "sortOrder", type: "number" })
-  ]
+  ],
+  orderings: [{ title: "Sort Order", name: "sortOrder", by: [{ field: "sortOrder", direction: "asc" }] }],
+  preview: {
+    select: { title: "question", subtitle: "tag" },
+    prepare({ title, subtitle }) {
+      return { title: title || "Untitled question", subtitle };
+    }
+  }
 });
