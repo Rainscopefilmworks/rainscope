@@ -227,60 +227,111 @@ layout: false
 
     /* Responsive scaling for landing page */
     @media (max-width: 900px) {
-      .split-container {
-        flex-direction: column;
-      }
       body.landing-page {
         height: auto;
-        overflow: auto;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
+
+      .landing-header {
+        position: relative;
+        flex-shrink: 0;
+        padding: calc(1.25rem + env(safe-area-inset-top, 0px)) 1rem 0.75rem;
+        background: #050507;
+      }
+
+      .landing-logo {
+        font-size: 1.75rem;
+      }
+
+      .split-container {
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
       .panel {
-        height: 33.33dvh;
-        min-height: 280px;
+        flex: 1 1 auto;
+        height: auto;
+        min-height: clamp(220px, 32dvh, 360px);
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 0.75rem 1rem;
       }
+
+      .panel-content {
+        padding: 1.5rem;
+        max-width: min(92vw, 340px);
+        gap: 1rem;
+        transform: none;
+      }
+
+      .panel:hover .panel-content {
+        transform: none;
+      }
+
       .split-container:hover .panel {
-        flex: 1;
+        flex: 1 1 auto;
         filter: none;
       }
+
       .split-container .panel:hover {
-        flex: 1;
+        flex: 1 1 auto;
       }
     }
 
     @media (max-width: 480px) {
       .landing-header {
-        padding: 1rem;
+        padding: 1rem 0.75rem 0.5rem;
       }
 
       .landing-logo {
-        font-size: 1.5rem;
-        letter-spacing: 0.12em;
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
       }
 
       .landing-logo span {
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
         margin-left: 0;
+        max-width: 100%;
+        text-align: center;
       }
 
       .panel {
-        min-height: 240px;
+        min-height: clamp(230px, 30dvh, 320px);
+        padding: 0.5rem 0.75rem;
       }
 
       .panel-content {
-        padding: 1.25rem;
-        max-width: min(90vw, 320px);
-        gap: 1rem;
+        padding: 1rem 1.1rem;
+        max-width: 100%;
+        gap: 0.75rem;
       }
 
       .panel-title {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .panel-subtitle {
+        margin-bottom: 0.5rem;
       }
 
       .panel-desc {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        margin-bottom: 0.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .panel .btn {
+        padding: 0.55rem 1.1rem;
+        font-size: 0.7rem;
       }
     }
 
