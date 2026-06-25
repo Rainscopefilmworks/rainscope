@@ -1,4 +1,10 @@
 {% set base = page.url | basePath %}
+{% set studioAddress = siteSettings.studioAddress | default("1868 Glen Drive, Vancouver, BC") %}
+{% set mapLat = siteSettings.mapLat | default(49.2684126) %}
+{% set mapLng = siteSettings.mapLng | default(-123.0808085) %}
+{% set googleMapsUrl = siteSettings.googleMapsUrl | default("https://maps.app.goo.gl/UfKXqDaY4pjSpGc16") %}
+{% set googleReviewUrl = siteSettings.googleReviewUrl | default("https://g.page/r/CXqkiemEnThYEAI/review") %}
+{% set googleRating = siteSettings.googleRating | default(5) %}
 <footer class="site-footer">
   <div class="footer-container">
     <div class="footer-about">
@@ -16,8 +22,41 @@
     </div>
     <div class="footer-contact">
       <h4>Office / Studio</h4>
-      <p>{{ siteSettings.contactLocation }}</p>
+      <p>{{ studioAddress | default(siteSettings.contactLocation) }}</p>
       <p style="margin-top: 0.5rem;">{{ siteSettings.contactEmail }}</p>
+    </div>
+    <div class="footer-map">
+      <h4>Find Us</h4>
+      <div class="footer-map-link">
+        <iframe
+          class="footer-map-embed"
+          title="Map showing Rainscope at {{ studioAddress }}"
+          src="https://maps.google.com/maps?q={{ mapLat }},{{ mapLng }}&amp;z=15&amp;output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+        ></iframe>
+        <a
+          href="{{ googleMapsUrl }}"
+          class="footer-map-hit"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open Rainscope studio location in Google Maps"
+        ></a>
+      </div>
+      <div class="footer-google-rating" aria-label="Rated {{ googleRating }} out of 5 on Google">
+        <span class="footer-stars" aria-hidden="true">
+          {% for i in range(googleRating | round(0, 'floor')) %}
+          <svg class="footer-star" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          {% endfor %}
+        </span>
+        <span class="footer-rating-value">{{ googleRating }}</span>
+        <span class="footer-rating-label">on Google</span>
+      </div>
+      <div class="footer-google-actions">
+        <a href="{{ googleMapsUrl }}" class="btn btn-secondary footer-google-btn" target="_blank" rel="noopener noreferrer">View on Google</a>
+        <a href="{{ googleReviewUrl }}" class="btn btn-primary footer-google-btn" target="_blank" rel="noopener noreferrer">Leave a Review</a>
+      </div>
     </div>
   </div>
   <div class="footer-bottom">
