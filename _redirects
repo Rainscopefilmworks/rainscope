@@ -1,0 +1,6 @@
+# Legacy domain → primary site (301 passes backlink equity)
+https://rainscopefilmworks.com/* https://rainscope.ca/:splat 301
+https://www.rainscopefilmworks.com/* https://rainscope.ca/:splat 301
+
+# Canonical host
+https://www.rainscope.ca/* https://rainscope.ca/:splat 301

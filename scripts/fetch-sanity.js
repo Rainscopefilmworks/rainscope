@@ -27,6 +27,30 @@ const QUERIES = {
   testimonials: `*[_type == "testimonial"] | order(sortOrder asc)`
 };
 
+const LEGACY_SITE = "https://rainscopefilmworks.com";
+const PRIMARY_SITE = "https://rainscope.ca";
+const LEGACY_MEDIA = "https://media.rainscopefilmworks.com";
+const PRIMARY_MEDIA = "https://media.rainscope.ca";
+
+function migrateLegacyUrls(value) {
+  if (typeof value === "string") {
+    return value
+      .replaceAll(LEGACY_SITE, PRIMARY_SITE)
+      .replaceAll(LEGACY_MEDIA, PRIMARY_MEDIA);
+  }
+  if (Array.isArray(value)) {
+    return value.map(migrateLegacyUrls);
+  }
+  if (value && typeof value === "object") {
+    const out = {};
+    for (const [key, val] of Object.entries(value)) {
+      out[key] = migrateLegacyUrls(val);
+    }
+    return out;
+  }
+  return value;
+}
+
 function stripSanityMeta(value) {
   if (Array.isArray(value)) {
     return value.map(stripSanityMeta);
@@ -62,7 +86,7 @@ async function fetchFromSanity() {
 
   for (const [filename, query] of Object.entries(QUERIES)) {
     let result = await client.fetch(query);
-    result = stripSanityMeta(result);
+    result = migrateLegacyUrls(stripSanityMeta(result));
 
     const isEmpty =
       result === null ||
