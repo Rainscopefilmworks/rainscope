@@ -1,0 +1,9 @@
+# Copy to worker/.dev.vars for local Square proxy (npm run worker:dev):
+#   cp worker/.dev.vars.example worker/.dev.vars
+#
+# Square Developer Dashboard → your app → Credentials → Access token
+
+SQUARE_TOKEN=
+
+# Optional: use sandbox instead of production
+# SQUARE_API_BASE=https://connect.squareupsandbox.com
