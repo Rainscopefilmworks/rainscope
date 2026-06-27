@@ -70,19 +70,27 @@ theme: filmworks
       overflow: hidden;
       aspect-ratio: 2 / 3;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(49, 232, 128, 0.15);
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
+    }
+
+    .film-card:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(49, 232, 128, 0.35);
     }
 
     .film-poster {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.2s ease-out;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .film-card:hover .film-poster {
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
 
     .film-card-overlay {
@@ -152,14 +160,15 @@ theme: filmworks
       padding: 0;
       cursor: pointer;
       text-align: center;
-      will-change: transform;
-      transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
     }
 
     .video-gallery-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-      border-color: rgba(var(--color-accent-rgb), 0.35);
+      transform: translateY(-6px) scale(1.008);
+      border-color: rgba(var(--color-accent-rgb), 0.4);
     }
 
     .video-gallery-item video {
@@ -592,9 +601,9 @@ theme: filmworks
 
     <!-- Studio Overview -->
     <section class="container intro-section reveal">
-      <p class="section-intro content-narrow">
+      <p class="intro-lead content-narrow">
         {{ pd.intro }}
-        Need gear or a live broadcast crew? Explore our <a href="{{ base }}rentals/">equipment rentals</a> and <a href="{{ base }}live/">live streaming</a> services.
+        Need gear or an event crew? Explore our <a href="{{ base }}rentals/">equipment rentals</a> and <a href="{{ base }}live/">audio visual services</a>.
       </p>
 
       <div class="services-grid">
@@ -609,8 +618,11 @@ theme: filmworks
     </section>
 
     <!-- Commercial & Corporate Section -->
-    <section class="container work-gallery-section reveal">
-      <h2 class="section-title font-display">{{ pd.sectionCommercialTitle | default('Commercial Showcase') }}</h2>
+    <section class="container work-gallery-section section-band reveal">
+      <h2 class="section-title font-display">
+        <span>Brand & Corporate</span>
+        {{ pd.sectionCommercialTitle | default('Commercial Showcase') }}
+      </h2>
       <p class="section-intro">{{ pd.sectionCommercialIntro }}</p>
       
       <div class="video-gallery-grid">
@@ -641,8 +653,11 @@ theme: filmworks
     </section>
 
     <!-- Narrative Films Section -->
-    <section class="container film-gallery-section reveal">
-      <h2 class="section-title font-display">{{ pd.sectionFilmsTitle }}</h2>
+    <section class="container film-gallery-section section-band reveal">
+      <h2 class="section-title font-display">
+        <span>{{ pd.sectionFilmsSubtitle | default('Narrative') }}</span>
+        {{ pd.sectionFilmsTitle }}
+      </h2>
       <p class="section-intro">{{ pd.sectionFilmsIntro }}</p>
       
       <div class="film-grid">
@@ -678,8 +693,11 @@ theme: filmworks
     </section>
 
     <!-- Team Profiles Section -->
-    <section class="container reveal">
-      <h2 class="section-title font-display">Our Core Team</h2>
+    <section class="container section-band reveal">
+      <h2 class="section-title font-display">
+        <span>The Crew</span>
+        Our Core Team
+      </h2>
       <p class="section-intro">{{ pd.sectionTeamIntro }}</p>
       
       <div class="team-grid">
@@ -698,9 +716,12 @@ theme: filmworks
     {% include "testimonials.njk" %}
 
     <!-- Client Lead / Project Planner Form -->
-    <section class="container reveal">
+    <section class="container section-band cta-section reveal">
       <div class="glass-panel planner-form-container">
-        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">Start Your Project</h2>
+        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">
+          <span>Get In Touch</span>
+          Start Your Project
+        </h2>
         
         <form id="project-planner-form" novalidate data-endpoint="https://script.google.com/macros/s/AKfycbzMvRqqR_oA5YBljGVrkbpl3EFjQljEu-_uHaHwIJdQPdFw_jWvrxznR7ik-Lu_dURkdw/exec">
           <div class="form-group">

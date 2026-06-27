@@ -804,7 +804,7 @@ body.modal-open {
 }
 
 .form-input, .form-textarea, .form-select {
-  background: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--color-card-border);
   padding: 0.85rem 1rem;
   border-radius: 6px;
@@ -813,16 +813,39 @@ body.modal-open {
   transition: all var(--transition-normal);
 }
 
+.form-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238fa8a4' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1.125rem;
+}
+
+.form-select option {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+}
+
 .form-input:focus, .form-textarea:focus, .form-select:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 10px var(--color-accent-glow);
-  background: rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 .form-hint {
   font-size: 0.75rem;
   color: var(--color-text-secondary);
   margin-top: 0.25rem;
+}
+
+.planner-form-container form,
+.consultation-form-container form {
+  color-scheme: dark;
 }
 
 .form-error {

@@ -18,10 +18,10 @@
     "title": "Live Sound"
   },
   {
-    "description": "Cinematic capture of live music, concerts, theatrical acts, and online festivals with multi-track sound.",
+    "description": "Cinematic capture of live music, concerts, theatrical acts, and festivals — multi-camera vision and multi-track sound for the room and the archive.",
     "icon": "🎵",
     "sortOrder": 3,
-    "title": "Performance streams"
+    "title": "Performances & Events"
   },
   {
     "description": "Multi-camera feeds switched live for projection and IMAG — so your audience sees the event, not a single static angle.",
@@ -36,7 +36,7 @@
     "title": "Custom Graphics"
   },
   {
-    "description": "Reliable live streams for remote audiences — town halls, performances, and hybrid events delivered with the same production standards as the show in the room.",
+    "description": "Optional webcasting for remote audiences — town halls, performances, and hybrid events delivered with the same production standards as the show in the room.",
     "icon": "📡",
     "sortOrder": 4,
     "title": "Webcasting"

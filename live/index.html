@@ -71,40 +71,6 @@ theme: live
       line-height: 1.5;
     }
 
-    /* Live Features / Gear Section */
-    .live-specs-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .specs-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .specs-item {
-      display: flex;
-      gap: 1rem;
-      padding-left: 1rem;
-      border-left: 2px solid rgba(var(--color-accent-rgb), 0.35);
-    }
-
-    .specs-content h3 {
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      margin-bottom: 0.25rem;
-    }
-
-    .specs-content p {
-      font-size: 0.85rem;
-      color: var(--color-text-secondary);
-      line-height: 1.4;
-    }
-
     /* Live project showcase grid */
     .live-projects-section {
       width: 100%;
@@ -145,13 +111,15 @@ theme: live
       padding: 0;
       cursor: pointer;
       text-align: center;
-      transition: transform 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
     }
 
     .live-project-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-      border-color: rgba(186, 143, 255, 0.35);
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(186, 143, 255, 0.4);
     }
 
     .live-project-item video,
@@ -230,18 +198,9 @@ theme: live
     }
 
     @media (max-width: 768px) {
-      .live-specs-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
       .services-grid {
         grid-template-columns: 1fr;
         gap: 1.25rem;
-      }
-
-      .live-specs-layout .section-title {
-        text-align: center;
       }
     }
   </style>
@@ -290,7 +249,7 @@ theme: live
 
     <!-- Overview -->
     <section class="container intro-section reveal">
-      <p class="section-intro content-narrow">{{ pd.intro }}</p>
+      <p class="intro-lead content-narrow">{{ pd.intro }}</p>
 
       <div class="services-grid">
         {% for service in liveServices %}
@@ -303,37 +262,46 @@ theme: live
       </div>
     </section>
 
-    <!-- Specs Section -->
-    <section class="container reveal" id="how-we-run" style="padding-top: 2rem; padding-bottom: 2rem;">
-      <h2 class="section-title font-display" style="margin-bottom: 2rem;">How We Run Your Event</h2>
+    <!-- How We Run -->
+    <section class="container section-band reveal" id="how-we-run">
+      <h2 class="section-title font-display">
+        <span>Our Process</span>
+        How We Run Your Event
+      </h2>
 
-      <ul class="specs-list">
-        <li class="specs-item">
-          <div class="specs-content">
-            <h3>Plan the Show</h3>
+      <div class="process-steps">
+        <article class="process-step glass-panel">
+          <span class="process-step-num" aria-hidden="true">01</span>
+          <div class="process-step-body">
+            <h3 class="font-display">Plan the Show</h3>
             <p>We start with your run-of-show, venue layout, and audience in the room, online, or both. Together we map camera positions, audio needs, and display routing so nothing is left to guesswork on event day.</p>
           </div>
-        </li>
+        </article>
 
-        <li class="specs-item">
-          <div class="specs-content">
-            <h3>Build Before Doors Open</h3>
-            <p>Our crew loads in early, runs lines, soundchecks, and walks through cues with your team. By the time guests arrive, switching, sound, and vision are tested, and the stream is live if you need one.</p>
+        <article class="process-step glass-panel">
+          <span class="process-step-num" aria-hidden="true">02</span>
+          <div class="process-step-body">
+            <h3 class="font-display">Build Before Doors Open</h3>
+            <p>Our crew loads in early, runs lines, soundchecks, and walks through cues with your team. By the time guests arrive, switching, sound, and vision are tested — and webcasting is ready if your event needs it.</p>
           </div>
-        </li>
+        </article>
 
-        <li class="specs-item">
-          <div class="specs-content">
-            <h3>Run It Live</h3>
+        <article class="process-step glass-panel">
+          <span class="process-step-num" aria-hidden="true">03</span>
+          <div class="process-step-body">
+            <h3 class="font-display">Run It Live</h3>
             <p>From the first walk-on to the final bow, we call the show: cutting cameras, mixing audio, and feeding screens in real time. You focus on your event; we keep the production moving.</p>
           </div>
-        </li>
-      </ul>
+        </article>
+      </div>
     </section>
 
     <!-- Live Project Showcase -->
-    <section class="container live-projects-section reveal" style="padding-top: 2rem; padding-bottom: 4rem;">
-      <h2 class="section-title font-display">{{ pd.showcaseTitle }}</h2>
+    <section class="container live-projects-section section-band reveal">
+      <h2 class="section-title font-display">
+        <span>Portfolio</span>
+        {{ pd.showcaseTitle }}
+      </h2>
       <p class="section-intro">{{ pd.showcaseDescription }}</p>
 
       <div class="live-projects-grid" data-count="{{ liveProjects | length }}">
@@ -370,9 +338,12 @@ theme: live
     </section>
 
     <!-- Consultation Form -->
-    <section class="container reveal" id="request-production">
+    <section class="container section-band cta-section reveal" id="request-production">
       <div class="glass-panel consultation-form-container">
-        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">Request Production</h2>
+        <h2 class="section-title font-display" style="font-size: 2rem; margin-bottom: 2rem;">
+          <span>Let's Talk</span>
+          Request Production
+        </h2>
         
         <form id="live-consultation-form" novalidate data-endpoint="https://script.google.com/macros/s/AKfycbzMvRqqR_oA5YBljGVrkbpl3EFjQljEu-_uHaHwIJdQPdFw_jWvrxznR7ik-Lu_dURkdw/exec">
           <div class="form-group">

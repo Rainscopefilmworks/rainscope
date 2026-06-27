@@ -16,7 +16,7 @@
       <ul>
         <li><a href="{{ base }}">Landing Hub</a></li>
         {% for item in siteSettings.nav %}
-        <li><a href="{{ base }}{{ item.href }}"{% if nav == item.slug %} style="color: var(--color-accent)"{% endif %}>{% if item.slug == 'rentals' %}Gear Rentals{% elif item.slug == 'live' %}Live Broadcasts{% elif item.slug == 'shop' %}Shop{% else %}{{ item.label }}{% endif %}</a></li>
+        <li><a href="{{ base }}{{ item.href }}"{% if nav == item.slug %} style="color: var(--color-accent)"{% endif %}>{% if item.slug == 'rentals' %}Gear Rentals{% elif item.slug == 'live' %}Live AV{% elif item.slug == 'shop' %}Shop{% else %}{{ item.label }}{% endif %}</a></li>
         {% endfor %}
       </ul>
     </div>

@@ -10,7 +10,11 @@
 
   if (header && hero) {
     const onScroll = () => {
+      const progress = Math.min(window.scrollY / hero.offsetHeight, 1);
       header.classList.toggle('is-scrolled', window.scrollY > hero.offsetHeight * 0.15);
+      if (!prefersReducedMotion) {
+        hero.style.setProperty('--hero-scroll', progress.toFixed(4));
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
