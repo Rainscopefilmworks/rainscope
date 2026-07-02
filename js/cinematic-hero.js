@@ -2,7 +2,7 @@
   const body = document.body;
   if (!body.classList.contains('hero-cinematic')) return;
 
-  const hero = document.querySelector('.hero-reel--cinematic');
+  const hero = document.querySelector('.hero-reel--cinematic, .commerce-hero');
   const header = document.querySelector('header.site-header');
   const video = hero?.querySelector('.hero-reel-video');
   const unmuteBtn = hero?.querySelector('.hero-unmute-btn');

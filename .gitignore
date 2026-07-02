@@ -5,3 +5,5 @@ _site/
 studio/.env
 .DS_Store
 studio/.sanity/
+.design/*/screenshots/
+.playwright-mcp/

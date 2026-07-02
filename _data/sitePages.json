@@ -4,7 +4,7 @@
     "heroTagline": "Pacific Northwest Creative Production",
     "heroTitle": "A Creative Production Company Shaped by the Pacific Northwest",
     "heroVideo": "https://media.rainscope.ca/hero-videov3.mp4",
-    "intro": "Rainscope Filmworks is a Vancouver-based production studio specializing in cinematic narrative films, high-end commercial campaigns, and corporate video retainers. We pair Pacific Northwest storytelling with full-service production, and share gear and live AV capabilities through our Rentals and Live divisions when projects need them.",
+    "intro": "Rainscope Filmworks is a Vancouver-based production studio specializing in cinematic narrative films, high-end commercial campaigns, and corporate video retainers. We pair Pacific Northwest storytelling with full-service production — and share gear and live broadcast capabilities through our Rentals and Live divisions when projects need them.",
     "sectionCommercialIntro": "Selected brand films, spec campaigns, and corporate contracts — each built for the platform it lives on.",
     "sectionCommercialTitle": "Commercial Showcase",
     "sectionFilmsIntro": "Independent and collaborative narrative work — short films, festival projects, and long-form storytelling from our Vancouver team.",
@@ -17,7 +17,7 @@
     "title": "Rainscope Filmworks | Cinematic & Narrative Production"
   },
   {
-    "description": "Rainscope is a creative production company based in the Pacific Northwest, specializing in narrative films, high-end commercial campaigns, gear rentals, and live event AV production.",
+    "description": "Rainscope is a creative production company based in the Pacific Northwest, specializing in narrative films, high-end commercial campaigns, gear rentals, and live multi-cam broadcasting.",
     "panels": [
       {
         "cta": "Enter",
@@ -37,7 +37,7 @@
       },
       {
         "cta": "View Services",
-        "description": "Full-service audio visual production — switching, sound, lighting, and vision for corporate events and performances in Vancouver.",
+        "description": "Full-service live event production — switching, audio, and vision for corporate events and performances in Vancouver.",
         "href": "/live/",
         "id": "live",
         "subtitle": "Event Production & AV",
@@ -45,21 +45,21 @@
       }
     ],
     "slug": "landing",
-    "title": "Rainscope | Production, Rentals & Live AV"
+    "title": "Rainscope | Production, Rentals & Live Webcasting"
   },
   {
-    "description": "Full-service audio visual production in Vancouver, BC. Camera switching, live sound, vision, lighting, and webcasting for corporate events and live performances.",
+    "description": "Full-service live event production in Vancouver, BC. Switching, audio, vision, and webcasting for corporate events and live performances.",
     "heroImage": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1920",
-    "heroTagline": "Vancouver Audio Visual Production",
-    "heroTitle": "Audio Visual Production for Vancouver Events",
-    "intro": "Your event deserves more than a microphone and a projector. Rainscope Live is a full AV team — camera switching, live sound, projection, and show calling for everyone in the room. From corporate keynotes to live performances, we bring broadcast-level production to your venue. Need remote attendees? We can webcast with the same crew and standards.",
+    "heroTagline": "Vancouver Event Production",
+    "heroTitle": "Live Event Production for Vancouver Venues",
+    "intro": "Your event deserves more than a microphone and a projector. Rainscope Live runs the show — camera switching, sound, and vision for everyone in the room. From corporate keynotes to live performances, we bring broadcast-level production to your venue. Remote attendees? We stream it with the same crew and standards.",
     "sectionSubtitle": "Vancouver Event Production",
     "sectionTitle": "Live AV",
     "showcaseDescription": "A look at events we've produced across Vancouver — corporate gatherings, performances, and more.",
     "showcaseTitle": "Recent Productions",
     "showcaseVideo": "https://media.rainscope.ca/work/work-4.mp4",
     "slug": "live",
-    "title": "Rainscope Live | Audio Visual Production in Vancouver, BC"
+    "title": "Rainscope Live | Event Production & AV in Vancouver, BC"
   },
   {
     "description": "Rainscope Rentals offers professional cinema cameras, anamorphic lenses, high-output lighting, and audio equipment in Vancouver, BC. Explore our full gear inventory.",

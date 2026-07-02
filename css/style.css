@@ -31,6 +31,18 @@
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Tactile motion — for physical/mechanical moments (shutter clicks, tape-load
+     transitions) layered alongside the transitions above, not replacing them */
+  --ease-tactile: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-shutter: 120ms;
+  --duration-tape-load: 700ms;
+
+  /* Analog grain texture — neutral fractal-noise overlay, reused across all
+     three theme palettes via mix-blend-mode rather than tinted per-theme */
+  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.05;
+  --grain-opacity-strong: 0.09;
 }
 
 /* --- Theme Overrides --- */
@@ -155,15 +167,17 @@ header.site-header {
 }
 
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
   min-height: 64px;
   max-height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+  box-sizing: border-box;
 }
 
 .logo-link {
@@ -239,14 +253,16 @@ main.site-content {
 footer.site-footer {
   background-color: var(--color-bg-dark);
   border-top: 1px solid var(--color-card-border);
-  padding: 4rem 2rem 2rem;
+  padding: 4rem clamp(1.25rem, 4vw, 3.5rem) 2rem;
   font-size: 0.9rem;
   color: var(--color-text-secondary);
+  box-sizing: border-box;
 }
 
 .footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr minmax(200px, 1.35fr);
   gap: clamp(2rem, 4vw, 3rem);
@@ -376,8 +392,9 @@ footer.site-footer {
 }
 
 .footer-bottom {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
@@ -517,19 +534,67 @@ main.site-content > section {
   line-height: 1.5;
 }
 
-/* Glassmorphism Panel */
+/* Glassmorphism Panel — grain-textured, not sterile-clean */
 .glass-panel {
+  position: relative;
   background: var(--color-card-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-card-border);
   border-radius: 12px;
+  overflow: hidden;
   transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
+
+/* Grain no longer lives here — it's a single fixed layer over the whole
+   page (see body.hero-cinematic grain overlay in cinematic.css), not
+   duplicated per-component. Duplicating it per glass-panel, per hero, and
+   per section each looked fine in isolation but visibly doubled up
+   wherever those boxes sat close together. */
 
 .glass-panel:hover {
   border-color: rgba(var(--color-accent-rgb), 0.35);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), 0 0 16px 0 var(--color-accent-glow);
+}
+
+/* --- Analog Grain Texture Utility ---
+   Apply to any container that should carry film-grain/VHS-noise texture
+   (hero overlays, section bands, atmospheric backgrounds). Animation is
+   automatically flattened by the prefers-reduced-motion block below. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: var(--texture-grain);
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+  animation: grain-shift 0.6s steps(4) infinite;
+}
+
+.grain--strong::after {
+  opacity: var(--grain-opacity-strong);
+}
+
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 1%); }
+  50% { transform: translate(1%, -2%); }
+  75% { transform: translate(-1%, 2%); }
 }
 
 /* Premium Buttons */
@@ -544,7 +609,7 @@ main.site-content > section {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: all var(--duration-shutter) var(--ease-tactile);
 }
 
 .btn-primary {
@@ -594,6 +659,114 @@ main.site-content > section {
   background: rgba(var(--color-accent-rgb), 0.6);
 }
 
+/* --- Testimonials carousel (shared — used by any page that includes
+   testimonials.njk, not just Filmworks; JS lives in main.js) --- */
+.testimonials {
+  padding: clamp(2rem, 4vw, 3rem) 0 0;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.testimonials-heading {
+  margin-bottom: 2rem;
+  padding: 0 1.5rem;
+}
+
+.testimonials-slider {
+  width: 100%;
+  position: relative;
+}
+
+.testimonial-slide {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 55vh, 620px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonial-slide.active {
+  display: flex;
+}
+
+.testimonial-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.5) 100%);
+  z-index: 1;
+}
+
+.testimonial-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: min(90vw, 1100px);
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.testimonial-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.45;
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.testimonial-author {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0;
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.testimonial-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem;
+}
+
+.testimonial-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  padding: 0;
+}
+
+.testimonial-indicator:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.15);
+}
+
+.testimonial-indicator.active {
+  background: var(--color-accent);
+  border-color: rgba(var(--color-accent-rgb), 0.4);
+  box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb), 0.25);
+}
+
+.testimonial-indicator:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 /* --- Native Modals (<dialog>) --- */
 dialog {
   border: none;
@@ -609,7 +782,7 @@ dialog::backdrop {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
-  transition: opacity var(--transition-normal);
+  transition: opacity var(--duration-shutter) var(--ease-tactile);
 }
 
 dialog[open]::backdrop {
@@ -626,7 +799,7 @@ dialog[open]::backdrop {
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition: opacity var(--duration-shutter) var(--ease-tactile), transform var(--duration-shutter) var(--ease-tactile);
   color: var(--color-text-primary);
 }
 
@@ -670,12 +843,18 @@ dialog[open] .modal-content {
   justify-content: center;
   padding: clamp(1.5rem, 4vw, 3rem);
   z-index: 1200;
+  opacity: 0;
+  transition: opacity var(--duration-shutter) var(--ease-tactile),
+    display var(--duration-shutter) var(--ease-tactile) allow-discrete;
 }
 
 .work-modal.open {
   display: flex;
+  opacity: 1;
 }
 
+/* Shutter-click open, not a plain fade: content snaps in slightly scaled
+   and settled, backdrop is a plain fade underneath it. */
 .work-modal-backdrop {
   position: absolute;
   inset: 0;
@@ -695,6 +874,18 @@ dialog[open] .modal-content {
   border: 1px solid var(--color-card-border);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   color: var(--color-text-primary);
+  transform: scale(1);
+  transition: transform var(--duration-shutter) var(--ease-tactile);
+}
+
+@starting-style {
+  .work-modal.open {
+    opacity: 0;
+  }
+
+  .work-modal.open .work-modal-content {
+    transform: scale(0.96);
+  }
 }
 
 .work-modal-close {
@@ -1484,16 +1675,37 @@ dialog.commerce-cart-panel {
     border-radius: 16px 16px 0 0;
     border-bottom: none;
     z-index: 200;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--duration-shutter) var(--ease-tactile),
+      transform var(--duration-shutter) var(--ease-tactile),
+      display var(--duration-shutter) var(--ease-tactile) allow-discrete,
+      overlay var(--duration-shutter) var(--ease-tactile) allow-discrete;
   }
 
   .commerce-layout .commerce-cart-panel[open] {
     display: flex;
     flex-direction: column;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .commerce-layout .commerce-cart-panel[open]::backdrop {
     display: block;
     background: rgba(0, 0, 0, 0.55);
+    transition: background-color var(--duration-shutter) var(--ease-tactile) allow-discrete;
+  }
+
+  /* Bottom sheet slides up like a drawer, not a plain fade-in. */
+  @starting-style {
+    .commerce-layout .commerce-cart-panel[open] {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .commerce-layout .commerce-cart-panel[open]::backdrop {
+      background: rgba(0, 0, 0, 0);
+    }
   }
 
   .commerce-layout .commerce-cart-inner {

@@ -13,6 +13,7 @@ theme: rentals
   {% set pageDescription = pd.description %}
   {% include "seo-head.njk" %}
   <link rel="stylesheet" href="{{ base }}css/style.css">
+  <link rel="stylesheet" href="{{ base }}css/cinematic.css">
   <style>
     .commerce-search {
       margin-bottom: 1.5rem;
@@ -145,17 +146,23 @@ theme: rentals
     }
   </style>
 </head>
-<body class="theme-rentals">
+<body class="theme-rentals hero-cinematic">
 
   {% include "header.njk" %}
 
-  <main class="site-content">
-    <section class="container">
-      <h1 class="section-title">
-        <span>{{ pd.sectionSubtitle }}</span>
-        {{ pd.sectionTitle }}
-      </h1>
+  <main class="site-content commerce-atmosphere">
+    <section class="commerce-hero" aria-labelledby="commerce-hero-title">
+      <div class="commerce-hero-inner">
+        <h1 class="section-title" id="commerce-hero-title">
+          <span>{{ pd.heroTagline | default(pd.sectionSubtitle) }}</span>
+          {{ pd.sectionTitle }}
+        </h1>
+        <p class="commerce-hero-lead">{{ pd.heroLead | default(pd.description) }}</p>
+        <p class="commerce-hero-crosslink">Need a full crew, not just gear? Explore <a href="{{ base }}filmworks/">Filmworks</a> or <a href="{{ base }}live/">Live AV</a>.</p>
+      </div>
+    </section>
 
+    <section class="container">
       <input id="rs-search" class="commerce-search font-tech" type="search" placeholder="Search gear, kits, lenses…" aria-label="Search catalog">
 
       <div class="rentals-layout commerce-layout">
@@ -228,6 +235,9 @@ theme: rentals
         </dialog>
       </div>
     </section>
+
+    {% set testimonialTag = "rentals" %}
+    {% include "testimonials.njk" %}
   </main>
 
   {% include "footer.njk" %}
@@ -266,6 +276,7 @@ theme: rentals
 
   <div id="rs-toast" hidden>Added to quote</div>
 
+  <script src="{{ base }}js/cinematic-hero.js"></script>
   <script src="{{ base }}js/square-config.js"></script>
   <script src="{{ base }}js/square-utils.js"></script>
   <script src="{{ base }}js/commerce-cart-shell.js"></script>

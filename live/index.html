@@ -249,7 +249,10 @@ theme: live
 
     <!-- Overview -->
     <section class="container intro-section reveal">
-      <p class="intro-lead content-narrow">{{ pd.intro }}</p>
+      <p class="intro-lead content-narrow">
+        {{ pd.intro }}
+        Need gear for your own team? Browse our <a href="{{ base }}rentals/">equipment rentals</a>.
+      </p>
 
       <div class="services-grid">
         {% for service in liveServices %}

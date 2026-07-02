@@ -1,5 +1,115 @@
 /* Cinematic hero + landing intro (Phase 1) */
 
+/* --- Commerce hero (Rentals, Shop) — atmospheric, catalog-first ---
+   Not a full-viewport video hero: these visitors are browsing gear, not
+   being sold on credibility, so the catalog stays close to the fold.
+   Left-aligned title deliberately avoids the centered hero-plus-CTA
+   formula. The glow lives on .commerce-atmosphere (the shared page
+   wrapper, see below), not on this section alone — that lets it fade
+   continuously across the hero and down into the catalog instead of
+   stopping at a hard box edge. */
+.commerce-hero {
+  position: relative;
+  overflow: hidden; /* clips the .grain texture layer only */
+  padding: clamp(3.5rem, 9vw, 6rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2.75rem, 6vw, 4.5rem);
+}
+
+/* Let the glow run full-bleed behind the transparent header (matches
+   body.hero-cinematic main.site-content { padding-top: 0 } elsewhere in
+   this file) — only the text content needs pushing clear of the nav. */
+body.hero-cinematic .commerce-hero {
+  padding-top: clamp(7.5rem, 15vh, 10.5rem);
+}
+
+/* Shared glow layer for Rentals/Shop — spans from behind the header down
+   through the hero and well into the catalog, fading to transparent (not
+   clipped) so it blends into --color-bg-base with no visible seam. */
+.commerce-atmosphere {
+  position: relative;
+}
+
+.commerce-atmosphere::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(900px, 130vh, 1500px);
+  background:
+    radial-gradient(ellipse 55% 40% at 22% 10%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 65%),
+    radial-gradient(ellipse 50% 38% at 72% 26%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 68%),
+    radial-gradient(ellipse 58% 40% at 45% 50%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 70%);
+  filter: blur(60px);
+  animation: commerce-hero-drift 24s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.commerce-atmosphere > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes commerce-hero-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-2.5%, 2%) scale(1.06); }
+  100% { transform: translate(2%, -1.5%) scale(1.03); }
+}
+
+.commerce-hero-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: hero-content-load var(--duration-tape-load) var(--ease-tactile) both;
+}
+
+.commerce-hero .section-title {
+  text-align: left;
+  margin-bottom: 1.25rem;
+  max-width: 16ch;
+}
+
+.commerce-hero .section-title span {
+  margin-bottom: 0.65rem;
+}
+
+.commerce-hero-lead {
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  color: var(--color-text-secondary);
+  max-width: 48ch;
+  line-height: 1.65;
+}
+
+/* Cross-link to sibling divisions, doubling as the "need more than gear?"
+   secondary CTA — a text line, not a competing form or button, so it never
+   fights with the cart/quote flow lower on the page. */
+.commerce-hero-crosslink {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-card-border);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  max-width: 48ch;
+}
+
+.commerce-hero-crosslink a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-accent-rgb), 0.35);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.commerce-hero-crosslink a:hover {
+  text-decoration-color: var(--color-accent);
+}
+
+@media (max-width: 767px) {
+  .commerce-hero .section-title {
+    max-width: none;
+  }
+}
+
 /* --- Full-viewport hero (Filmworks, Live) --- */
 body.hero-cinematic main.site-content {
   padding-top: 0;
@@ -73,6 +183,7 @@ body.hero-cinematic header.site-header.is-scrolled {
   will-change: transform;
 }
 
+
 .hero-reel--cinematic .hero-reel-content {
   position: relative;
   z-index: 2;
@@ -80,6 +191,27 @@ body.hero-cinematic header.site-header.is-scrolled {
   width: min(92vw, 960px);
   padding: clamp(5rem, 12vh, 8rem) 2rem clamp(1rem, 3vh, 1.5rem);
   flex-shrink: 0;
+  animation: hero-content-load var(--duration-tape-load) var(--ease-tactile) both;
+}
+
+/* A tape loading in, not a generic fade — settles with a focus-pull
+   (blur clears before the motion finishes) rather than a plain opacity
+   tween. prefers-reduced-motion is already handled globally (forces
+   animation-duration to 0.01ms), which collapses this to its end state. */
+@keyframes hero-content-load {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 .hero-reel--cinematic .hero-tagline {
@@ -386,13 +518,15 @@ body.hero-cinematic .section-band {
   isolation: isolate;
 }
 
+/* Contained to this section's own box (was: -5rem bleed to blend across
+   section boundaries). Adjacent sections sit almost flush (margin-top:
+   -0.5rem below), so two bleeding gradients add up right at the shared
+   edge and show as a visible seam — containing both this wash and the
+   grain below to inset:0 removes that doubling entirely. */
 body.hero-cinematic .section-band::before {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -5rem;
-  bottom: -5rem;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(
@@ -404,6 +538,9 @@ body.hero-cinematic .section-band::before {
     transparent 100%
   );
 }
+
+/* No per-section grain layer — body.hero-cinematic::after above already
+   covers the whole page as a single fixed layer. */
 
 body.hero-cinematic main.site-content > section + section {
   margin-top: -0.5rem;

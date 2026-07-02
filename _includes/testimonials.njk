@@ -1,10 +1,12 @@
+{% set shownTestimonials = testimonials | withTag(testimonialTag) %}
+{% if shownTestimonials.length > 0 %}
 <section class="testimonials reveal" id="testimonials" aria-label="Client testimonials">
   <h2 class="section-title font-display testimonials-heading">
     <span>What Clients Say</span>
     Testimonials
   </h2>
   <div class="testimonials-slider">
-    {% for testimonial in testimonials %}
+    {% for testimonial in shownTestimonials %}
     <div class="testimonial-slide{% if loop.first %} active{% endif %}" style="background-image: url('{{ testimonial.image }}');">
       <div class="testimonial-overlay"></div>
       <div class="testimonial-content">
@@ -14,8 +16,9 @@
     </div>
     {% endfor %}
   </div>
+  {% if shownTestimonials.length > 1 %}
   <div class="testimonial-indicators" role="tablist" aria-label="Testimonial slides">
-    {% for testimonial in testimonials %}
+    {% for testimonial in shownTestimonials %}
     <button
       type="button"
       class="testimonial-indicator{% if loop.first %} active{% endif %}"
@@ -26,4 +29,6 @@
     ></button>
     {% endfor %}
   </div>
+  {% endif %}
 </section>
+{% endif %}

@@ -40,6 +40,11 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("json", (value) => JSON.stringify(value ?? null));
 
+  eleventyConfig.addFilter("withTag", (items, tag) => {
+    if (!tag || !Array.isArray(items)) return items || [];
+    return items.filter((item) => Array.isArray(item.tags) && item.tags.includes(tag));
+  });
+
   return {
     dir: {
       input: ".",

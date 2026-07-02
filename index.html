@@ -121,6 +121,22 @@ layout: false
       z-index: 1;
     }
 
+    /* Film-grain over the panel imagery — clipped by .panel's own
+       overflow:hidden, sits above the image but below .panel-content
+       (z-index: 2), so the card text stays untouched. */
+    .panel-bg::after {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: var(--texture-grain);
+      background-size: 180px 180px;
+      opacity: var(--grain-opacity-strong);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
     /* Column-specific backgrounds — rentals uses still image; filmworks/live use video */
     #panel-rentals .panel-bg {
       background-image: linear-gradient(135deg, rgba(22, 25, 32, 0.95), rgba(15, 16, 19, 0.95)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200');
@@ -155,6 +171,7 @@ layout: false
       max-width: 320px;
       padding: 2.5rem;
       border-radius: 16px;
+      overflow: hidden;
       background: rgba(10, 10, 12, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(12px);
@@ -165,6 +182,22 @@ layout: false
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
+    }
+
+    .panel-content::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--texture-grain);
+      background-size: 160px 160px;
+      opacity: var(--grain-opacity);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .panel-content > * {
+      position: relative;
+      z-index: 1;
     }
 
     .panel:hover .panel-content {
