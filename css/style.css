@@ -485,53 +485,93 @@ main.site-content > section {
   max-width: min(96vw, 720px);
 }
 
-.services-grid {
+/* Division service ledgers — boxed two-column tables (Filmworks departments,
+   Live patch list) that replaced the old centered icon-card grids. Entries
+   flow two across with hairline rules between cells; an odd trailing entry
+   spans the full width. */
+.service-ledger {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-  margin-bottom: 1rem;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid rgba(var(--color-accent-rgb), 0.16);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.service-card {
-  padding: 2rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+.service-ledger-note {
+  display: block;
+  width: 100%;
+  margin: 0 auto 0.6rem;
+  text-align: right;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(var(--color-accent-rgb), 0.55);
 }
 
-.service-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(var(--color-accent-rgb), 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-accent);
-  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  transition: all var(--transition-normal);
+/* Each cell: index and title share the top line, description runs under */
+.service-ledger-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0.6rem 1.1rem;
+  padding: clamp(1.25rem, 2.5vw, 1.9rem) clamp(1.25rem, 3vw, 2.25rem);
+  border-top: 1px solid rgba(var(--color-accent-rgb), 0.1);
+  transition: background var(--transition-fast);
 }
 
-.service-card:hover .service-icon {
-  transform: scale(1.1);
-  background: rgba(var(--color-accent-rgb), 0.2);
-  box-shadow: 0 0 15px rgba(var(--color-accent-rgb), 0.3);
+.service-ledger-row:nth-child(-n+2) {
+  border-top: none;
 }
 
-.service-title {
-  font-size: 1.15rem;
+.service-ledger-row:nth-child(even) {
+  border-left: 1px solid rgba(var(--color-accent-rgb), 0.1);
+}
+
+.service-ledger-row:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.service-ledger-row:hover {
+  background: rgba(var(--color-accent-rgb), 0.035);
+}
+
+.service-ledger-index {
+  font-family: var(--font-tech);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(var(--color-accent-rgb), 0.6);
+}
+
+.service-ledger-title {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
   text-transform: uppercase;
   font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-.service-desc {
-  font-size: 0.88rem;
+.service-ledger-desc {
+  grid-column: 1 / -1;
+  font-size: 0.92rem;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+@media (max-width: 700px) {
+  .service-ledger {
+    grid-template-columns: 1fr;
+  }
+
+  .service-ledger-row:nth-child(even) {
+    border-left: none;
+  }
+
+  .service-ledger-row:nth-child(2) {
+    border-top: 1px solid rgba(var(--color-accent-rgb), 0.1);
+  }
 }
 
 /* Glassmorphism Panel — grain-textured, not sterile-clean */
@@ -1544,7 +1584,7 @@ dialog.commerce-cart-panel {
 .film-grid,
 .video-gallery-grid,
 .team-grid,
-.services-grid,
+.service-ledger,
 .live-specs-layout {
   width: 100%;
 }

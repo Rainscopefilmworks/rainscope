@@ -294,27 +294,35 @@ theme: filmworks
       }
     }
 
-    /* Team Section */
+    /* Team Section — credit cards: photo, role billed over name. Three to a
+       full-width row on desktop; the trailing pair grows to fill its row. */
     .team-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2.5rem 3rem;
+      gap: clamp(1rem, 2vw, 1.5rem);
+      width: 100%;
     }
 
     .team-card {
-      flex: 0 1 220px;
-      max-width: 280px;
-      text-align: center;
+      flex: 1 1 20rem;
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem, 2.5vw, 1.75rem);
+      text-align: left;
+    }
+
+    body.hero-cinematic .team-card {
+      padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.35rem, 3vw, 2rem);
     }
 
     .team-avatar-container {
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
+      width: clamp(96px, 10vw, 128px);
+      height: clamp(96px, 10vw, 128px);
+      border-radius: 12px;
       overflow: hidden;
-      margin: 0 auto 1.75rem;
-      border: 2px solid var(--color-card-border);
+      flex-shrink: 0;
+      border: 1px solid var(--color-card-border);
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
@@ -326,21 +334,23 @@ theme: filmworks
     }
 
     .team-card:hover .team-avatar {
-      transform: scale(1.08);
-    }
-
-    .team-name {
-      font-size: 1.35rem;
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
+      transform: scale(1.06);
     }
 
     .team-role {
-      font-size: 0.95rem;
+      font-size: 0.7rem;
+      font-weight: 500;
       color: var(--color-accent);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.16em;
       line-height: 1.4;
+      margin-bottom: 0.35rem;
+    }
+
+    .team-name {
+      font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+      text-transform: uppercase;
+      line-height: 1.2;
     }
 
     /* Contact Planner */
@@ -435,18 +445,8 @@ theme: filmworks
         padding: 1.5rem;
       }
 
-      .team-grid {
-        gap: 2rem 1.5rem;
-      }
-
       .team-card {
-        flex-basis: 160px;
-        max-width: 220px;
-      }
-
-      .team-avatar-container {
-        width: 150px;
-        height: 150px;
+        flex-basis: 100%;
       }
     }
 
@@ -494,13 +494,13 @@ theme: filmworks
         Need gear or an event crew? Explore our <a href="{{ base }}rentals/">equipment rentals</a> and <a href="{{ base }}live/">audio visual services</a>.
       </p>
 
-      <div class="services-grid">
+      <div class="service-ledger dept-ledger">
         {% for service in filmworksServices %}
-        <div class="service-card glass-panel">
-          <div class="service-icon" aria-hidden="true">{{ service.icon }}</div>
-          <h3 class="service-title font-display">{{ service.title }}</h3>
-          <p class="service-desc">{{ service.description }}</p>
-        </div>
+        <article class="service-ledger-row dept-row">
+          <span class="service-ledger-index" aria-hidden="true">0{{ loop.index }}</span>
+          <h3 class="service-ledger-title font-display">{{ service.title }}</h3>
+          <p class="service-ledger-desc">{{ service.description }}</p>
+        </article>
         {% endfor %}
       </div>
     </section>
@@ -594,8 +594,10 @@ theme: filmworks
           <div class="team-avatar-container">
             <img src="{{ member.image }}" alt="{{ member.name }}" class="team-avatar" loading="lazy">
           </div>
-          <h3 class="team-name font-display">{{ member.name }}</h3>
-          <div class="team-role">{{ member.role }}</div>
+          <div class="team-card-body">
+            <div class="team-role font-tech">{{ member.role }}</div>
+            <h3 class="team-name font-display">{{ member.name }}</h3>
+          </div>
         </div>
         {% endfor %}
       </div>

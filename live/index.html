@@ -22,53 +22,62 @@ theme: live
     }
 
     /* Live Page Specific Styling */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 4rem;
+
+    /* Patch list — console channel strips: input number, source, notes.
+       Each row carries a segmented signal meter that pins to full on hover. */
+    .channel-list {
+      margin-bottom: 2.5rem;
     }
 
-    .service-card {
-      padding: 2rem;
-      text-align: center;
+    .channel-main {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 1rem;
+      gap: 0.6rem;
     }
 
-    .service-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba(186, 143, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-accent);
-      border: 1px solid rgba(186, 143, 255, 0.2);
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      transition: all var(--transition-normal);
+    .channel-meter {
+      --lit: 30%;
+      width: 118px;
+      height: 7px;
+      position: relative;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(var(--color-accent-rgb), 0.16) 0 7px,
+        transparent 7px 11px
+      );
     }
 
-    .service-card:hover .service-icon {
-      transform: scale(1.1);
-      background: rgba(186, 143, 255, 0.2);
-      box-shadow: 0 0 15px rgba(186, 143, 255, 0.3);
+    .channel-meter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--color-accent) 0 7px,
+        transparent 7px 11px
+      );
+      opacity: 0.8;
+      clip-path: inset(0 calc(100% - var(--lit)) 0 0);
+      transition: clip-path 0.5s var(--ease-tactile);
     }
 
-    .service-title {
-      font-size: 1.25rem;
-      text-transform: uppercase;
-      font-weight: 700;
+    /* Idle levels sit wherever the last soundcheck left them */
+    .channel-row:nth-child(7n+1) .channel-meter { --lit: 34%; }
+    .channel-row:nth-child(7n+2) .channel-meter { --lit: 61%; }
+    .channel-row:nth-child(7n+3) .channel-meter { --lit: 45%; }
+    .channel-row:nth-child(7n+4) .channel-meter { --lit: 72%; }
+    .channel-row:nth-child(7n+5) .channel-meter { --lit: 27%; }
+    .channel-row:nth-child(7n+6) .channel-meter { --lit: 56%; }
+    .channel-row:nth-child(7n) .channel-meter { --lit: 40%; }
+
+    .channel-row:hover .channel-meter::before {
+      clip-path: inset(0 0 0 0);
     }
 
-    .service-desc {
-      font-size: 0.88rem;
-      color: var(--color-text-secondary);
-      line-height: 1.5;
+    @media (max-width: 700px) {
+      .channel-meter {
+        width: 96px;
+      }
     }
 
     /* Live project showcase grid */
@@ -82,22 +91,105 @@ theme: live
       gap: clamp(1rem, 2.5vw, 2rem);
       justify-content: center;
       width: 100%;
-      max-width: min(96vw, 1200px);
-      margin-inline: auto;
     }
 
     .live-projects-grid[data-count="1"] {
-      grid-template-columns: minmax(280px, 420px);
+      grid-template-columns: 1fr;
+    }
+
+    /* Standby card — placeholder for shows without a recap yet. Broadcast
+       language, not film: signal bars up top, blinking standby status. */
+    .live-standby {
+      position: relative;
+      border: 1px solid rgba(var(--color-accent-rgb), 0.22);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--color-card-bg);
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      padding-top: clamp(2.5rem, 5vw, 3.25rem);
+      text-align: left;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 2px 8px rgba(0, 0, 0, 0.18),
+        0 12px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Monochrome test-bar strip */
+    .live-standby-bars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: linear-gradient(
+        90deg,
+        rgba(var(--color-accent-rgb), 0.75) 0 12.5%,
+        rgba(var(--color-accent-rgb), 0.35) 12.5% 25%,
+        rgba(var(--color-accent-rgb), 0.85) 25% 37.5%,
+        rgba(var(--color-accent-rgb), 0.2) 37.5% 50%,
+        rgba(var(--color-accent-rgb), 0.55) 50% 62.5%,
+        rgba(var(--color-accent-rgb), 0.3) 62.5% 75%,
+        rgba(var(--color-accent-rgb), 0.65) 75% 87.5%,
+        rgba(var(--color-accent-rgb), 0.15) 87.5% 100%
+      );
+      border-bottom: 1px solid rgba(var(--color-accent-rgb), 0.25);
+    }
+
+    .live-standby-status {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.85rem;
+    }
+
+    .live-standby-dot {
+      color: var(--color-accent);
+      animation: standby-blink 1.6s steps(2, jump-none) infinite;
+    }
+
+    @keyframes standby-blink {
+      50% { opacity: 0.15; }
+    }
+
+    .live-standby-title {
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+
+    .live-standby-copy {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      max-width: 52ch;
+    }
+
+    .live-standby-copy a {
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(var(--color-accent-rgb), 0.35);
+      text-underline-offset: 0.2em;
+      transition: text-decoration-color var(--transition-fast);
+    }
+
+    .live-standby-copy a:hover {
+      text-decoration-color: var(--color-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .live-standby-dot {
+        animation: none;
+      }
     }
 
     .live-projects-grid[data-count="2"] {
       grid-template-columns: repeat(2, minmax(280px, 1fr));
-      max-width: 840px;
     }
 
     .live-projects-grid[data-count="3"] {
       grid-template-columns: repeat(3, minmax(280px, 1fr));
-      max-width: 1080px;
     }
 
     .live-project-item {
@@ -197,12 +289,6 @@ theme: live
       }
     }
 
-    @media (max-width: 768px) {
-      .services-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-      }
-    }
   </style>
 </head>
 <body class="theme-live hero-cinematic">
@@ -254,13 +340,17 @@ theme: live
         Need gear for your own team? Browse our <a href="{{ base }}rentals/">equipment rentals</a>.
       </p>
 
-      <div class="services-grid">
+      <span class="service-ledger-note font-tech" aria-hidden="true">Patch list — 0{{ liveServices | length }} inputs</span>
+      <div class="service-ledger channel-list">
         {% for service in liveServices %}
-        <div class="service-card glass-panel">
-          <div class="service-icon">{{ service.icon }}</div>
-          <h3 class="service-title font-display">{{ service.title }}</h3>
-          <p class="service-desc">{{ service.description }}</p>
-        </div>
+        <article class="service-ledger-row channel-row">
+          <span class="service-ledger-index" aria-hidden="true">CH 0{{ loop.index }}</span>
+          <div class="channel-main">
+            <h3 class="service-ledger-title font-display">{{ service.title }}</h3>
+            <span class="channel-meter" aria-hidden="true"></span>
+          </div>
+          <p class="service-ledger-desc">{{ service.description }}</p>
+        </article>
         {% endfor %}
       </div>
     </section>
@@ -309,6 +399,15 @@ theme: live
 
       <div class="live-projects-grid" data-count="{{ liveProjects | length }}">
         {% for project in liveProjects %}
+        {% set projectHasMedia = project.preview or project.thumbnail or project.video or project.embed or (project.images and project.images.length) %}
+        {% if not projectHasMedia %}
+        <div class="live-standby">
+          <div class="live-standby-bars" aria-hidden="true"></div>
+          <p class="live-standby-status font-tech" aria-hidden="true"><span class="live-standby-dot">&#9679;</span> STANDBY</p>
+          <p class="live-standby-title font-display">{{ project.title }}</p>
+          <p class="live-standby-copy">Recaps from recent shows are coming soon. In the meantime, <a href="#request-production">put your event on the board</a>.</p>
+        </div>
+        {% else %}
         <button
           class="live-project-item"
           type="button"
@@ -336,6 +435,7 @@ theme: live
             <span class="live-project-copy">View project</span>
           </span>
         </button>
+        {% endif %}
         {% endfor %}
       </div>
     </section>
