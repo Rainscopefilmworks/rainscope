@@ -3,6 +3,7 @@ studio/node_modules/
 _site/
 .env
 studio/.env
+worker/.dev.vars
 .DS_Store
 studio/.sanity/
 .design/*/screenshots/

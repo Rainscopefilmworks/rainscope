@@ -66,7 +66,17 @@ function stripSanityMeta(value) {
   return value;
 }
 
+function useLocalDataOnly() {
+  const flag = process.env.USE_LOCAL_DATA;
+  return flag === "1" || flag === "true";
+}
+
 async function fetchFromSanity() {
+  if (useLocalDataOnly()) {
+    console.log("[fetch-sanity] USE_LOCAL_DATA set — using committed _data/*.json");
+    return false;
+  }
+
   const { projectId, dataset } = getSanityConfig();
 
   if (!projectId) {
