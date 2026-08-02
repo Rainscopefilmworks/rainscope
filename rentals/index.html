@@ -257,6 +257,17 @@ theme: rentals
     </span>
   </button>
 
+  <dialog id="weekend-modal" closedby="any" aria-labelledby="weekend-modal-title">
+    <div class="modal-content" style="max-width: 480px;">
+      <button class="close-modal-btn" commandfor="weekend-modal" command="close" aria-label="Close notice">&times;</button>
+      <h2 class="modal-title font-tech" id="weekend-modal-title">Weekend Pickup/Dropoff Unavailable</h2>
+      <div style="margin-top: 1.5rem;">
+        <p>We're unable to accommodate rental pickups or dropoffs on Saturdays or Sundays. Please choose a weekday for both dates.</p>
+        <p>If you have an urgent need for a rental, please contact us at <a href="mailto:rentals@rainscope.ca">rentals@rainscope.ca</a>.</p>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="faq-modal" closedby="any" aria-labelledby="faq-title">
     <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
       <button class="close-modal-btn" commandfor="faq-modal" command="close" aria-label="Close FAQ">&times;</button>

@@ -5,3 +5,4 @@ scripts/
 worker/
 .git/
 .design/
+.claude/

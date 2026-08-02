@@ -32,6 +32,26 @@
     return Number.isNaN(d.getTime()) ? null : d;
   }
 
+  function isWeekend(dateStr) {
+    if (!dateStr) return false;
+    const d = new Date(dateStr + "T00:00:00");
+    if (Number.isNaN(d.getTime())) return false;
+    const day = d.getDay();
+    return day === 0 || day === 6;
+  }
+
+  function showWeekendModal() {
+    const modal = document.getElementById("weekend-modal");
+    if (modal && typeof modal.showModal === "function") {
+      modal.showModal();
+    } else {
+      alert(
+        "We're unable to accommodate rental pickups or dropoffs on Saturdays or Sundays. " +
+          "If you have an urgent need for a rental, please contact us at rentals@rainscope.ca."
+      );
+    }
+  }
+
   // Days between pickup and dropoff, excluding both endpoints.
   function dayDiff(a, b) {
     const da = new Date(a.getFullYear(), a.getMonth(), a.getDate());
@@ -642,6 +662,10 @@
           alert("Dropoff date must be on/after pickup date.");
           return;
         }
+        if (isWeekend(startStr) || isWeekend(endStr)) {
+          showWeekendModal();
+          return;
+        }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_address)) {
           alert("Please enter a valid email address.");
           return;
@@ -808,8 +832,17 @@
 
       const start = document.getElementById("rental-start");
       const end = document.getElementById("rental-end");
-      if (start) start.addEventListener("change", computeTotals);
-      if (end) end.addEventListener("change", computeTotals);
+
+      function handleDateChange(e) {
+        if (isWeekend(e.target.value)) {
+          e.target.value = "";
+          showWeekendModal();
+        }
+        computeTotals();
+      }
+
+      if (start) start.addEventListener("change", handleDateChange);
+      if (end) end.addEventListener("change", handleDateChange);
 
       if ($form) {
         // Capture-phase handler to ensure rentals.js owns this form submit flow.
@@ -829,8 +862,16 @@
       try {
         $grid.innerHTML = utils.catalogSkeletonHTML(8);
 
-        const today = new Date();
-        const tomorrow = new Date(Date.now() + MS);
+        function nextWeekday(d) {
+          const result = new Date(d);
+          while (result.getDay() === 0 || result.getDay() === 6) {
+            result.setDate(result.getDate() + 1);
+          }
+          return result;
+        }
+
+        const today = nextWeekday(new Date());
+        const tomorrow = nextWeekday(new Date(today.getTime() + MS));
         const startInput = document.getElementById("rental-start");
         const endInput = document.getElementById("rental-end");
         if (startInput && endInput && !startInput.value && !endInput.value) {
