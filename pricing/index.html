@@ -13,8 +13,8 @@ eleventyExcludeFromCollections: true
   <meta name="robots" content="noindex, nofollow">
   <meta name="googlebot" content="noindex, nofollow">
   {% include "seo-head.njk" %}
-  <link rel="stylesheet" href="{{ base }}css/style.css">
-  <link rel="stylesheet" href="{{ base }}css/cinematic.css">
+  <link rel="stylesheet" href="{{ base }}css/style.css?v={{ buildVersion }}">
+  <link rel="stylesheet" href="{{ base }}css/cinematic.css?v={{ buildVersion }}">
   <style>
     .pricing-hero-section {
       padding-bottom: 0;
@@ -551,6 +551,6 @@ eleventyExcludeFromCollections: true
     })();
   </script>
 
-  <script src="{{ base }}js/main.js"></script>
+  <script src="{{ base }}js/main.js?v={{ buildVersion }}"></script>
 </body>
 </html>

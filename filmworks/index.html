@@ -44,8 +44,8 @@ theme: filmworks
 }
   {% endset %}
   {% include "seo-head.njk" %}
-  <link rel="stylesheet" href="{{ base }}css/style.css">
-  <link rel="stylesheet" href="{{ base }}css/cinematic.css">
+  <link rel="stylesheet" href="{{ base }}css/style.css?v={{ buildVersion }}">
+  <link rel="stylesheet" href="{{ base }}css/cinematic.css?v={{ buildVersion }}">
   <style>
     /* Filmworks Specific Custom Styles */
     .intro-section {
@@ -716,10 +716,10 @@ theme: filmworks
     </div>
   </div>
 
-  <script src="{{ base }}js/form-config.js"></script>
-  <script src="{{ base }}js/google-forms.js"></script>
-  <script src="{{ base }}js/cinematic-hero.js"></script>
-  <script src="{{ base }}js/main.js"></script>
-  <script src="{{ base }}js/filmworks-work.js"></script>
+  <script src="{{ base }}js/form-config.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/google-forms.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/cinematic-hero.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/main.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/filmworks-work.js?v={{ buildVersion }}"></script>
 </body>
 </html>

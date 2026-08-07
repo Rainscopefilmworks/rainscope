@@ -13,8 +13,8 @@ theme: live
   {% set pageTitle = pd.title %}
   {% set pageDescription = pd.description %}
   {% include "seo-head.njk" %}
-  <link rel="stylesheet" href="{{ base }}css/style.css">
-  <link rel="stylesheet" href="{{ base }}css/cinematic.css">
+  <link rel="stylesheet" href="{{ base }}css/style.css?v={{ buildVersion }}">
+  <link rel="stylesheet" href="{{ base }}css/cinematic.css?v={{ buildVersion }}">
   <style>
     .intro-section {
       padding-top: clamp(2.5rem, 5vw, 3.5rem);
@@ -504,10 +504,10 @@ theme: live
     </div>
   </div>
 
-  <script src="{{ base }}js/cinematic-hero.js"></script>
-  <script src="{{ base }}js/form-config.js"></script>
-  <script src="{{ base }}js/google-forms.js"></script>
-  <script src="{{ base }}js/main.js"></script>
-  <script src="{{ base }}js/live-projects.js"></script>
+  <script src="{{ base }}js/cinematic-hero.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/form-config.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/google-forms.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/main.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/live-projects.js?v={{ buildVersion }}"></script>
 </body>
 </html>

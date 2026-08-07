@@ -12,8 +12,8 @@ theme: shop
   {% set pageTitle = pd.title %}
   {% set pageDescription = pd.description %}
   {% include "seo-head.njk" %}
-  <link rel="stylesheet" href="{{ base }}css/style.css">
-  <link rel="stylesheet" href="{{ base }}css/cinematic.css">
+  <link rel="stylesheet" href="{{ base }}css/style.css?v={{ buildVersion }}">
+  <link rel="stylesheet" href="{{ base }}css/cinematic.css?v={{ buildVersion }}">
   <link rel="preconnect" href="https://web.squarecdn.com">
   <style>
     .commerce-search { margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--color-text-primary); font-family: var(--font-tech); }
@@ -189,11 +189,11 @@ theme: shop
     </span>
   </button>
 
-  <script src="{{ base }}js/cinematic-hero.js"></script>
-  <script src="{{ base }}js/square-config.js"></script>
-  <script src="{{ base }}js/square-utils.js"></script>
-  <script src="{{ base }}js/commerce-cart-shell.js"></script>
-  <script src="{{ base }}js/main.js"></script>
-  <script src="{{ base }}js/shop.js"></script>
+  <script src="{{ base }}js/cinematic-hero.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/square-config.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/square-utils.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/commerce-cart-shell.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/main.js?v={{ buildVersion }}"></script>
+  <script src="{{ base }}js/shop.js?v={{ buildVersion }}"></script>
 </body>
 </html>

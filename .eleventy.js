@@ -1,4 +1,14 @@
+const { execSync } = require("child_process");
+
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addGlobalData("buildVersion", () => {
+    try {
+      return execSync("git rev-parse --short HEAD").toString().trim();
+    } catch (err) {
+      return String(Date.now());
+    }
+  });
+
   eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("assets");
