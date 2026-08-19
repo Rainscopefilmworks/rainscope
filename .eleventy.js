@@ -55,6 +55,11 @@ module.exports = function (eleventyConfig) {
     return items.filter((item) => Array.isArray(item.tags) && item.tags.includes(tag));
   });
 
+  eleventyConfig.addFilter("byTag", (items, tag) => {
+    if (!tag || !Array.isArray(items)) return items || [];
+    return items.filter((item) => item.tag === tag);
+  });
+
   return {
     dir: {
       input: ".",

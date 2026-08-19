@@ -20,6 +20,62 @@
 <meta name="twitter:description" content="{{ ogDescription | default(pageDescription) }}">
 <meta name="twitter:image" content="{{ ogImage | default(siteSettings.defaultOgImage) }}">
 
+{% set orgSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "LocalBusiness"],
+  "name": siteSettings.siteName | default("Rainscope"),
+  "legalName": "Rainscope Filmworks",
+  "url": siteSettings.domain,
+  "logo": "https://media.rainscope.ca/android-chrome-512x512.png",
+  "image": "https://media.rainscope.ca/android-chrome-512x512.png",
+  "description": siteSettings.footerAbout,
+  "email": siteSettings.contactEmail,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1868 Glen Drive",
+    "addressLocality": "Vancouver",
+    "addressRegion": "BC",
+    "addressCountry": "CA"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": siteSettings.mapLat | default(49.2684126),
+    "longitude": siteSettings.mapLng | default(-123.0808085)
+  },
+  "hasMap": siteSettings.googleMapsUrl | default("https://maps.app.goo.gl/UfKXqDaY4pjSpGc16"),
+  "areaServed": "Vancouver, BC",
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Filmworks — Production Studio",
+        "description": "Cinematic narrative films, high-end commercial campaigns, and corporate video production.",
+        "url": siteSettings.domain ~ "/filmworks/"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Rentals — Equipment & Gear",
+        "description": "Cinema camera, lens, lighting, and audio equipment rentals, including gear available for sale.",
+        "url": siteSettings.domain ~ "/rentals/"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Live — Event Production & AV",
+        "description": "Live event production, camera switching, audio, vision, and webcasting for corporate events and performances.",
+        "url": siteSettings.domain ~ "/live/"
+      }
+    }
+  ]
+} %}
+<script type="application/ld+json">{{ orgSchema | dump | safe }}</script>
+
 {% if schemaJson %}
 <script type="application/ld+json">{{ schemaJson | safe }}</script>
 {% endif %}

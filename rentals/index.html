@@ -11,6 +11,24 @@ theme: rentals
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% set pageTitle = pd.title %}
   {% set pageDescription = pd.description %}
+  {% set schemaJson %}
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for item in faqItems | byTag("rentals") %}
+    {
+      "@type": "Question",
+      "name": {{ item.question | dump | safe }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ item.answer | dump | safe }}
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+  {% endset %}
   {% include "seo-head.njk" %}
   <link rel="stylesheet" href="{{ base }}css/style.css?v={{ buildVersion }}">
   <link rel="stylesheet" href="{{ base }}css/cinematic.css?v={{ buildVersion }}">
