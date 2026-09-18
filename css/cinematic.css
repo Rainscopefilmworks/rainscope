@@ -463,12 +463,17 @@ body.landing-page.is-intro-ready .landing-header {
 }
 
 @media (max-width: 768px) {
+  .hero-reel--cinematic {
+    justify-content: center;
+  }
+
   .hero-reel--cinematic .hero-title {
     font-size: clamp(1.65rem, 7vw, 2.25rem);
   }
 
   .hero-reel--cinematic .hero-reel-content {
     padding-inline: 1.25rem;
+    padding-top: 0;
     padding-bottom: clamp(0.75rem, 2vh, 1rem);
   }
 
