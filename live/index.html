@@ -187,12 +187,14 @@ theme: live
       }
     }
 
-    .live-projects-grid[data-count="2"] {
-      grid-template-columns: repeat(2, minmax(280px, 1fr));
-    }
+    @media (min-width: 640px) {
+      .live-projects-grid[data-count="2"] {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+      }
 
-    .live-projects-grid[data-count="3"] {
-      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      .live-projects-grid[data-count="3"] {
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+      }
     }
 
     .live-project-item {
